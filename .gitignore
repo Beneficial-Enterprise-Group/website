@@ -1,0 +1,17 @@
+# Node
+node_modules/
+
+# Netlify
+.netlify/
+
+# Environment variables - NEVER commit these
+.env
+.env.local
+.env*.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/

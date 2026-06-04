@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Legacy ERP Modernization & API Automation | Beneficial Enterprise Group</title>
+<meta name="description" content="Extend the life of your legacy ERP — Visual legacy system, AS400, Oracle, SAP, Infor, Eclipse. We build secure API middleware and data transformation pipelines without the risk of full replacement. Book a discovery call.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["Organization", "ProfessionalService"],
+  "name": "Beneficial Enterprise Group Inc.",
+  "url": "https://www.beneficialenterprisegroup.com",
+  "logo": "https://www.beneficialenterprisegroup.com/logo.png",
+  "description": "IT consulting firm specializing in legacy ERP modernization, API middleware architecture, data transformation pipelines, and production support for small and mid-market businesses across the Northeast US.",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Philadelphia",
+    "addressRegion": "PA",
+    "addressCountry": "US"
+  },
+  "areaServed": {
+    "@type": "GeoRegion",
+    "name": "Northeast United States"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "email": "info@beneficialenterprisegroup.com",
+    "contactType": "customer service"
+  },
+  "knowsAbout": [
+    "Legacy ERP modernization",
+    "API middleware architecture",
+    "Legacy database migration",
+    "AS400 IBM iSeries integration",
+    "Upsizing Microsoft Access to .NET web apps",
+    "Oracle ERP bridge",
+    "SAP integration",
+    "ETL pipeline development",
+    "SQL Server",
+    "HL7 FHIR healthcare integration",
+    "EDI flat-file CSV pipeline automation",
+    "Production support"
+  ],
+  "sameAs": []
+}
+</script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --teal:      #0BBFBF;
+    --teal-dark: #089090;
+    --blue:      #1A6FD4;
+    --blue-light:#2E8EFF;
+    --bg-dark:   #080C10;
+    --bg-card:   #0E1420;
+    --bg-card2:  #131A28;
+    --border:    rgba(11,191,191,0.18);
+    --border2:   rgba(255,255,255,0.07);
+    --text:      #E8EEF4;
+    --muted:     #8A9BB0;
+    --white:     #FFFFFF;
+    --grad:      linear-gradient(135deg, #0BBFBF 0%, #1A6FD4 100%);
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  a { text-decoration: none; }
+  .container { max-width: 1120px; margin: 0 auto; padding: 0 2rem; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(8,12,16,0.90); backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border2);
+  }
+  .nav-inner {
+    max-width: 1120px; margin: 0 auto; padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between; height: 68px;
+  }
+  .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .nav-logo-mark {
+    background: var(--grad); width: 38px; height: 38px;
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  }
+  .nav-logo-mark svg { width: 22px; height: 22px; }
+  .nav-brand { display: flex; flex-direction: column; line-height: 1.25; }
+  .nav-brand-name { font-size: 15px; font-weight: 700; color: var(--white); letter-spacing: -0.01em; }
+  .nav-brand-sub { font-size: 11px; color: var(--muted); font-weight: 400; letter-spacing: 0.04em; }
+
+  /* nav right group */
+  .nav-right { display: flex; align-items: center; gap: 2rem; list-style: none; }
+  .nav-right > li { display: flex; align-items: center; }
+  .nav-right a {
+    font-size: 14px; color: var(--muted); font-weight: 500;
+    transition: color 0.2s; line-height: 1;
+  }
+  .nav-right a:hover { color: var(--white); }
+
+  /* dropdown */
+  .nav-dropdown { position: relative; display: flex; align-items: center; }
+  .nav-dropdown > a {
+    display: flex; align-items: center; gap: 4px;
+    font-size: 14px; color: var(--muted); font-weight: 500;
+    transition: color 0.2s; cursor: pointer; line-height: 1;
+  }
+  .nav-dropdown > a:hover { color: var(--white); }
+  .nav-dropdown > a svg { transition: transform 0.2s; }
+  .nav-dropdown:hover > a svg { transform: rotate(180deg); }
+  .dropdown-menu {
+    position: absolute; top: calc(100% + 14px); right: 0;
+    min-width: 240px;
+    background: rgba(14,20,32,0.97); backdrop-filter: blur(16px);
+    border: 1px solid var(--border); border-radius: 12px;
+    padding: 8px;
+    opacity: 0; visibility: hidden;
+    transform: translateY(-6px);
+    transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+    z-index: 200;
+  }
+  .nav-dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+  .dropdown-item {
+    display: flex; flex-direction: column;
+    padding: 10px 14px; border-radius: 8px;
+    transition: background 0.15s; text-decoration: none;
+  }
+  .dropdown-item:hover { background: rgba(11,191,191,0.08); }
+  .dropdown-item-name { font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 2px; }
+  .dropdown-item-desc { font-size: 11px; color: var(--muted); line-height: 1.4; }
+  .dropdown-divider { height: 1px; background: var(--border2); margin: 4px 0; }
+
+  .btn-primary {
+    background: var(--grad); color: var(--white) !important;
+    padding: 9px 20px; border-radius: 8px;
+    font-size: 14px; font-weight: 600;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  /* ── HERO ── */
+  .hero { padding: 140px 0 80px; position: relative; overflow: hidden; }
+  .hero::before {
+    content: ''; position: absolute; top: -200px; right: -200px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(11,191,191,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 4rem; align-items: center; }
+  .grad-text {
+    background: var(--grad); -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 4vw, 3rem); font-weight: 800;
+    color: var(--white); line-height: 1.15; letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+  }
+  .hero-sub { font-size: 17px; color: var(--muted); line-height: 1.75; margin-bottom: 2.5rem; }
+  .hero-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 22px; padding: 2rem;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.35);
+    position: relative; overflow: hidden;
+  }
+  .hero-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--grad);
+  }
+  .hero-card h3 { color: var(--white); margin-bottom: 0.8rem; font-size: 16px; font-weight: 600; }
+  .hero-card-sub { font-size: 13px; color: var(--muted); margin-bottom: 1.4rem; }
+  .guardrail-item {
+    background: rgba(255,255,255,0.04); padding: 12px 14px;
+    border-radius: 8px; font-size: 13px; color: var(--text);
+    border: 1px solid var(--border2); margin-bottom: 8px; line-height: 1.5;
+  }
+  .guardrail-item:last-child { margin-bottom: 0; }
+  .guardrail-item strong { color: var(--teal); }
+
+  /* ── COMING SOON OVERLAY ── */
+  .overlay {
+    position: fixed; inset: 0; z-index: 500;
+    background: rgba(8,12,16,0.92);
+    backdrop-filter: blur(16px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.25s, visibility 0.25s;
+  }
+  .overlay.active { opacity: 1; visibility: visible; }
+  .overlay-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 3rem 3.5rem;
+    max-width: 480px; width: 90%;
+    text-align: center;
+    position: relative;
+    transform: translateY(12px);
+    transition: transform 0.25s;
+  }
+  .overlay.active .overlay-card { transform: translateY(0); }
+  .overlay-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--grad); border-radius: 24px 24px 0 0;
+  }
+  .overlay-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+    color: var(--teal); text-transform: uppercase;
+    border: 1px solid rgba(11,191,191,0.3);
+    padding: 4px 12px; border-radius: 999px;
+    margin-bottom: 1.5rem;
+  }
+  .overlay-badge span { width: 5px; height: 5px; border-radius: 50%; background: var(--teal); }
+  .overlay-icon {
+    font-size: 3rem; margin-bottom: 1.2rem; display: block;
+  }
+  .overlay-title {
+    font-size: 1.6rem; font-weight: 800; color: var(--white);
+    letter-spacing: -0.03em; margin-bottom: 0.8rem;
+  }
+  .overlay-name {
+    background: var(--grad); -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .overlay-desc {
+    font-size: 15px; color: var(--muted); line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+  .overlay-close {
+    background: none; border: 1px solid var(--border);
+    color: var(--muted); font-size: 14px; font-weight: 500;
+    padding: 10px 28px; border-radius: 8px; cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .overlay-close:hover { border-color: var(--teal); color: var(--white); }
+
+  /* ── CONTACT MODAL ── */
+  .contact-modal {
+    position: fixed; inset: 0; z-index: 600;
+    background: rgba(8,12,16,0.92);
+    backdrop-filter: blur(16px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.25s, visibility 0.25s;
+  }
+  .contact-modal.active { opacity: 1; visibility: visible; }
+  .contact-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 2.5rem 3rem;
+    max-width: 500px; width: 92%;
+    position: relative;
+    transform: translateY(14px);
+    transition: transform 0.25s;
+  }
+  .contact-modal.active .contact-card { transform: translateY(0); }
+  .contact-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--grad); border-radius: 24px 24px 0 0;
+  }
+  .contact-card-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    margin-bottom: 1.8rem;
+  }
+  .contact-card-header h2 {
+    font-size: 1.4rem; font-weight: 800; color: var(--white);
+    letter-spacing: -0.03em; line-height: 1.2;
+  }
+  .contact-card-header p {
+    font-size: 13px; color: var(--muted); margin-top: 4px;
+  }
+  .modal-close-btn {
+    background: rgba(255,255,255,0.06); border: 1px solid var(--border2);
+    color: var(--muted); width: 32px; height: 32px;
+    border-radius: 8px; cursor: pointer; font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-left: 1rem; margin-top: 2px;
+    transition: background 0.2s, color 0.2s; font-family: 'Inter', sans-serif;
+  }
+  .modal-close-btn:hover { background: rgba(255,255,255,0.1); color: var(--white); }
+  .form-group { margin-bottom: 1.1rem; }
+  .form-group label {
+    display: block; font-size: 12px; font-weight: 600;
+    color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em;
+    margin-bottom: 6px;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%; background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border2); border-radius: 8px;
+    padding: 11px 14px; font-size: 14px; color: var(--white);
+    font-family: 'Inter', sans-serif; outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-group input::placeholder,
+  .form-group textarea::placeholder { color: var(--muted); }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: var(--teal); }
+  .form-group select {
+    appearance: none; cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' viewBox='0 0 24 24' stroke='%238A9BB0' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 14px center;
+  }
+  .form-group select option { background: #0E1420; color: var(--text); }
+  .form-group textarea { resize: vertical; min-height: 90px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-submit {
+    width: 100%; background: var(--grad); color: var(--white);
+    border: none; border-radius: 10px; padding: 13px;
+    font-size: 15px; font-weight: 700; cursor: pointer;
+    font-family: 'Inter', sans-serif; margin-top: 0.5rem;
+    transition: opacity 0.2s, transform 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .form-submit:hover { opacity: 0.88; transform: translateY(-1px); }
+  .form-success {
+    text-align: center; padding: 1.5rem 0; display: none;
+  }
+  .form-success .success-icon { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+  .form-success h3 { font-size: 1.2rem; font-weight: 700; color: var(--white); margin-bottom: 0.5rem; }
+  .form-success p { font-size: 14px; color: var(--muted); }
+
+  /* ── TRUST BAR ── */
+  .trust {
+    padding: 2.5rem 0;
+    border-top: 1px solid var(--border2);
+    border-bottom: 1px solid var(--border2);
+    margin-bottom: 0;
+  }
+  .trust-inner {
+    max-width: 1120px; margin: 0 auto; padding: 0 2rem;
+    display: flex; align-items: center; gap: 3rem; flex-wrap: wrap;
+  }
+  .trust-label { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; white-space: nowrap; }
+  .trust-items { display: flex; gap: 2.5rem; flex-wrap: wrap; align-items: center; }
+  .trust-item { font-size: 14px; color: var(--muted); font-weight: 500; display: flex; align-items: center; gap: 8px; }
+  .trust-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--teal); flex-shrink: 0; }
+
+  /* ── SECTIONS ── */
+  .section { padding: 80px 0; }
+  .section-eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; color: var(--teal); text-transform: uppercase; margin-bottom: 1rem; }
+  .section-title { font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 800; color: var(--white); letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 1rem; }
+  .section-sub { font-size: 17px; color: var(--muted); max-width: 800px; line-height: 1.75; margin-bottom: 3rem; }
+
+  /* ── CARDS GRID ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .card {
+    background: var(--bg-card); border: 1px solid var(--border2);
+    border-radius: 16px; padding: 2rem;
+    transition: border-color 0.25s, transform 0.25s;
+    position: relative; overflow: hidden;
+  }
+  .card:hover { border-color: var(--border); transform: translateY(-3px); }
+  .card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--grad); opacity: 0; transition: opacity 0.25s;
+  }
+  .card:hover::before { opacity: 1; }
+  .card-icon { font-size: 24px; margin-bottom: 1rem; }
+  .card h3, .card-heading {
+    font-size: 17px; font-weight: 600; color: var(--white);
+    margin-bottom: 0.75rem; letter-spacing: -0.01em;
+  }
+  .card p { font-size: 15px; color: var(--muted); line-height: 1.7; }
+
+  /* ── PRIVACY BOX ── */
+  .privacy-box {
+    background: rgba(11,191,191,0.03);
+    border: 1px dashed var(--border);
+    border-radius: 20px; padding: 3rem;
+    margin-top: 1rem;
+  }
+  .privacy-box h3 { font-size: 1.4rem; font-weight: 700; color: var(--white); letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+  .privacy-box > p { font-size: 15px; color: var(--muted); margin-bottom: 2rem; }
+  .privacy-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem; }
+  .privacy-item h4 { color: var(--teal); margin-bottom: 0.5rem; font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
+  .privacy-item p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+  /* ── BLOG ── */
+  .blog-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    margin-bottom: 2.5rem; gap: 1.5rem; flex-wrap: wrap;
+  }
+  .blog-sub { font-size: 16px; color: var(--muted); line-height: 1.6; margin-top: 0.5rem; max-width: 520px; }
+  .blog-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 600; color: var(--teal);
+    border: 1px solid rgba(11,191,191,0.25);
+    background: rgba(11,191,191,0.05);
+    padding: 7px 14px; border-radius: 999px;
+    white-space: nowrap; align-self: flex-start; margin-top: 6px;
+  }
+  .blog-pulse {
+    width: 8px; height: 8px; border-radius: 50%; background: var(--teal);
+    flex-shrink: 0; animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.4; transform: scale(0.8); }
+  }
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+    margin-bottom: 1.5rem;
+  }
+  .blog-card {
+    background: var(--bg-card); border: 1px solid var(--border2);
+    border-radius: 16px; padding: 1.6rem;
+    display: flex; flex-direction: column; gap: 0.8rem;
+    transition: border-color 0.25s, transform 0.25s;
+    position: relative; overflow: hidden;
+  }
+  .blog-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--grad); opacity: 0; transition: opacity 0.25s;
+  }
+  .blog-card:hover { border-color: var(--border); transform: translateY(-3px); }
+  .blog-card:hover::before { opacity: 1; }
+  .blog-card-meta {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .blog-tag {
+    font-size: 11px; font-weight: 600; padding: 3px 9px;
+    border-radius: 999px; background: rgba(11,191,191,0.1);
+    border: 1px solid rgba(11,191,191,0.2); color: var(--teal);
+    letter-spacing: 0.03em;
+  }
+  .blog-date { font-size: 12px; color: var(--muted); }
+  .blog-card-title {
+    font-size: 15px; font-weight: 700; color: var(--white);
+    line-height: 1.35; letter-spacing: -0.01em;
+  }
+  .blog-card-body {
+    font-size: 13px; color: var(--muted); line-height: 1.65; flex: 1;
+  }
+  .blog-card-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 0.6rem; border-top: 1px solid var(--border2);
+  }
+  .blog-source { font-size: 12px; color: var(--muted); font-style: italic; }
+  .blog-read-more {
+    font-size: 12px; font-weight: 600; color: var(--teal);
+    transition: color 0.2s;
+  }
+  .blog-read-more:hover { color: var(--blue-light); }
+  .blog-footer-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 1.2rem;
+    background: var(--bg-card); border: 1px solid var(--border2);
+    border-radius: 12px; flex-wrap: wrap; gap: 0.8rem;
+  }
+  .blog-agent-note {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; color: var(--muted);
+  }
+  .blog-agent-note svg { color: var(--teal); flex-shrink: 0; }
+  .blog-archive-link {
+    font-size: 13px; font-weight: 600; color: var(--teal);
+    transition: color 0.2s;
+  }
+  .blog-archive-link:hover { color: var(--blue-light); }
+
+  /* ── HERO EYEBROW ── */
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.1em;
+    color: var(--teal); text-transform: uppercase;
+    border: 1px solid rgba(11,191,191,0.3);
+    padding: 5px 14px; border-radius: 999px;
+    margin-bottom: 1.5rem;
+  }
+  .hero-eyebrow-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--teal); flex-shrink: 0;
+  }
+  .hero-card-blog { padding: 0; overflow: hidden; }
+  .hero-blog-label {
+    color: var(--white); font-size: 15px; font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .hero-blog-sublabel {
+    font-size: 12px; color: var(--muted); margin-top: 3px;
+  }
+  .hero-blog-live {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 600; color: var(--teal);
+  }
+  .hero-blog-live-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--teal); flex-shrink: 0;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  /* ── HERO BLOG CARD ── */
+  .hero-blog-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.3rem 1.5rem 1rem;
+    border-bottom: 1px solid var(--border2);
+  }
+  .hero-blog-feed {
+    overflow-y: scroll;
+    max-height: 480px;
+    padding: 0.4rem 0;
+    scrollbar-width: auto;
+    scrollbar-color: rgba(11,191,191,0.5) rgba(255,255,255,0.04);
+  }
+  .hero-blog-feed::-webkit-scrollbar { width: 7px; }
+  .hero-blog-feed::-webkit-scrollbar-track { background: rgba(255,255,255,0.04); border-radius: 4px; }
+  .hero-blog-feed::-webkit-scrollbar-thumb { background: rgba(11,191,191,0.5); border-radius: 4px; }
+  .hero-blog-feed::-webkit-scrollbar-thumb:hover { background: rgba(11,191,191,0.8); }
+  .hero-blog-entry {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border2);
+    transition: background 0.15s;
+    cursor: default;
+  }
+  .hero-blog-entry:last-child { border-bottom: none; }
+  .hero-blog-entry:hover { background: rgba(255,255,255,0.02); }
+  .hero-blog-tag {
+    display: inline-block; font-size: 10px; font-weight: 600;
+    letter-spacing: 0.06em; color: var(--teal);
+    background: rgba(11,191,191,0.1); border: 1px solid rgba(11,191,191,0.2);
+    padding: 2px 8px; border-radius: 999px; margin-bottom: 6px;
+  }
+  .hero-blog-title {
+    font-size: 13px; font-weight: 600; color: var(--white);
+    line-height: 1.4; margin-bottom: 5px; letter-spacing: -0.01em;
+  }
+  .hero-blog-snippet {
+    font-size: 12px; color: var(--muted); line-height: 1.55; margin-bottom: 6px;
+  }
+  .hero-blog-meta {
+    font-size: 11px; color: rgba(138,155,176,0.6); font-style: italic;
+  }
+  .hero-blog-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.9rem 1.5rem;
+    border-top: 1px solid var(--border2);
+    background: rgba(255,255,255,0.02);
+  }
+
+  .erp-bridge-section { padding-top: 240px; }
+
+  /* ── LEGACY ENV STRIP ── */
+  .env-strip {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 12px;
+    margin-bottom: 2.5rem;
+    padding: 1rem 1.4rem;
+    background: var(--bg-card); border: 1px solid var(--border2);
+    border-radius: 12px;
+  }
+  .env-label {
+    font-size: 11px; font-weight: 600; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap;
+  }
+  .env-tags { display: flex; flex-wrap: wrap; gap: 7px; }
+  .env-tag {
+    font-size: 12px; font-weight: 500; padding: 4px 11px;
+    border-radius: 999px; border: 1px solid rgba(11,191,191,0.2);
+    background: rgba(11,191,191,0.06); color: var(--teal);
+  }
+
+  /* ── 3-COLUMN GRID ── */
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+    margin-bottom: 2rem;
+  }
+
+  /* ── TRIGGER BOX ── */
+  .trigger-box {
+    display: flex; align-items: flex-start; gap: 1.2rem;
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 1.8rem 2rem;
+    position: relative; overflow: hidden;
+  }
+  .trigger-box::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--grad);
+  }
+  .trigger-icon { font-size: 2rem; flex-shrink: 0; margin-top: 2px; }
+  .trigger-title {
+    font-size: 16px; font-weight: 700; color: var(--white);
+    margin-bottom: 6px; letter-spacing: -0.01em;
+  }
+  .trigger-body {
+    font-size: 14px; color: var(--muted); line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+  .trigger-cta {
+    font-size: 14px; font-weight: 600; color: var(--teal);
+    transition: color 0.2s;
+  }
+  .trigger-cta:hover { color: var(--blue-light); }
+
+  /* ── FOOTER ── */
+  footer { border-top: 1px solid var(--border2); padding: 3rem 0; margin-top: 4rem; }
+  .footer-inner {
+    max-width: 1120px; margin: 0 auto; padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1.5rem;
+  }
+  .footer-brand { display: flex; align-items: center; gap: 12px; }
+  .footer-brand-mark { width: 32px; height: 32px; border-radius: 7px; background: var(--grad); display: flex; align-items: center; justify-content: center; }
+  .footer-brand-mark svg { width: 18px; height: 18px; }
+  .footer-name { font-size: 14px; font-weight: 600; color: var(--white); }
+  .footer-copy { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .footer-email a { font-size: 13px; color: var(--muted); transition: color 0.2s; }
+  .footer-email a:hover { color: var(--teal); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-card { display: none; }
+    .grid-2 { grid-template-columns: 1fr; }
+    .grid-3 { grid-template-columns: 1fr; }
+    .blog-grid { grid-template-columns: 1fr; }
+    .blog-header { flex-direction: column; }
+    .env-strip { flex-direction: column; align-items: flex-start; }
+    .founder-grid { grid-template-columns: 1fr; }
+    .process-grid { grid-template-columns: 1fr; }
+    .faq-grid { grid-template-columns: 1fr; }
+    .insights-grid { grid-template-columns: 1fr; }
+    .cta-band-inner { flex-direction: column; align-items: flex-start; }
+    .cta-band-actions { align-items: flex-start; }
+    .trigger-box { flex-direction: column; }
+  }
+  @media (max-width: 768px) {
+    .nav-right { display: none; }
+  }
+
+
+  /* ── INSIGHTS SECTION ── */
+  .insights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .insight-card {
+    background: var(--bg-card); border: 1px solid var(--border2);
+    border-radius: 16px; padding: 1.8rem;
+    display: flex; flex-direction: column; gap: 0.8rem;
+    transition: border-color 0.25s, transform 0.25s;
+    position: relative; overflow: hidden;
+  }
+  .insight-card:hover { border-color: var(--border); transform: translateY(-3px); }
+  .insight-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--grad); opacity: 0; transition: opacity 0.25s;
+  }
+  .insight-card:hover::before { opacity: 1; }
+  .insight-category {
+    font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 999px;
+    background: rgba(11,191,191,0.1); border: 1px solid rgba(11,191,191,0.2); color: var(--teal);
+    display: inline-block; width: fit-content;
+  }
+  .insight-title {
+    font-size: 17px; font-weight: 700; color: var(--white);
+    line-height: 1.3; letter-spacing: -0.02em;
+  }
+  .insight-body { font-size: 14px; color: var(--muted); line-height: 1.7; flex: 1; }
+  .insight-sources { margin-top: 0.5rem; padding-top: 0.8rem; border-top: 1px solid var(--border2); }
+  .insight-sources-label {
+    font-size: 11px; font-weight: 600; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 6px; display: block;
+  }
+  .insight-source-links { display: flex; flex-direction: column; gap: 4px; }
+  .insight-source-link {
+    font-size: 12px; color: var(--teal); text-decoration: none;
+    display: inline-flex; align-items: center; gap: 5px;
+    transition: color 0.2s;
+  }
+  .insight-source-link:hover { color: var(--blue-light); }
+  .insight-source-link::before { content: '↗'; font-size: 11px; }
+  .blog-source-link {
+    color: var(--teal); text-decoration: none; font-size: 11px; font-weight: 500;
+    transition: color 0.2s;
+  }
+  .blog-source-link:hover { color: var(--blue-light); }
+
+  /* ── BTN SECONDARY HERO ── */
+  .btn-secondary-hero {
+    display: inline-flex; align-items: center; gap: 6px;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 13px 24px; border-radius: 10px;
+    font-size: 15px; font-weight: 500;
+    transition: border-color 0.2s, background 0.2s;
+    text-decoration: none;
+  }
+  .btn-secondary-hero:hover { border-color: var(--teal); background: rgba(11,191,191,0.05); color: var(--text); }
+
+  /* ── TRUST STATS ── */
+  .trust-divider { width: 1px; height: 20px; background: var(--border2); }
+  .trust-stats { display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: center; }
+  .trust-stat { font-size: 13px; color: var(--muted); }
+  .trust-stat strong { color: var(--white); font-weight: 600; }
+
+  /* ── CASE STUDIES ── */
+  .case-card {
+    background: var(--bg-card); border: 1px solid var(--border2);
+    border-radius: 16px; padding: 1.8rem;
+    display: flex; flex-direction: column; gap: 1rem;
+    transition: border-color 0.25s, transform 0.25s;
+    position: relative; overflow: hidden;
+  }
+  .case-card:hover { border-color: var(--border); transform: translateY(-3px); }
+  .case-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--grad); opacity: 0; transition: opacity 0.25s;
+  }
+  .case-card:hover::before { opacity: 1; }
+  .case-tag-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .case-industry {
+    font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 999px;
+    background: rgba(11,191,191,0.1); border: 1px solid rgba(11,191,191,0.2); color: var(--teal);
+  }
+  .case-tech { font-size: 11px; color: var(--muted); }
+  .case-title { font-size: 15px; font-weight: 700; color: var(--white); line-height: 1.35; letter-spacing: -0.01em; }
+  .case-block { display: flex; flex-direction: column; gap: 4px; }
+  .case-label { font-size: 11px; font-weight: 600; color: var(--teal); text-transform: uppercase; letter-spacing: 0.07em; }
+  .case-text { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .case-outcome {
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(11,191,191,0.06); border: 1px solid rgba(11,191,191,0.15);
+    border-radius: 10px; padding: 12px 14px; margin-top: auto;
+  }
+  .outcome-num { font-size: 2rem; font-weight: 800; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
+  .outcome-label { font-size: 13px; color: var(--muted); line-height: 1.4; }
+
+  /* ── FOUNDER ── */
+  .founder-section { background: var(--bg-card); border-top: 1px solid var(--border2); border-bottom: 1px solid var(--border2); }
+  .founder-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 5rem; align-items: center; }
+  .founder-body { font-size: 16px; color: var(--muted); line-height: 1.75; }
+  .founder-skills { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 1.5rem; }
+  .founder-skill { font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 999px; border: 1px solid var(--border2); color: var(--muted); background: rgba(255,255,255,0.03); }
+  .founder-card {
+    background: var(--bg-dark); border: 1px solid var(--border);
+    border-radius: 20px; padding: 2rem; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .founder-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--grad); }
+  .founder-avatar {
+    width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 1rem;
+    background: var(--grad); display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem; font-weight: 800; color: white;
+  }
+  .founder-name { font-size: 17px; font-weight: 700; color: var(--white); margin-bottom: 3px; }
+  .founder-title { font-size: 13px; color: var(--muted); margin-bottom: 1.5rem; }
+  .founder-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.5rem; }
+  .founder-meta-item { background: rgba(255,255,255,0.04); border-radius: 10px; padding: 10px; }
+  .founder-meta-num { display: block; font-size: 1.4rem; font-weight: 800; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .founder-meta-lbl { font-size: 11px; color: var(--muted); line-height: 1.3; }
+  .founder-linkedin {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 13px; font-weight: 600; color: var(--teal);
+    border: 1px solid rgba(11,191,191,0.25); padding: 8px 18px; border-radius: 8px;
+    transition: background 0.2s; text-decoration: none;
+  }
+  .founder-linkedin:hover { background: rgba(11,191,191,0.08); color: var(--teal); }
+
+  /* ── PROCESS ── */
+  .process-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+  .process-step-card {
+    background: var(--bg-dark); border: 1px solid var(--border2); border-radius: 14px; padding: 1.5rem;
+    transition: border-color 0.2s;
+  }
+  .process-step-card:hover { border-color: var(--border); }
+  .process-num { font-size: 11px; font-weight: 700; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.6rem; }
+  .process-heading { font-size: 15px; font-weight: 600; color: var(--white); margin-bottom: 6px; }
+  .process-body { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  /* ── FAQ ── */
+  .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .faq-item { background: var(--bg-card); border: 1px solid var(--border2); border-radius: 14px; padding: 1.6rem; transition: border-color 0.2s; }
+  .faq-item:hover { border-color: var(--border); }
+  .faq-q { font-size: 15px; font-weight: 600; color: var(--white); margin-bottom: 0.8rem; line-height: 1.35; letter-spacing: -0.01em; }
+  .faq-a { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+  /* ── CTA BAND ── */
+  .cta-band { background: var(--bg-card); border-top: 1px solid var(--border2); padding: 60px 0; }
+  .cta-band-inner { display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+  .cta-band-title { font-size: clamp(1.4rem, 2.5vw, 2rem); font-weight: 800; color: var(--white); letter-spacing: -0.03em; margin-bottom: 0.6rem; }
+  .cta-band-sub { font-size: 16px; color: var(--muted); line-height: 1.65; max-width: 560px; }
+  .cta-band-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 0.6rem; flex-shrink: 0; }
+  .cta-reassurance { font-size: 12px; color: var(--muted); }
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#">
+      <div class="nav-logo-mark">
+        <svg viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="3" y="3" width="7" height="7" rx="1.5" fill="white" opacity="0.9"/>
+          <rect x="12" y="3" width="7" height="7" rx="1.5" fill="white" opacity="0.6"/>
+          <rect x="3" y="12" width="7" height="7" rx="1.5" fill="white" opacity="0.6"/>
+          <circle cx="15.5" cy="15.5" r="3.5" fill="white" opacity="0.9"/>
+        </svg>
+      </div>
+      <div class="nav-brand">
+        <span class="nav-brand-name">Beneficial Enterprise Group</span>
+        <span class="nav-brand-sub">IT Consulting</span>
+      </div>
+    </a>
+    <ul class="nav-right">
+      <li class="nav-dropdown">
+        <a>
+          Products
+          <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
+        <div class="dropdown-menu">
+          <a href="/products/quote-recovery" class="dropdown-item" onclick="showProduct('Quote Recovery'); return false;">
+            <span class="dropdown-item-name">Quote Recovery</span>
+            <span class="dropdown-item-desc">Revenue recovery for stalled distributor quotes</span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="/products/vendor-compliance" class="dropdown-item" onclick="showProduct('Vendor Compliance Recovery'); return false;">
+            <span class="dropdown-item-name">Vendor Compliance Recovery</span>
+            <span class="dropdown-item-desc">Automated vendor compliance tracking and recovery workflows</span>
+          </a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-eyebrow">
+          <span class="hero-eyebrow-dot"></span>
+          Legacy ERP · Integration · Modernization
+        </div>
+        <h1>Connect your <span class="grad-text">Legacy ERP</span> to modern systems — without replacing it.</h1>
+        <p class="hero-sub">Your ERP works. The problem is it can't talk to the tools your business needs today. We build the integration layer that eliminates manual workarounds, stops lost revenue, and connects your existing systems to the modern world — in weeks, not years.</p>
+        <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:0.5rem;">
+        <a href="#erp-bridge" class="btn-primary">
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          See How We Work
+        </a>
+        <a href="#" onclick="openContactModal(); return false;" class="btn-secondary-hero">
+          Get a Free Assessment →
+        </a>
+        </div>
+      </div>
+      <aside class="hero-card hero-card-blog">
+        <div class="hero-blog-header">
+          <div>
+            <div class="hero-blog-label">Legacy Systems are Changing</div>
+            <p class="hero-blog-sublabel">Industry developments · updated daily</p>
+          </div>
+          <div class="hero-blog-live">
+            <span class="hero-blog-live-dot"></span>
+            Live
+          </div>
+        </div>
+        <div class="hero-blog-feed">
+
+          <div class="hero-blog-entry">
+            <span class="hero-blog-tag">ERP Failure</span>
+            <p class="hero-blog-title">Only 23% of ERP Implementations Are Considered Successful</p>
+            <p class="hero-blog-snippet">Research shows 74% of companies have experienced at least one failed ERP project, with 67% reporting schedule overruns and 52% saying objectives were not met.</p>
+            <span class="hero-blog-meta"><a href="https://www.priority-software.com/resources/why-erp-implementations-fail/" target="_blank" rel="noopener" class="blog-source-link">Priority Software · Aug 2025</a></span>
+          </div>
+
+          <div class="hero-blog-entry">
+            <span class="hero-blog-tag">ERP Failure</span>
+            <p class="hero-blog-title">Zimmer Biomet's $69M SAP Implementation: A Cautionary Tale</p>
+            <p class="hero-blog-snippet">Following go-live, the medical device company reported order fulfillment disruptions, invoicing failures, and an estimated $75M annual revenue decline attributed to implementation-related delays. Remediation costs added $72M beyond the original contract.</p>
+            <span class="hero-blog-meta"><a href="https://www.elevatiq.com/post/erp-implementation-failures/" target="_blank" rel="noopener" class="blog-source-link">Elevatiq · Jan 2026</a></span>
+          </div>
+
+          <div class="hero-blog-entry">
+            <span class="hero-blog-tag">API Strategy</span>
+            <p class="hero-blog-title">API-First Architecture: Modernizing Legacy Systems Without Replacement</p>
+            <p class="hero-blog-snippet">Engineering teams spending 60–70% of their time on legacy maintenance can use API-first patterns — wrapper, strangler fig, or middleware orchestration — to unlock modern connectivity without replacing core systems.</p>
+            <span class="hero-blog-meta"><a href="https://medium.com/@hashbyt/legacy-modernization-api-first-strategy-07e5f90052b9" target="_blank" rel="noopener" class="blog-source-link">Medium / HashByt · Apr 2026</a></span>
+          </div>
+
+          <div class="hero-blog-entry">
+            <span class="hero-blog-tag">API Strategy</span>
+            <p class="hero-blog-title">Middleware vs. API: When Complex ERP Integrations Need an Orchestration Layer</p>
+            <p class="hero-blog-snippet">When integrating multiple enterprise systems — ERP, CRM, legacy databases — middleware handles bulk transformation and reliable delivery. APIs work best for lightweight, real-time connections between systems you control at both ends.</p>
+            <span class="hero-blog-meta"><a href="https://burq.io/blog/middleware-vs-api/" target="_blank" rel="noopener" class="blog-source-link">Burq.io · Oct 2025</a></span>
+          </div>
+
+          <div class="hero-blog-entry">
+            <span class="hero-blog-tag">ERP Failure</span>
+            <p class="hero-blog-title">73% of Manufacturing ERP Projects Fail to Meet Objectives — 2025 Research</p>
+            <p class="hero-blog-snippet">Panorama Consulting Group's 2025 ERP Report finds discrete manufacturing environments experience the highest ERP failure rates across all industries, with average cost overruns reaching 215%.</p>
+            <span class="hero-blog-meta"><a href="https://godlan.com/erp-implementation-failure-statistics/" target="_blank" rel="noopener" class="blog-source-link">Godlan / Panorama Consulting · Mar 2025</a></span>
+          </div>
+
+          <div class="hero-blog-entry">
+            <span class="hero-blog-tag">API Strategy</span>
+            <p class="hero-blog-title">API Management Market to Reach $34B by 2032 — Driven by Legacy Integration Demand</p>
+            <p class="hero-blog-snippet">The global API management market is projected to grow from $5.42B in 2024 to $34.17B by 2032 at a 25.9% CAGR. Financial institutions and manufacturers are among the fastest adopters, using API wrappers to modernize legacy systems without touching core infrastructure.</p>
+            <span class="hero-blog-meta"><a href="https://www.moesif.com/blog/monitoring/Expert-Advice-on-Integrating-APIs-with-Legacy-Systems-in-2025/" target="_blank" rel="noopener" class="blog-source-link">Moesif · Feb 2025</a></span>
+          </div>
+
+        </div>
+        <div class="hero-blog-footer">
+          <span style="font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px;">
+            <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            Industry developments · updated daily
+          </span>
+          <a href="#insights" style="font-size:12px;font-weight:600;color:var(--teal);">More insights →</a>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust">
+  <div class="trust-inner">
+    <span class="trust-label">Trusted across</span>
+    <div class="trust-items">
+      <span class="trust-item"><span class="trust-dot"></span>Healthcare</span>
+      <span class="trust-item"><span class="trust-dot"></span>Distribution</span>
+      <span class="trust-item"><span class="trust-dot"></span>Manufacturing</span>
+      <span class="trust-item"><span class="trust-dot"></span>Financial Services</span>
+    </div>
+  </div>
+</div>
+
+
+<!-- INSIGHTS -->
+<section class="section" id="insights">
+  <div class="container">
+    <div class="section-eyebrow">Insights</div>
+    <h2 class="section-title">What the data says about legacy modernization.</h2>
+    <p class="section-sub">Articles grounded in current research — for IT directors and operations leaders evaluating their options.</p>
+
+    <div class="insights-grid">
+
+      <div class="insight-card">
+        <span class="insight-category">Why ERP Replacements Fail</span>
+        <h2 class="insight-title">Why Most ERP Replacements Fail — And What the Numbers Actually Show</h2>
+        <p class="insight-body">The statistics are sobering. Only 23% of ERP implementations are considered truly successful. A shocking 74% of organizations have experienced at least one failed ERP project. 67% report significant schedule overruns, and 52% say their ERP project failed to meet core business objectives.<br><br>The pattern is consistent across industries: failures are rarely caused by the software itself. Prosci's 2025 study found ERP implementations fall below expectations between 11% and 31% of the time — driven primarily by inadequate change management, unrealistic timelines, and a failure to account for the human side of transformation. In discrete manufacturing, the picture is even starker: Panorama Consulting Group's 2025 ERP Report puts the failure rate at 73%, with average cost overruns of 215%.<br><br>The Zimmer Biomet case is instructive. A $69M SAP S/4HANA implementation went live in July 2024 after multiple delays. The aftermath included order fulfillment disruptions, invoicing failures, an estimated $75M annual revenue decline, and $72M in remediation costs beyond the original contract — on a project designed to deliver $197–316M in benefits. Both the client and implementation partner dispute what went wrong. But the outcome is a matter of public record.<br><br>For mid-size companies, the calculus is different. The risk profile is more concentrated, the internal IT bench is thinner, and the business cannot absorb a 6-month operational disruption. Before committing to a full replacement, the question worth asking is whether the specific connectivity problem can be solved with a targeted integration layer — at a fraction of the cost and risk.</p>
+        <div class="insight-sources">
+          <span class="insight-sources-label">Sources</span>
+          <div class="insight-source-links">
+            <a href="https://www.priority-software.com/resources/why-erp-implementations-fail/" target="_blank" rel="noopener" class="insight-source-link">Priority Software — 12 Reasons for ERP Implementation Failure (2025)</a>
+            <a href="https://www.prosci.com/blog/why-do-erp-implementations-fail" target="_blank" rel="noopener" class="insight-source-link">Prosci — Why Do ERP Implementations Fail? (2025)</a>
+            <a href="https://godlan.com/erp-implementation-failure-statistics/" target="_blank" rel="noopener" class="insight-source-link">Godlan / Panorama Consulting — ERP Failure Statistics 2025</a>
+            <a href="https://www.elevatiq.com/post/erp-implementation-failures/" target="_blank" rel="noopener" class="insight-source-link">Elevatiq — ERP Implementation Failures 2025: Zimmer Biomet Case Study</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="insight-card">
+        <span class="insight-category">Why ERP Replacements Fail</span>
+        <h2 class="insight-title">The Hidden Costs of ERP Replacement That Most Vendors Don't Put in Their Proposals</h2>
+        <p class="insight-body">When an ERP vendor presents a $500K implementation proposal, what they typically don't itemize are the costs that accumulate after the contract is signed. Change orders. Training time. Productivity losses during parallel-run periods. Post-go-live remediation when processes that worked in the legacy system don't translate cleanly to the new one.<br><br>Prosci's research identifies change management failure as the primary driver of ERP underperformance. Organizations that invest in structured change management — stakeholder engagement, training that happens before go-live rather than after, and clear governance — see significantly better outcomes than those that treat implementation as a purely technical project.<br><br>For SMEs without a dedicated IT project manager, the risk is compounded further. Eurostat data shows only 21% of small and medium enterprises provide ICT training to their staff, compared to 73% of large enterprises. That skills gap creates dangerous dependency on external implementation partners — and, as the Zimmer Biomet case demonstrates, that dependency can become a liability when something goes wrong.<br><br>The alternative worth considering: a targeted API or middleware layer that solves the specific problem — the tool that won't connect, the data that won't move, the report that requires manual intervention every week — without triggering a full organizational transformation. The scope is smaller. The risk is smaller. The timeline is measured in weeks, not years.</p>
+        <div class="insight-sources">
+          <span class="insight-sources-label">Sources</span>
+          <div class="insight-source-links">
+            <a href="https://www.prosci.com/blog/why-do-erp-implementations-fail" target="_blank" rel="noopener" class="insight-source-link">Prosci — Unlocking ERP Implementations Study (2025)</a>
+            <a href="https://www.initos.com/en/blog/what-to-avoid-in-erp-implementation-project/" target="_blank" rel="noopener" class="insight-source-link">Initos — 7 Factors to Avoid in ERP Implementation (2025)</a>
+            <a href="https://pemeco.com/two-big-reasons-erp-implementation-failure/" target="_blank" rel="noopener" class="insight-source-link">Pemeco — Why ERP Implementation Failures Exceed 50% (2026)</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="insight-card">
+        <span class="insight-category">API Layer vs. Replacement</span>
+        <h2 class="insight-title">When To Build An API Layer Instead Of Replacing Your ERP</h2>
+        <p class="insight-body">Not every legacy system problem requires a legacy system replacement. In many cases, the problem is much more specific: a new SaaS tool that won't connect to the ERP, a reporting pipeline that requires hours of manual CSV work each week, or a vendor portal that demands data in a format your system doesn't natively produce.<br><br>API-first modernization addresses these problems without touching the core system. The approach — building a bridge layer that reads data from the existing ERP and exposes it through a modern interface — preserves the operational stability of the source system while unlocking the connectivity that modern workflows require.<br><br>The global API management market is projected to grow from $5.42B in 2024 to $34.17B by 2032 at a 25.9% CAGR, driven largely by exactly this demand: enterprises choosing to extend legacy infrastructure rather than replace it. The pattern is consistent across distribution, manufacturing, healthcare, and financial services — industries where operational continuity matters more than technical elegance.<br><br>The indicators that an API layer is the right answer: the core ERP is stable and trusted, the problem is a specific integration gap rather than a systemic capability failure, the organization cannot absorb a multi-month operational disruption, and the total cost of a targeted integration is a fraction of a full replacement scope.</p>
+        <div class="insight-sources">
+          <span class="insight-sources-label">Sources</span>
+          <div class="insight-source-links">
+            <a href="https://medium.com/@hashbyt/legacy-modernization-api-first-strategy-07e5f90052b9" target="_blank" rel="noopener" class="insight-source-link">Medium / HashByt — Legacy Modernization API-First Strategy (2026)</a>
+            <a href="https://www.moesif.com/blog/monitoring/Expert-Advice-on-Integrating-APIs-with-Legacy-Systems-in-2025/" target="_blank" rel="noopener" class="insight-source-link">Moesif — Expert Advice on Integrating APIs with Legacy Systems (2025)</a>
+            <a href="https://burq.io/blog/middleware-vs-api/" target="_blank" rel="noopener" class="insight-source-link">Burq.io — Middleware vs. API: When to Use Each (2025)</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="insight-card">
+        <span class="insight-category">API Layer vs. Replacement</span>
+        <h2 class="insight-title">Middleware or API? Choosing the Right Integration Architecture for Your ERP</h2>
+        <p class="insight-body">The decision between a middleware layer and a direct API integration depends on the specific integration scenario — not on preference for one technology over another. Understanding the distinction prevents both over-engineering simple connections and under-building complex ones.<br><br>APIs work best for lightweight, real-time connections between two systems where you have control at both ends. An internal microservices architecture, a direct connection between two modern applications, or a simple data retrieval from a single endpoint — these are API use cases. Lower architectural overhead, real-time sync, straightforward maintenance.<br><br>Middleware is the right choice when the integration is multi-step, enterprise-scale, and requires data transformation across multiple systems simultaneously. Connecting an ERP to a CRM and a data warehouse while normalizing formats across all three — that's a middleware scenario. It handles bulk transformations, routing across disparate protocols, and reliable delivery in environments where data integrity matters more than latency.<br><br>For most legacy ERP integrations, the answer is middleware: the source systems use older protocols, the data structures need transformation before they're useful downstream, and the integration needs to be reliable under production load. The architecture should match the problem — and for legacy environments, that usually means an orchestration layer, not a direct API call.</p>
+        <div class="insight-sources">
+          <span class="insight-sources-label">Sources</span>
+          <div class="insight-source-links">
+            <a href="https://burq.io/blog/middleware-vs-api/" target="_blank" rel="noopener" class="insight-source-link">Burq.io — Middleware vs. API: Real Differences &amp; When to Use Each (2025)</a>
+            <a href="https://www.esyon.net/news/api-vs-middleware-which-approach-is-better-for-your-business" target="_blank" rel="noopener" class="insight-source-link">Esyon — API vs. Middleware: Which Approach is Better? (2024)</a>
+            <a href="https://www.empaxis.com/blog/middleware-vs-api" target="_blank" rel="noopener" class="insight-source-link">Empaxis — Middleware vs. API: 5 Key Points for CTOs (2025)</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ERP BRIDGE -->
+<section class="section erp-bridge-section" id="erp-bridge">
+  <div class="container">
+    <div class="section-eyebrow">Core Capability</div>
+    <h2 class="section-title">Custom API Bridge &amp; Integration Solutions for Legacy ERPs</h2>
+    <p class="section-sub">Stop waiting for an ERP upgrade that never comes. We build middleware architecture and data transformation pipelines directly on top of your existing systems — AS400, older Oracle and SAP instances, Infor, Eclipse, Epicor — to solve modern problems without the cost or risk of full replacement.</p>
+
+    <!-- Integration type cards — 3 column grid -->
+    <div class="grid-3">
+
+      <div class="card">
+        <div class="card-icon">🌐</div>
+        <h2 class="card-heading">ERP to Web App &amp; Customer Portal</h2>
+        <p>Your ERP holds the data your customers and partners need — but they have no way to access it without calling your team. We build secure web-facing layers that expose the right data to the right people through a modern portal, without touching your core ERP schema. Inventory visibility, order status, quote history — available in a browser, in real time.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">🔗</div>
+        <h2 class="card-heading">ERP to Third-Party API (REST / GraphQL)</h2>
+        <p>A vendor is demanding an API your system doesn't have. A modern SaaS tool you just purchased won't talk to your ERP. We build the integration layer — REST or GraphQL — that bridges your legacy system to any modern platform. Field mapping, authentication, error handling, and retry logic handled end to end. Your ERP becomes API-capable without a replacement project.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">🗄️</div>
+        <h2 class="card-heading">Industrial Data Ingestion &amp; ETL Pipelines</h2>
+        <p>We specialize in messy, legacy data. Whether it's an automated FTP export from a 20-year-old AS400, a manual CSV from a legacy system or a SQL Server dump from an older Oracle instance — our pipeline cleans, transforms, and structures it for modern workflows. Batch and real-time ETL both handled. Agent-to-agent automation ready.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">☁️</div>
+        <h2 class="card-heading">Legacy System to Cloud Migration</h2>
+        <p>Moving to Azure or AWS without breaking what works is an operational challenge most cloud vendors underestimate. We approach legacy-to-cloud migrations with a parallel-run model — your existing system stays live while the cloud layer is validated against it. When confidence is high, we cut over. No big-bang risk, no data integrity surprises, no production downtime.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">📂</div>
+        <h2 class="card-heading">EDI, Flat-File &amp; CSV Pipeline Automation</h2>
+        <p>EDI transactions, flat-file exports, and manual CSV handoffs are still the operational backbone of distribution, manufacturing, and healthcare. We automate these pipelines — scheduled pulls, format normalization, validation rules, error alerting, and downstream routing — so your team stops babysitting file transfers and starts relying on them. From daily batch to near-real-time processing.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">🏥</div>
+        <h2 class="card-heading">HL7 &amp; FHIR Healthcare Integrations</h2>
+        <p>Healthcare system integrations require precision that general-purpose middleware rarely delivers. We build HL7 v2 and FHIR R4 integration layers between EHR platforms, clinical systems, revenue cycle management, and third-party health data services. Compliance-aware, audit-trail-ready, and built for the reliability standards that clinical environments demand. Interface engines and custom FHIR APIs both in scope.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">🔄</div>
+        <h2 class="card-heading">Database-to-Database Migration</h2>
+        <p>Moving data between systems — whether you're consolidating platforms, decommissioning a legacy database, or onboarding after an acquisition — is where data integrity problems are born. We design migration pipelines with reconciliation checkpoints, row-count validation, field-level comparison, and rollback plans. Data arrives in the target system clean, complete, and verifiable. Not approximately right — exactly right.</p>
+      </div>
+
+    </div>
+
+    <!-- Trigger statement -->
+    <div class="trigger-box">
+      <div class="trigger-icon">💬</div>
+      <div>
+        <p class="trigger-title">The conversation usually starts the same way.</p>
+        <p class="trigger-body">"We just bought a new tool and it won't talk to our system." If that's where you are — your ERP can't connect to something modern your team needs — that's exactly the problem we solve. We assess the integration gap, design the bridge, and deliver it in production without disrupting what's already running.</p>
+        <a href="#" onclick="openContactModal(); return false;" class="trigger-cta">Tell us what you're working on →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-brand-mark">
+        <svg viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="3" y="3" width="7" height="7" rx="1.5" fill="white" opacity="0.9"/>
+          <rect x="12" y="3" width="7" height="7" rx="1.5" fill="white" opacity="0.6"/>
+          <rect x="3" y="12" width="7" height="7" rx="1.5" fill="white" opacity="0.6"/>
+          <circle cx="15.5" cy="15.5" r="3.5" fill="white" opacity="0.9"/>
+        </svg>
+      </div>
+      <div>
+        <div class="footer-name">Beneficial Enterprise Group Inc.</div>
+        <div class="footer-copy">© 2026 · IT Consulting · Philadelphia, PA · Northeast US</div>
+      </div>
+    </div>
+    <div class="footer-email">
+      <a href="mailto:info@beneficialenterprisegroup.com">info@beneficialenterprise.com</a>
+    </div>
+  </div>
+</footer>
+
+<!-- NOT YET IMPLEMENTED OVERLAY -->
+<div class="overlay" id="productOverlay" onclick="handleOverlayClick(event)">
+  <div class="overlay-card">
+    <div class="overlay-badge"><span></span> Coming Soon</div>
+    <span class="overlay-icon">🚧</span>
+    <h2 class="overlay-title"><span class="overlay-name" id="overlayProductName">Product</span><br>is not yet implemented.</h2>
+    <p class="overlay-desc" id="overlayProductDesc">This product is currently in development. Get in touch to be notified when it launches.</p>
+    <a href="#" onclick="closeOverlay(); openContactModal(); return false;" style="display:inline-flex;align-items:center;gap:6px;background:var(--grad);color:#fff;padding:10px 22px;border-radius:8px;font-size:14px;font-weight:600;margin-bottom:1rem;text-decoration:none;">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      Notify Me at Launch
+    </a>
+    <br>
+    <button class="overlay-close" onclick="closeOverlay()">← Back to Site</button>
+  </div>
+</div>
+
+<!-- CONTACT MODAL -->
+<div class="contact-modal" id="contactModal" onclick="handleContactOverlayClick(event)">
+  <div class="contact-card">
+    <div class="contact-card-header">
+      <div>
+        <h2>Tell us how we can help</h2>
+        <p>Tell us what you're working on. We'll map your integration gap and respond within one business day — no commitment required.</p>
+      </div>
+      <button class="modal-close-btn" onclick="closeContactModal()" aria-label="Close">✕</button>
+    </div>
+
+    <div id="contactForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" id="firstName" placeholder="Jane" autocomplete="given-name">
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" id="lastName" placeholder="Smith" autocomplete="family-name">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Work Email</label>
+        <input type="email" id="emailField" placeholder="jane@company.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label>Company</label>
+        <input type="text" id="company" placeholder="Your company name" autocomplete="organization">
+      </div>
+      <div class="form-group">
+        <label>I'm interested in</label>
+        <select id="interest">
+          <option value="" disabled selected>Select a service…</option>
+          <option>Managed IT Services</option>
+          <option>Software Development</option>
+          <option>Legacy ERP Bridge</option>
+          <option>Quote Recovery (Product)</option>
+          <option>Vendor Compliance Recovery (Product)</option>
+          <option>General Consultation</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Brief Description</label>
+        <textarea id="message" placeholder="Describe what you're looking to solve…"></textarea>
+      </div>
+      <button class="form-submit" id="submitBtn" onclick="submitContactForm()">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+        Send Message
+      </button>
+    </div>
+
+    <div class="form-success" id="formSuccess">
+      <span class="success-icon">✅</span>
+      <h3>Message received.</h3>
+      <p>Thank you for reaching out. A member of the Beneficial Enterprise Group team will be in touch within one business day.</p>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  /* ── EmailJS init ── */
+  emailjs.init({ publicKey: "l_tqw5JKGeKbJ-9fi" });
+
+  /* ── Contact modal ── */
+  function openContactModal() {
+    document.getElementById('contactModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+    /* Clear all fields every time the modal opens */
+    document.getElementById('firstName').value = '';
+    document.getElementById('lastName').value = '';
+    document.getElementById('emailField').value = '';
+    document.getElementById('company').value = '';
+    document.getElementById('interest').selectedIndex = 0;
+    document.getElementById('message').value = '';
+    /* Reset to form view in case success screen was showing */
+    document.getElementById('contactForm').style.display = 'block';
+    document.getElementById('formSuccess').style.display = 'none';
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = false;
+    btn.innerHTML = `<svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg> Send Message`;
+  }
+  function closeContactModal() {
+    document.getElementById('contactModal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  function handleContactOverlayClick(e) {
+    if (e.target === document.getElementById('contactModal')) closeContactModal();
+  }
+
+  function submitContactForm() {
+    const first    = document.getElementById('firstName').value.trim();
+    const last     = document.getElementById('lastName').value.trim();
+    const email    = document.getElementById('emailField').value.trim();
+    const company  = document.getElementById('company').value.trim();
+    const interest = document.getElementById('interest').value;
+    const message  = document.getElementById('message').value.trim();
+
+    if (!first || !email) {
+      alert('Please enter at least your first name and email address.');
+      return;
+    }
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg> Sending…`;
+
+    const templateParams = {
+      from_name:  first + (last ? ' ' + last : ''),
+      from_email: email,
+      company:    company || 'Not provided',
+      interest:   interest || 'Not specified',
+      message:    message  || 'No message provided',
+      to_email:   'info@beneficialenterprisegroup.com'
+    };
+
+    emailjs.send("service_be8swd8", "template_z6glh89", templateParams)
+      .then(() => {
+        document.getElementById('contactForm').style.display = 'none';
+        document.getElementById('formSuccess').style.display = 'block';
+      })
+      .catch((err) => {
+        console.error('EmailJS error:', err);
+        btn.disabled = false;
+        btn.innerHTML = `<svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg> Send Message`;
+        alert('Something went wrong sending your message. Please email us directly at info@beneficialenterprisegroup.com');
+      });
+  }
+
+  /* ── Product coming-soon overlay ── */
+  function showProduct(name) {
+    document.getElementById('overlayProductName').textContent = name;
+    document.getElementById('overlayProductDesc').textContent = 'This product is currently in development. Get in touch to be notified when ' + name + ' launches.';
+    document.getElementById('productOverlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeOverlay() {
+    document.getElementById('productOverlay').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  function handleOverlayClick(e) {
+    if (e.target === document.getElementById('productOverlay')) closeOverlay();
+  }
+
+  /* ── Escape closes any open modal ── */
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') { closeContactModal(); closeOverlay(); }
+  });
+</script>
+
+</body>
+</html>

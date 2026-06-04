@@ -1,0 +1,18 @@
+<svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg-grad" x1="0" y1="0" x2="60" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0BBFBF"/>
+      <stop offset="100%" stop-color="#1A6FD4"/>
+    </linearGradient>
+  </defs>
+  <!-- Background tile -->
+  <rect width="60" height="60" rx="12" fill="url(#bg-grad)"/>
+  <!-- Top-left square -->
+  <rect x="9" y="9" width="19" height="19" rx="3.5" fill="white" opacity="0.9"/>
+  <!-- Top-right square -->
+  <rect x="32" y="9" width="19" height="19" rx="3.5" fill="white" opacity="0.6"/>
+  <!-- Bottom-left square -->
+  <rect x="9" y="32" width="19" height="19" rx="3.5" fill="white" opacity="0.6"/>
+  <!-- Bottom-right circle -->
+  <circle cx="41.5" cy="41.5" r="9.5" fill="white" opacity="0.9"/>
+</svg>
