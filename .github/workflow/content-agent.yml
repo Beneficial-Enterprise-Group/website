@@ -1,0 +1,90 @@
+# ══════════════════════════════════════════════
+# BENEFICIAL ENTERPRISE GROUP — CONTENT AGENT WORKFLOW
+# File location: .github/workflows/content-agent.yml
+#
+# This workflow runs the content agent on two schedules:
+# 1. Every day at 6am EST (11:00 UTC) — feed entries
+# 2. Every Monday at 6am EST (11:00 UTC) — insight articles
+#
+# GitHub Actions uses UTC time — EST is UTC-5, so 6am EST = 11:00 UTC
+#
+# To pause the agent without changing this file:
+# Go to Supabase → agent_settings table and set
+# feed_agent_enabled or insight_agent_enabled to 'false'
+#
+# To disable the schedule entirely:
+# Go to GitHub → Actions tab → select this workflow → disable
+# ══════════════════════════════════════════════
+
+name: Content Agent
+
+on:
+  schedule:
+    # Daily feed run — every day at 11:00 UTC (6am EST)
+    - cron: '0 11 * * *'
+    # Monday insight run — every Monday at 11:00 UTC (6am EST)
+    - cron: '0 11 * * 1'
+
+  # Allows manual trigger from the GitHub Actions tab for testing
+  # Go to Actions → Content Agent → Run workflow
+  workflow_dispatch:
+    inputs:
+      run_mode:
+        description: 'Run mode: feed or insights'
+        required: true
+        default: 'feed'
+        type: choice
+        options:
+          - feed
+          - insights
+
+jobs:
+  run-agent:
+    # Run on Ubuntu — lightweight and free for public repos
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1 — Check out the repository code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2 — Set up Node.js runtime
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'        # LTS version — stable and well supported
+          cache: 'npm'              # Cache npm packages to speed up runs
+          cache-dependency-path: agent/package-lock.json
+
+      # Step 3 — Install agent dependencies
+      - name: Install dependencies
+        working-directory: agent    # Run npm install inside the agent folder
+        run: npm install
+
+      # Step 4 — Determine run mode
+      # If triggered manually, use the selected input
+      # If triggered by schedule, check which cron fired:
+      # - Monday (day of week = 1) → insights
+      # - All other days → feed
+      - name: Set run mode
+        id: set-mode
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "RUN_MODE=${{ github.event.inputs.run_mode }}" >> $GITHUB_ENV
+          elif [ "$(date +%u)" = "1" ]; then
+            echo "RUN_MODE=insights" >> $GITHUB_ENV
+          else
+            echo "RUN_MODE=feed" >> $GITHUB_ENV
+          fi
+
+      # Step 5 — Run the agent
+      # Secrets are injected as environment variables at runtime
+      # They are encrypted and never visible in logs
+      - name: Run content agent
+        working-directory: agent
+        env:
+          ANTHROPIC_API_KEY:   ${{ secrets.ANTHROPIC_API_KEY }}
+          SUPABASE_URL:        ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          RUN_MODE:            ${{ env.RUN_MODE }}
+        run: node agent.js
