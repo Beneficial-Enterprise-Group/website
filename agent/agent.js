@@ -152,9 +152,18 @@ async function isAgentEnabled(settingKey) {
    This function returns the parsed object: { entries: [...] }
    ══════════════════════════════════════════════ */
 function parseJSON(text) {
-  /* Remove markdown code fences if present — ```json ... ``` */
-  const clean = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-  return JSON.parse(clean);
+  /* First try to extract JSON from inside code fences if present */
+  const fenceMatch = text.match(/```json\n?([\s\S]*?)```/);
+  if (fenceMatch) {
+    return JSON.parse(fenceMatch[1].trim());
+  }
+  /* If no code fence, try to extract raw JSON object directly */
+  const jsonMatch = text.match(/\{[\s\S]*\}/);
+  if (jsonMatch) {
+    return JSON.parse(jsonMatch[0]);
+  }
+  /* Last resort — try parsing the whole text */
+  return JSON.parse(text.trim());
 }
 
 
