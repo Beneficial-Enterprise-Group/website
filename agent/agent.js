@@ -30,6 +30,7 @@
    node-fetch: adds fetch() to Node.js for HTTP calls to the Anthropic API */
 import { createClient } from '@supabase/supabase-js';
 import fetch from 'node-fetch';
+import ws from 'ws';
 
 /* ── Read environment variables ──
    These are never hardcoded — they are injected by GitHub Actions at runtime
@@ -52,7 +53,11 @@ if (!ANTHROPIC_API_KEY || !SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
    The service role key bypasses Row Level Security — the agent needs full
    write access to insert new content and update agent_runs records.
    This key is NEVER used in browser code — server/agent only. */
-const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
+  realtime: {
+    transport: ws  /* Required for Node.js versions below 22 */
+  }
+});
 
 
 /* ══════════════════════════════════════════════
