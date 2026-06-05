@@ -1,25 +1,16 @@
 {
-  "name": "website",
+  "name": "beg-content-agent",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Daily content agent for Beneficial Enterprise Group",
+  "main": "agent.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node agent.js",
+    "feed": "RUN_MODE=feed node agent.js",
+    "insights": "RUN_MODE=insights node agent.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Beneficial-Enterprise-Group/website.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/Beneficial-Enterprise-Group/website/issues"
-  },
-  "homepage": "https://github.com/Beneficial-Enterprise-Group/website#readme",
   "dependencies": {
-    "@supabase/supabase-js": "^2.107.0",
+    "@supabase/supabase-js": "^2.39.0",
     "node-fetch": "^3.3.2"
   }
 }
