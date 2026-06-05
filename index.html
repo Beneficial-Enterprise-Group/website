@@ -1159,9 +1159,9 @@
         <div class="footer-copy">© 2026 · IT Consulting · Philadelphia, PA · Northeast US</div>
       </div>
     </div>
-    <!-- Primary contact email — mailto: opens the user's email client -->
+    <!-- Clicking the email address opens the contact modal instead of launching an email client -->
     <div class="footer-email">
-      <a href="mailto:info@beneficialenterprisegroup.com">info@beneficialenterprise.com</a>
+      <a href="#" onclick="openContactModal(); return false;">info@beneficialenterprise.com</a>
     </div>
   </div>
 </footer>
@@ -1207,7 +1207,10 @@
 <div class="contact-modal" id="contactModal" onclick="handleContactOverlayClick(event)">
   <div class="contact-card">
     <div class="contact-card-header">
-      <div></div>
+      <div>
+        <h2>Tell us how we can help</h2>
+        <p>Tell us what you're working on. We'll map your integration gap and respond within one business day — no commitment required.</p>
+      </div>
       <!-- X close button — top right corner of the modal card -->
       <button class="modal-close-btn" onclick="closeContactModal()" aria-label="Close">✕</button>
     </div>
