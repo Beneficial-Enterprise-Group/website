@@ -1705,7 +1705,8 @@
     if (e.key === 'Escape') {
       closeContactModal(); /* Close contact modal if open */
       closeOverlay();      /* Close product overlay if open */
-      closeMobileNav();    /* Close mobile nav if open */
+      document.getElementById('mobileNav').style.display = 'none'; /* Close mobile nav */
+      document.getElementById('hamburgerBtn').innerHTML = '☰';
       closeDropdowns();    /* Close any open dropdowns */
     }
   });
@@ -1746,34 +1747,34 @@
      Opens or closes the mobile nav menu when the hamburger button is clicked.
      The hamburger icon switches between ☰ (open) and ✕ (close).
      ───────────────────────────────────────────── */
+  /* ─────────────────────────────────────────────
+     MOBILE NAV — TOGGLE
+     Uses inline style display instead of CSS classes for
+     maximum compatibility across Android and iOS Safari.
+     ───────────────────────────────────────────── */
   function toggleMobileNav() {
     const nav = document.getElementById('mobileNav');
     const btn = document.getElementById('hamburgerBtn');
-    const isOpen = nav.classList.contains('open');
+    const isOpen = nav.style.display === 'flex';
     if (isOpen) {
-      nav.classList.remove('open');
-      btn.innerHTML = '☰'; /* Switch back to hamburger icon */
+      nav.style.display = 'none';
+      btn.innerHTML = '☰';
     } else {
-      nav.classList.add('open');
-      btn.innerHTML = '✕'; /* Switch to close icon */
+      nav.style.display = 'flex';
+      btn.innerHTML = '✕';
     }
   }
 
-  /* ─────────────────────────────────────────────
-     MOBILE NAV — CLOSE
-     Closes the mobile nav and resets the hamburger icon.
-     Called when a nav link is clicked or Escape is pressed.
-     ───────────────────────────────────────────── */
   function closeMobileNav() {
-    document.getElementById('mobileNav').classList.remove('open');
+    document.getElementById('mobileNav').style.display = 'none';
     document.getElementById('hamburgerBtn').innerHTML = '☰';
   }
 
-  /* Close mobile nav when clicking outside of it */
+  /* Close mobile nav when tapping outside — works on both touch and mouse */
   document.addEventListener('click', function(e) {
     const nav = document.getElementById('mobileNav');
     const btn = document.getElementById('hamburgerBtn');
-    if (nav.classList.contains('open') && !nav.contains(e.target) && !btn.contains(e.target)) {
+    if (nav.style.display === 'flex' && !nav.contains(e.target) && !btn.contains(e.target)) {
       closeMobileNav();
     }
   });
