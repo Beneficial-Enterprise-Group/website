@@ -734,24 +734,98 @@
      At 900px and below, multi-column grids collapse to single column.
      The hero blog card is hidden on mobile — too complex for small screens.
      At 768px and below, the nav links are hidden — mobile nav not yet implemented. */
+  /* ── TABLET & MOBILE (max-width: 900px) ──
+     All multi-column grids collapse to single column.
+     Blog feed card is shown on mobile — moved below the headline.
+     Nav links hidden at 768px — hamburger menu shown instead. */
   @media (max-width: 900px) {
-    .hero-grid { grid-template-columns: 1fr; }       /* Hero: single column */
-    .hero-card { display: none; }                     /* Hide blog feed card on mobile */
-    .grid-2 { grid-template-columns: 1fr; }           /* 2-col grids: stack vertically */
-    .grid-3 { grid-template-columns: 1fr; }           /* 3-col grids: stack vertically */
-    .blog-grid { grid-template-columns: 1fr; }        /* Blog grid: stack vertically */
-    .blog-header { flex-direction: column; }          /* Blog header: stack vertically */
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-card { display: block; margin-top: 2rem; }  /* Show blog card below headline on mobile */
+    .hero-blog-feed { max-height: 320px; }            /* Shorter feed height on mobile */
+    .grid-2 { grid-template-columns: 1fr; }
+    .grid-3 { grid-template-columns: 1fr; }
+    .blog-grid { grid-template-columns: 1fr; }
+    .blog-header { flex-direction: column; }
     .env-strip { flex-direction: column; align-items: flex-start; }
-    .founder-grid { grid-template-columns: 1fr; }     /* Founder: stack vertically */
-    .process-grid { grid-template-columns: 1fr; }     /* Process steps: stack vertically */
-    .faq-grid { grid-template-columns: 1fr; }         /* FAQ: stack vertically */
-    .insights-grid { grid-template-columns: 1fr; }    /* Insights: stack vertically */
+    .founder-grid { grid-template-columns: 1fr; }
+    .process-grid { grid-template-columns: 1fr; }
+    .faq-grid { grid-template-columns: 1fr; }
+    .insights-grid { grid-template-columns: 1fr; }
     .cta-band-inner { flex-direction: column; align-items: flex-start; }
     .cta-band-actions { align-items: flex-start; }
-    .trigger-box { flex-direction: column; }          /* Trigger: icon above text */
+    .trigger-box { flex-direction: column; }
+    .section { padding: 50px 0; }                     /* Reduce section padding on mobile */
+    .hero { padding: 100px 0 50px; }                  /* Reduce hero padding on mobile */
+    .hero h1 { font-size: clamp(1.6rem, 5vw, 2.4rem); } /* Smaller headline on mobile */
+    .hero-sub { font-size: 15px; }
+    .section-title { font-size: clamp(1.4rem, 5vw, 2rem); }
+    .contact-card { padding: 1.5rem; }                /* Tighter modal padding on mobile */
+    .form-row { grid-template-columns: 1fr; }         /* Stack first/last name on mobile */
   }
+
+  /* ── MOBILE ONLY (max-width: 768px) ──
+     Nav links hidden — hamburger menu shown instead.
+     Products dropdown accessible via hamburger. */
   @media (max-width: 768px) {
-    .nav-right { display: none; } /* Hide nav links — mobile hamburger menu not yet built */
+    .nav-right { display: none; }                     /* Hide desktop nav links */
+    .nav-hamburger { display: flex; }                 /* Show hamburger button */
+    .container { padding: 0 1rem; }                   /* Tighter padding on small screens */
+  }
+
+  /* ── MOBILE NAV MENU — open state ──
+     When hamburger is clicked, mobile menu slides down below the nav bar. */
+  .mobile-nav {
+    display: none;
+    position: fixed;
+    top: 68px; left: 0; right: 0;
+    background: rgba(8,12,16,0.98);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border2);
+    z-index: 99;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 0.5rem;
+  }
+  .mobile-nav.open { display: flex; }
+  .mobile-nav a {
+    color: var(--muted); font-size: 15px; font-weight: 500;
+    padding: 12px 16px; border-radius: 8px;
+    text-decoration: none; display: block;
+    transition: background 0.15s, color 0.15s;
+  }
+  .mobile-nav a:hover { background: rgba(255,255,255,0.05); color: var(--white); }
+  .mobile-nav .mobile-nav-divider { height: 1px; background: var(--border2); margin: 4px 0; }
+  .mobile-nav .mobile-nav-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted);
+    padding: 8px 16px 4px;
+  }
+
+  /* Hamburger button — hidden on desktop, shown on mobile */
+  .nav-hamburger {
+    display: none;
+    background: none; border: 1px solid var(--border2);
+    color: var(--muted); width: 36px; height: 36px;
+    border-radius: 8px; cursor: pointer;
+    align-items: center; justify-content: center;
+    transition: border-color 0.2s, color 0.2s;
+    font-family: 'Inter', sans-serif;
+  }
+  .nav-hamburger:hover { border-color: var(--teal); color: var(--white); }
+
+  /* ── LANDSCAPE MOBILE (orientation: landscape, max-height: 500px) ──
+     When phone is rotated sideways, the viewport is wide but short.
+     Reduce vertical padding and font sizes so content fits without excessive scrolling. */
+  @media (orientation: landscape) and (max-height: 500px) {
+    .hero { padding: 80px 0 30px; }
+    .hero h1 { font-size: clamp(1.4rem, 4vw, 2rem); margin-bottom: 0.75rem; }
+    .hero-sub { font-size: 14px; margin-bottom: 1rem; }
+    .hero-grid { gap: 2rem; }
+    .hero-blog-feed { max-height: 200px; }
+    .section { padding: 40px 0; }
+    nav { height: 54px; }
+    .nav-inner { height: 54px; }
+    .mobile-nav { top: 54px; }
   }
 
 
@@ -1628,6 +1702,44 @@
     if (e.key === 'Escape') {
       closeContactModal(); /* Close contact modal if open */
       closeOverlay();      /* Close product overlay if open */
+      closeMobileNav();    /* Close mobile nav if open */
+    }
+  });
+
+  /* ─────────────────────────────────────────────
+     MOBILE NAV — TOGGLE
+     Opens or closes the mobile nav menu when the hamburger button is clicked.
+     The hamburger icon switches between ☰ (open) and ✕ (close).
+     ───────────────────────────────────────────── */
+  function toggleMobileNav() {
+    const nav = document.getElementById('mobileNav');
+    const btn = document.getElementById('hamburgerBtn');
+    const isOpen = nav.classList.contains('open');
+    if (isOpen) {
+      nav.classList.remove('open');
+      btn.innerHTML = '☰'; /* Switch back to hamburger icon */
+    } else {
+      nav.classList.add('open');
+      btn.innerHTML = '✕'; /* Switch to close icon */
+    }
+  }
+
+  /* ─────────────────────────────────────────────
+     MOBILE NAV — CLOSE
+     Closes the mobile nav and resets the hamburger icon.
+     Called when a nav link is clicked or Escape is pressed.
+     ───────────────────────────────────────────── */
+  function closeMobileNav() {
+    document.getElementById('mobileNav').classList.remove('open');
+    document.getElementById('hamburgerBtn').innerHTML = '☰';
+  }
+
+  /* Close mobile nav when clicking outside of it */
+  document.addEventListener('click', function(e) {
+    const nav = document.getElementById('mobileNav');
+    const btn = document.getElementById('hamburgerBtn');
+    if (nav.classList.contains('open') && !nav.contains(e.target) && !btn.contains(e.target)) {
+      closeMobileNav();
     }
   });
 
