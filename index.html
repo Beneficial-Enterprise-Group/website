@@ -11,6 +11,9 @@
      social media platforms understand and display it. -->
 
 <meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <!-- Tells the browser to use UTF-8 character encoding.
      Without this, special characters like em dashes and currency symbols
      may render incorrectly. Always the first meta tag. -->
@@ -1703,6 +1706,38 @@
       closeContactModal(); /* Close contact modal if open */
       closeOverlay();      /* Close product overlay if open */
       closeMobileNav();    /* Close mobile nav if open */
+      closeDropdowns();    /* Close any open dropdowns */
+    }
+  });
+
+  /* ─────────────────────────────────────────────
+     PRODUCTS DROPDOWN — TOUCH SUPPORT
+     On desktop the dropdown works via CSS :hover.
+     On touch devices (phones, tablets) there is no hover state —
+     tapping the Products link must toggle the dropdown open/closed.
+     This JavaScript adds .open class on tap which CSS uses to show the menu.
+     ───────────────────────────────────────────── */
+  function closeDropdowns() {
+    document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
+  }
+
+  /* Find all dropdown toggles and add touch/click handler */
+  document.querySelectorAll('.nav-dropdown > a').forEach(function(toggle) {
+    toggle.addEventListener('click', function(e) {
+      const dropdown = toggle.parentElement;
+      const isOpen = dropdown.classList.contains('open');
+      closeDropdowns(); /* Close any other open dropdowns first */
+      if (!isOpen) {
+        e.preventDefault(); /* Prevent navigation on first tap — show menu instead */
+        dropdown.classList.add('open');
+      }
+    });
+  });
+
+  /* Close dropdown when clicking/tapping outside of it */
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.nav-dropdown')) {
+      closeDropdowns();
     }
   });
 
