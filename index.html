@@ -965,6 +965,66 @@
   .cta-band-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 0.6rem; flex-shrink: 0; }
   .cta-reassurance { font-size: 12px; color: var(--muted); }
 
+  /* ── MOBILE NAV BAR ──
+     Always-visible horizontal strip below the main nav on mobile.
+     Shows Products and key links without requiring a hamburger menu.
+     Hidden on desktop — only shows on screens under 900px. */
+  .mobile-nav-bar {
+    display: none; /* Hidden on desktop */
+  }
+  @media (max-width: 900px) {
+    /* Show mobile nav bar below the fixed main nav */
+    .mobile-nav-bar {
+      display: flex;
+      position: fixed;
+      top: 68px; left: 0; right: 0;
+      z-index: 98;
+      background: rgba(8,12,16,0.97);
+      border-bottom: 1px solid rgba(11,191,191,0.2);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .mobile-nav-bar::-webkit-scrollbar { display: none; }
+
+    /* Each nav item — flex column with label and sub-label */
+    .mobile-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 16px;
+      text-decoration: none;
+      border-right: 1px solid rgba(255,255,255,0.05);
+      flex-shrink: 0;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      transition: background 0.15s;
+    }
+    .mobile-nav-item:active { background: rgba(255,255,255,0.05); }
+    .mobile-nav-item-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #E8EEF4;
+      white-space: nowrap;
+    }
+    .mobile-nav-item-sub {
+      font-size: 10px;
+      color: #8A9BB0;
+      margin-top: 1px;
+      white-space: nowrap;
+    }
+    /* CTA item — teal accent */
+    .mobile-nav-cta .mobile-nav-item-label { color: #0BBFBF; }
+    .mobile-nav-cta .mobile-nav-item-sub { color: rgba(11,191,191,0.6); }
+
+    /* Push hero down to account for both nav bars */
+    .hero { padding-top: 160px; }
+
+    /* Hide hamburger — no longer needed */
+    .nav-hamburger { display: none !important; }
+  }
+
 </style>
 </head>
 <body>
