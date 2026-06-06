@@ -257,6 +257,8 @@
     font-size: 14px; font-weight: 600;
     display: inline-flex; align-items: center; gap: 6px;
     transition: opacity 0.2s, transform 0.2s;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
   /* Slight lift and fade on hover — gives the button a tactile feel */
   .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
@@ -766,12 +768,13 @@
     .form-row { grid-template-columns: 1fr; }         /* Stack first/last name on mobile */
   }
 
-  /* ── MOBILE ONLY (max-width: 768px) ──
+  /* ── MOBILE (max-width: 900px) ──
      Nav links hidden — hamburger menu shown instead.
-     Products dropdown accessible via hamburger. */
-  @media (max-width: 768px) {
-    .nav-right { display: none; }                     /* Hide desktop nav links */
-    .nav-hamburger { display: flex; }                 /* Show hamburger button */
+     Matches the same breakpoint as the layout collapse above.
+     Products dropdown accessible via hamburger menu. */
+  @media (max-width: 900px) {
+    .nav-right { display: none !important; }          /* Hide desktop nav links */
+    .nav-hamburger { display: flex !important; }      /* Show hamburger button */
     .container { padding: 0 1rem; }                   /* Tighter padding on small screens */
   }
 
@@ -804,17 +807,21 @@
     padding: 8px 16px 4px;
   }
 
-  /* Hamburger button — hidden on desktop, shown on mobile */
+  /* Hamburger button — hidden on desktop, shown on mobile via media query above */
   .nav-hamburger {
     display: none;
-    background: none; border: 1px solid var(--border2);
-    color: var(--muted); width: 36px; height: 36px;
+    background: none; border: 1px solid rgba(255,255,255,0.07);
+    color: #8A9BB0; width: 40px; height: 40px;
     border-radius: 8px; cursor: pointer;
     align-items: center; justify-content: center;
     transition: border-color 0.2s, color 0.2s;
     font-family: 'Inter', sans-serif;
+    font-size: 18px; line-height: 1;
+    -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
+    touch-action: manipulation;               /* Prevents double-tap zoom on iOS */
   }
-  .nav-hamburger:hover { border-color: var(--teal); color: var(--white); }
+  .nav-hamburger:hover,
+  .nav-hamburger:active { border-color: #0BBFBF; color: #E8EEF4; }
 
   /* ── LANDSCAPE MOBILE (orientation: landscape, max-height: 500px) ──
      When phone is rotated sideways, the viewport is wide but short.
