@@ -1,0 +1,15 @@
+# robots.txt — Beneficial Enterprise Group Inc.
+# beneficialenterprisegroup.com
+
+# Allow all search engine crawlers to index the site
+User-agent: *
+Allow: /
+
+# Block access to Netlify function endpoints — not indexable content
+Disallow: /.netlify/
+
+# Block access to any hidden or system files
+Disallow: /.git/
+
+# Sitemap location — tells Google where to find the sitemap
+Sitemap: https://www.beneficialenterprisegroup.com/sitemap.xml
