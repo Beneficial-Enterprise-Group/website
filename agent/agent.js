@@ -270,7 +270,14 @@ async function runInsightAgent(agentRunId) {
     }
   ];
 
-  for (const cat of categories) {
+for (let i = 0; i < categories.length; i++) {
+    const cat = categories[i];
+    /* Wait 65 seconds between articles to avoid rate limit.
+       Anthropic rate limit resets every 60 seconds — 65 gives a safe buffer. */
+    if (i > 0) {
+      console.log('Waiting 65 seconds before next article to respect rate limits...');
+      await new Promise(resolve => setTimeout(resolve, 65000));
+    }
     console.log(`Generating article for category: ${cat.category}`);
 
     /* Build the prompt for this category's article */
