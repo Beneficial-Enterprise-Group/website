@@ -30,7 +30,6 @@
    node-fetch: adds fetch() to Node.js for HTTP calls to the Anthropic API */
 import { createClient } from '@supabase/supabase-js';
 import fetch from 'node-fetch';
-import ws from 'ws';
 
 /* ── Read environment variables ──
    These are never hardcoded — they are injected by GitHub Actions at runtime
@@ -53,11 +52,7 @@ if (!ANTHROPIC_API_KEY || !SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
    The service role key bypasses Row Level Security — the agent needs full
    write access to insert new content and update agent_runs records.
    This key is NEVER used in browser code — server/agent only. */
-const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
-  realtime: {
-    transport: ws  /* Required for Node.js versions below 22 */
-  }
-});
+const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
 
 
 /* ══════════════════════════════════════════════
@@ -152,18 +147,9 @@ async function isAgentEnabled(settingKey) {
    This function returns the parsed object: { entries: [...] }
    ══════════════════════════════════════════════ */
 function parseJSON(text) {
-  /* First try to extract JSON from inside code fences if present */
-  const fenceMatch = text.match(/```json\n?([\s\S]*?)```/);
-  if (fenceMatch) {
-    return JSON.parse(fenceMatch[1].trim());
-  }
-  /* If no code fence, try to extract raw JSON object directly */
-  const jsonMatch = text.match(/\{[\s\S]*\}/);
-  if (jsonMatch) {
-    return JSON.parse(jsonMatch[0]);
-  }
-  /* Last resort — try parsing the whole text */
-  return JSON.parse(text.trim());
+  /* Remove markdown code fences if present — ```json ... ``` */
+  const clean = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+  return JSON.parse(clean);
 }
 
 
@@ -270,14 +256,42 @@ async function runInsightAgent(agentRunId) {
     }
   ];
 
-for (let i = 0; i < categories.length; i++) {
+  /* ── Safety cleanup before inserting new articles ──
+     If a previous run crashed mid-way, there may be more than 1 active article
+     per category. This cleanup runs before generating anything new — it ensures
+     only the most recent article per category is active going into this run.
+     This prevents the "3 articles showing" bug caused by rate limit crashes. */
+  console.log('Running pre-flight cleanup — ensuring max 1 active article per category...');
+  for (const cat of categories) {
+    const { data: activeArticles } = await supabase
+      .from('insight_articles')
+      .select('id, title, published_at')
+      .eq('category', cat.category)
+      .eq('active', true)
+      .order('published_at', { ascending: false });
+
+    if (activeArticles && activeArticles.length > 1) {
+      const idsToDeactivate = activeArticles.slice(1).map(a => a.id);
+      console.log(`Deactivating ${idsToDeactivate.length} extra active article(s) in category: ${cat.category}`);
+      await supabase
+        .from('insight_articles')
+        .update({ active: false })
+        .in('id', idsToDeactivate);
+    }
+  }
+  console.log('Pre-flight cleanup complete.');
+
+  for (let i = 0; i < categories.length; i++) {
     const cat = categories[i];
-    /* Wait 65 seconds between articles to avoid rate limit.
-       Anthropic rate limit resets every 60 seconds — 65 gives a safe buffer. */
+
+    /* Wait 65 seconds between articles to avoid Anthropic rate limits.
+       The rate limit resets every 60 seconds — 65 seconds gives a safe buffer.
+       This prevents the crash that caused the "3 articles" bug. */
     if (i > 0) {
       console.log('Waiting 65 seconds before next article to respect rate limits...');
       await new Promise(resolve => setTimeout(resolve, 65000));
     }
+
     console.log(`Generating article for category: ${cat.category}`);
 
     /* Build the prompt for this category's article */
