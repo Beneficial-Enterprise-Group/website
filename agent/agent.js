@@ -30,6 +30,12 @@
    node-fetch: adds fetch() to Node.js for HTTP calls to the Anthropic API */
 import { createClient } from '@supabase/supabase-js';
 import fetch from 'node-fetch';
+import ws from 'ws';
+
+/* Supabase's createClient() builds a realtime client that needs a global
+   WebSocket. Node 20 doesn't provide one (Node 22 does). Supply it here,
+   before createClient runs further down. */
+globalThis.WebSocket = globalThis.WebSocket ?? ws;
 
 /* ── Read environment variables ──
    These are never hardcoded — they are injected by GitHub Actions at runtime
