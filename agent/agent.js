@@ -40,9 +40,9 @@ globalThis.WebSocket = globalThis.WebSocket ?? ws;
 /* ── Read environment variables ──
    These are never hardcoded — they are injected by GitHub Actions at runtime
    from encrypted secrets stored in the repository settings. */
-const ANTHROPIC_API_KEY  = process.env.ANTHROPIC_API_KEY;
-const SUPABASE_URL        = process.env.SUPABASE_URL;
-const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
+const ANTHROPIC_API_KEY    = process.env.ANTHROPIC_API_KEY?.trim();
+const SUPABASE_URL         = process.env.SUPABASE_URL?.trim();
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY?.trim();
 const RUN_MODE            = process.env.RUN_MODE || 'feed'; /* 'feed' or 'insights' */
 
 /* ── Validate required environment variables ──
