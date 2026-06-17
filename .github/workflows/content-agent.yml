@@ -46,13 +46,13 @@ jobs:
     steps:
       # Step 1 — Check out the repository code
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       # Step 2 — Set up Node.js runtime
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: '20'        # LTS version — stable and well supported
+          node-version: '22'        # LTS version — stable and well supported
           cache: 'npm'              # Cache npm packages to speed up runs
           cache-dependency-path: agent/package-lock.json
 
