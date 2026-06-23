@@ -46,32 +46,46 @@
      display=swap means text renders immediately in a fallback font while Inter loads,
      preventing invisible text during font loading (FOUT vs FOIT). -->
 
-<!--
-  Structured data (JSON-LD) for Beneficial Enterprise Group.
-  NOTE: JSON has no comment syntax. Do NOT put 
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": ["Organization", "ProfessionalService"],
+  <!-- Structured data in JSON-LD format. Tells Google this page represents
+       a real business — enables rich results in search and helps AI search
+       tools (ChatGPT, Perplexity) identify the company accurately.
+       Declaring both Organization and ProfessionalService improves coverage. -->
+
   "name": "Beneficial Enterprise Group Inc.",
   "url": "https://www.beneficialenterprisegroup.com",
   "logo": "https://www.beneficialenterprisegroup.com/logo.png",
+  <!-- logo.png must exist at this exact path in the repo root for Google
+       to display it in knowledge panels and search results. -->
+
   "description": "IT consulting firm specializing in legacy ERP modernization, API middleware architecture, data transformation pipelines, and production support for small and mid-market businesses across the Northeast US.",
+
   "address": {
     "@type": "PostalAddress",
     "addressLocality": "Philadelphia",
     "addressRegion": "PA",
     "addressCountry": "US"
   },
+  <!-- Philadelphia PA is used as the public address for local SEO purposes.
+       No street address is listed by deliberate policy decision — email and
+       form only for client contact. -->
+
   "areaServed": {
     "@type": "GeoRegion",
     "name": "Northeast United States"
   },
+  <!-- Tells Google the service area extends beyond the city address.
+       Important for appearing in searches from NY, NJ, CT, MA, etc. -->
+
   "contactPoint": {
     "@type": "ContactPoint",
     "email": "info@beneficialenterprisegroup.com",
     "contactType": "customer service"
   },
+
   "knowsAbout": [
     "Legacy ERP modernization",
     "API middleware architecture",
@@ -86,7 +100,14 @@
     "EDI flat-file CSV pipeline automation",
     "Production support"
   ],
+  <!-- List of specific technical competencies. Helps Google and AI search tools
+       understand the exact services offered. Using the precise technical names
+       (AS400, HL7 FHIR, EDI) improves match quality for specialist searches. -->
+
   "sameAs": []
+  <!-- Will be populated with LinkedIn Company Page URL once created.
+       sameAs tells Google these external profiles represent the same entity,
+       strengthening the knowledge graph entry. -->
 }
 </script>
 
