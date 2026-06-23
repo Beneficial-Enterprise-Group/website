@@ -112,97 +112,60 @@
 </script>
 
 <style>
-  /* ── RESET ──
-     Removes default browser margin, padding, and box-sizing inconsistencies.
-     box-sizing: border-box makes width calculations predictable — padding and
-     border are included inside the declared width, not added on top of it.
-     The * selector applies this to every element and its pseudo-elements. */
+  /* ── RESET ── */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  /* ── DESIGN TOKENS (CSS Custom Properties) ──
-     All brand colors and gradients are defined once here as variables.
-     Use var(--teal) throughout instead of hardcoding #0BBFBF everywhere.
-     If the brand color ever changes, update it here and it propagates site-wide. */
+  /* ── DESIGN TOKENS (CSS Custom Properties) ── */
   :root {
-    --teal:      #0BBFBF;   /* Primary brand color — used for accents, tags, links */
-    --teal-dark: #089090;   /* Darker teal for hover states */
-    --blue:      #1A6FD4;   /* Secondary brand color — used in gradients */
-    --blue-light:#2E8EFF;   /* Lighter blue for link hover states */
-    --bg-dark:   #080C10;   /* Page background — near-black with a blue tint */
-    --bg-card:   #0E1420;   /* Card background — slightly lighter than page bg */
-    --bg-card2:  #131A28;   /* Secondary card background — used for nested elements */
-    --border:    rgba(11,191,191,0.18);  /* Teal-tinted border for highlighted cards */
-    --border2:   rgba(255,255,255,0.07); /* Subtle white border for standard cards */
-    --text:      #E8EEF4;   /* Primary text color — off-white with cool tint */
-    --muted:     #8A9BB0;   /* Secondary text — used for subtitles, captions, metadata */
-    --white:     #FFFFFF;   /* Pure white — used for headings and primary labels */
-    --grad:      linear-gradient(135deg, #0BBFBF 0%, #1A6FD4 100%); /* Brand gradient — teal to blue */
+    --teal:      #0BBFBF;
+    --teal-dark: #089090;
+    --blue:      #1A6FD4;
+    --blue-light:#2E8EFF;
+    --bg-dark:   #080C10;
+    --bg-card:   #0E1420;
+    --bg-card2:  #131A28;
+    --border:    rgba(11,191,191,0.18);
+    --border2:   rgba(255,255,255,0.07);
+    --text:      #E8EEF4;
+    --muted:     #8A9BB0;
+    --white:     #FFFFFF;
+    --grad:      linear-gradient(135deg, #0BBFBF 0%, #1A6FD4 100%);
   }
 
-  /* Enables smooth animated scrolling when clicking anchor links like #erp-bridge */
   html { scroll-behavior: smooth; }
-
-  /* Base body styles applied to every page element unless overridden.
-     Inter is the primary typeface. antialiased smooths font rendering on Mac/retina.
-     line-height: 1.7 gives body text comfortable breathing room. */
   body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; }
-
-  /* Remove underlines from all links globally.
-     Individual link styles re-add color and hover effects where needed. */
   a { text-decoration: none; }
-
-  /* Reusable wrapper that centers content and limits max width to 1120px.
-     padding: 0 2rem ensures content doesn't touch screen edges on mobile. */
   .container { max-width: 1120px; margin: 0 auto; padding: 0 2rem; }
 
-
-  /* ── NAV ──
-     Fixed navigation bar that stays visible as the user scrolls.
-     z-index: 100 keeps it above all page content.
-     backdrop-filter: blur creates the frosted-glass effect behind the nav.
-     The semi-transparent background (0.90 alpha) lets page content show through. */
+  /* ── NAV ── */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     background: rgba(8,12,16,0.90); backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--border2);
   }
-
-  /* Inner nav container — centers content and sets 68px fixed height.
-     flexbox with space-between pushes logo left and nav links right. */
   .nav-inner {
     max-width: 1120px; margin: 0 auto; padding: 0 2rem;
     display: flex; align-items: center; justify-content: space-between; height: 68px;
   }
-
-  /* Logo wrapper — flex row aligns the logo mark and brand text side by side */
   .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-
-  /* The gradient square container for the SVG logo mark */
   .nav-logo-mark {
     background: var(--grad); width: 38px; height: 38px;
     border-radius: 8px; display: flex; align-items: center; justify-content: center;
   }
   .nav-logo-mark svg { width: 22px; height: 22px; }
-
-  /* Stacks the company name and "IT Consulting" subtitle vertically */
   .nav-brand { display: flex; flex-direction: column; line-height: 1.25; }
   .nav-brand-name { font-size: 15px; font-weight: 700; color: var(--white); letter-spacing: -0.01em; }
   .nav-brand-sub { font-size: 11px; color: var(--muted); font-weight: 400; letter-spacing: 0.04em; }
 
-  /* Right side nav items — horizontal row with consistent spacing */
   .nav-right { display: flex; align-items: center; gap: 2rem; list-style: none; }
   .nav-right > li { display: flex; align-items: center; }
   .nav-right a {
     font-size: 14px; color: var(--muted); font-weight: 500;
     transition: color 0.2s; line-height: 1;
   }
-  /* Lighten nav links on hover to indicate interactivity */
   .nav-right a:hover { color: var(--white); }
 
-  /* ── PRODUCTS DROPDOWN ──
-     Pure CSS dropdown — no JavaScript required.
-     position: relative on the parent establishes the positioning context
-     for the absolute-positioned dropdown menu. */
+  /* ── PRODUCTS DROPDOWN ── */
   .nav-dropdown { position: relative; display: flex; align-items: center; }
   .nav-dropdown > a {
     display: flex; align-items: center; gap: 4px;
@@ -210,15 +173,8 @@
     transition: color 0.2s; cursor: pointer; line-height: 1;
   }
   .nav-dropdown > a:hover { color: var(--white); }
-
-  /* The chevron arrow icon — rotates 180° when dropdown is open */
   .nav-dropdown > a svg { transition: transform 0.2s; }
   .nav-dropdown:hover > a svg { transform: rotate(180deg); }
-
-  /* Dropdown panel — hidden by default using opacity:0 and visibility:hidden.
-     Using both together (not just display:none) allows CSS transitions to work.
-     translateY(-6px) starts the panel slightly above its final position for
-     the slide-down animation effect on hover. */
   .dropdown-menu {
     position: absolute; top: calc(100% + 14px); right: 0;
     min-width: 240px;
@@ -228,29 +184,20 @@
     opacity: 0; visibility: hidden;
     transform: translateY(-6px);
     transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
-    z-index: 200; /* Above the fixed nav (z-index:100) */
+    z-index: 200;
   }
-  /* Show the dropdown when hovering the parent — slide in and fade in */
   .nav-dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
-
-  /* Individual dropdown items — stacked column layout for name + description */
   .dropdown-item {
     display: flex; flex-direction: column;
     padding: 10px 14px; border-radius: 8px;
     transition: background 0.15s; text-decoration: none;
   }
-  /* Teal-tinted background highlight on hover */
   .dropdown-item:hover { background: rgba(11,191,191,0.08); }
   .dropdown-item-name { font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 2px; }
   .dropdown-item-desc { font-size: 11px; color: var(--muted); line-height: 1.4; }
-
-  /* Thin horizontal rule between dropdown items */
   .dropdown-divider { height: 1px; background: var(--border2); margin: 4px 0; }
 
-  /* ── PRIMARY BUTTON ──
-     Gradient background button used for all primary CTAs.
-     !important on color prevents link color from overriding white text.
-     inline-flex with gap allows an icon and text to sit side by side. */
+  /* ── PRIMARY BUTTON ── */
   .btn-primary {
     background: var(--grad); color: var(--white) !important;
     padding: 9px 20px; border-radius: 8px;
@@ -260,68 +207,39 @@
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
   }
-  /* Slight lift and fade on hover — gives the button a tactile feel */
   .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
 
-
-  /* ── HERO SECTION ──
-     Full-width section with generous top padding (140px) to clear the fixed nav.
-     overflow: hidden clips the decorative radial gradient that bleeds outside the section. */
+  /* ── HERO SECTION ── */
   .hero { padding: 140px 0 80px; position: relative; overflow: hidden; }
-
-  /* Decorative radial glow in the top-right corner of the hero.
-     ::before is a CSS pseudo-element — creates a visual element without adding HTML.
-     pointer-events: none ensures it doesn't block mouse interaction. */
   .hero::before {
     content: ''; position: absolute; top: -200px; right: -200px;
     width: 700px; height: 700px;
     background: radial-gradient(circle, rgba(11,191,191,0.07) 0%, transparent 70%);
     pointer-events: none;
   }
-
-  /* Two-column layout: left column (1.1fr) slightly wider than right (1fr).
-     The extra width gives the headline more space than the blog card. */
   .hero-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 4rem; align-items: center; }
-
-  /* Gradient text effect — applies the brand gradient as a text fill.
-     Requires all three properties together to work cross-browser. */
   .grad-text {
     background: var(--grad); -webkit-background-clip: text;
     -webkit-text-fill-color: transparent; background-clip: text;
   }
-
-  /* Hero headline — clamp() creates a fluid font size that scales between
-     2rem (minimum) and 3rem (maximum) based on viewport width (4vw).
-     letter-spacing: -0.03em tightens large display text for a modern look. */
   .hero h1 {
     font-size: clamp(2rem, 4vw, 3rem); font-weight: 800;
     color: var(--white); line-height: 1.15; letter-spacing: -0.03em;
     margin-bottom: 1.5rem;
   }
-
-  /* Hero subheading — muted color and generous line-height for readability */
   .hero-sub { font-size: 17px; color: var(--muted); line-height: 1.75; margin-bottom: 2.5rem; }
-
-  /* The blog feed card on the right side of the hero.
-     box-shadow creates depth. overflow: hidden ensures the gradient top border
-     (added via ::before) doesn't spill outside the rounded corners. */
   .hero-card {
     background: var(--bg-card); border: 1px solid var(--border);
     border-radius: 22px; padding: 2rem;
     box-shadow: 0 30px 80px rgba(0,0,0,0.35);
     position: relative; overflow: hidden;
   }
-
-  /* 2px gradient line at the top of the hero card — brand accent detail.
-     content: '' is required for ::before to render even with no text content. */
   .hero-card::before {
     content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
     background: var(--grad);
   }
   .hero-card h3 { color: var(--white); margin-bottom: 0.8rem; font-size: 16px; font-weight: 600; }
   .hero-card-sub { font-size: 13px; color: var(--muted); margin-bottom: 1.4rem; }
-
-  /* Individual guardrail/checklist items inside cards */
   .guardrail-item {
     background: rgba(255,255,255,0.04); padding: 12px 14px;
     border-radius: 8px; font-size: 13px; color: var(--text);
@@ -330,13 +248,7 @@
   .guardrail-item:last-child { margin-bottom: 0; }
   .guardrail-item strong { color: var(--teal); }
 
-
-  /* ── COMING SOON PRODUCT OVERLAY ──
-     Full-screen overlay shown when a user clicks a product that isn't live yet.
-     inset: 0 is shorthand for top/right/bottom/left: 0 — covers entire viewport.
-     z-index: 500 sits above the fixed nav (100) but below the contact modal (600).
-     Hidden by default — opacity:0 + visibility:hidden allows CSS transitions
-     while keeping it inaccessible to screen readers and pointer events when closed. */
+  /* ── COMING SOON PRODUCT OVERLAY ── */
   .overlay {
     position: fixed; inset: 0; z-index: 500;
     background: rgba(8,12,16,0.92);
@@ -345,12 +257,7 @@
     opacity: 0; visibility: hidden;
     transition: opacity 0.25s, visibility 0.25s;
   }
-  /* Adding the .active class via JavaScript shows the overlay */
   .overlay.active { opacity: 1; visibility: visible; }
-
-  /* The white card centered inside the overlay.
-     transform: translateY(12px) starts it slightly below center.
-     The transition creates the slide-up animation when .active is added. */
   .overlay-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -362,39 +269,30 @@
     transform: translateY(12px);
     transition: transform 0.25s;
   }
-  /* Slide card up to center when overlay becomes active */
   .overlay.active .overlay-card { transform: translateY(0); }
-
-  /* 2px gradient accent line at top of overlay card — matches hero card styling */
   .overlay-card::before {
     content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
     background: var(--grad); border-radius: 24px 24px 0 0;
   }
-
-  /* "Coming Soon" pill badge inside the overlay */
   .overlay-badge {
     display: inline-flex; align-items: center; gap: 6px;
     font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
     color: var(--teal); text-transform: uppercase;
     border: 1px solid rgba(11,191,191,0.3);
-    padding: 4px 12px; border-radius: 999px; /* 999px = pill shape */
+    padding: 4px 12px; border-radius: 999px;
     margin-bottom: 1.5rem;
   }
-  /* Small teal dot inside the badge */
   .overlay-badge span { width: 5px; height: 5px; border-radius: 50%; background: var(--teal); }
   .overlay-icon { font-size: 3rem; margin-bottom: 1.2rem; display: block; }
   .overlay-title {
     font-size: 1.6rem; font-weight: 800; color: var(--white);
     letter-spacing: -0.03em; margin-bottom: 0.8rem;
   }
-  /* Gradient text treatment on the product name inside the overlay title */
   .overlay-name {
     background: var(--grad); -webkit-background-clip: text;
     -webkit-text-fill-color: transparent; background-clip: text;
   }
   .overlay-desc { font-size: 15px; color: var(--muted); line-height: 1.7; margin-bottom: 2rem; }
-
-  /* Back to site button — ghost style with hover color change */
   .overlay-close {
     background: none; border: 1px solid var(--border);
     color: var(--muted); font-size: 14px; font-weight: 500;
@@ -404,11 +302,7 @@
   }
   .overlay-close:hover { border-color: var(--teal); color: var(--white); }
 
-
-  /* ── CONTACT MODAL ──
-     Same overlay pattern as the product overlay but z-index: 600 — sits above
-     the product overlay so it can layer on top when triggered from within it
-     (e.g. clicking "Notify Me at Launch" inside the product overlay). */
+  /* ── CONTACT MODAL ── */
   .contact-modal {
     position: fixed; inset: 0; z-index: 600;
     background: rgba(8,12,16,0.92);
@@ -418,8 +312,6 @@
     transition: opacity 0.25s, visibility 0.25s;
   }
   .contact-modal.active { opacity: 1; visibility: visible; }
-
-  /* Contact form card — max-width: 500px keeps the form readable on wide screens */
   .contact-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -431,14 +323,10 @@
     transition: transform 0.25s;
   }
   .contact-modal.active .contact-card { transform: translateY(0); }
-
-  /* 2px gradient accent line at top of contact card */
   .contact-card::before {
     content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
     background: var(--grad); border-radius: 24px 24px 0 0;
   }
-
-  /* Header row: title + close button in a space-between flex row */
   .contact-card-header {
     display: flex; align-items: flex-start; justify-content: space-between;
     margin-bottom: 1.8rem;
@@ -448,8 +336,6 @@
     letter-spacing: -0.03em; line-height: 1.2;
   }
   .contact-card-header p { font-size: 13px; color: var(--muted); margin-top: 4px; }
-
-  /* X close button in the top-right corner of the modal */
   .modal-close-btn {
     background: rgba(255,255,255,0.06); border: 1px solid var(--border2);
     color: var(--muted); width: 32px; height: 32px;
@@ -459,20 +345,12 @@
     transition: background 0.2s, color 0.2s; font-family: 'Inter', sans-serif;
   }
   .modal-close-btn:hover { background: rgba(255,255,255,0.1); color: var(--white); }
-
-  /* Form field container — provides consistent spacing between fields */
   .form-group { margin-bottom: 1.1rem; }
-
-  /* Form labels — uppercase small caps style, muted color */
   .form-group label {
     display: block; font-size: 12px; font-weight: 600;
     color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em;
     margin-bottom: 6px;
   }
-
-  /* Shared styles for all form inputs, selects, and textareas.
-     outline: none removes the browser's default blue focus ring —
-     we replace it with a custom teal border-color transition below. */
   .form-group input,
   .form-group select,
   .form-group textarea {
@@ -482,32 +360,19 @@
     font-family: 'Inter', sans-serif; outline: none;
     transition: border-color 0.2s;
   }
-  /* Muted placeholder text color for all inputs and textareas */
   .form-group input::placeholder,
   .form-group textarea::placeholder { color: var(--muted); }
-
-  /* Teal border highlight on focus — replaces the default browser outline */
   .form-group input:focus,
   .form-group select:focus,
   .form-group textarea:focus { border-color: var(--teal); }
-
-  /* Custom select dropdown — removes browser default appearance so we can style it.
-     The SVG chevron is embedded as a base64 data URI for the dropdown arrow icon. */
   .form-group select {
     appearance: none; cursor: pointer;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' viewBox='0 0 24 24' stroke='%238A9BB0' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
     background-repeat: no-repeat; background-position: right 14px center;
   }
-  /* Dark background for select dropdown options — matches page theme */
   .form-group select option { background: #0E1420; color: var(--text); }
-
-  /* Textarea — vertically resizable only (not horizontally, which would break layout) */
   .form-group textarea { resize: vertical; min-height: 90px; }
-
-  /* Two-column form row for first name / last name fields */
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-
-  /* Submit button — full-width gradient style with centered icon + text */
   .form-submit {
     width: 100%; background: var(--grad); color: var(--white);
     border: none; border-radius: 10px; padding: 13px;
@@ -517,63 +382,37 @@
     display: flex; align-items: center; justify-content: center; gap: 8px;
   }
   .form-submit:hover { opacity: 0.88; transform: translateY(-1px); }
-
-  /* Success confirmation screen shown after form submits successfully.
-     Hidden by default (display: none) — shown via JavaScript after submit. */
   .form-success { text-align: center; padding: 1.5rem 0; display: none; }
   .form-success .success-icon { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
   .form-success h3 { font-size: 1.2rem; font-weight: 700; color: var(--white); margin-bottom: 0.5rem; }
   .form-success p { font-size: 14px; color: var(--muted); }
 
-
-  /* ── TRUST BAR ──
-     Horizontal strip between hero and main content listing industries served.
-     Thin borders top and bottom create a subtle visual separator. */
+  /* ── TRUST BAR ── */
   .trust { padding: 2.5rem 0; border-top: 1px solid var(--border2); border-bottom: 1px solid var(--border2); margin-bottom: 0; }
   .trust-inner {
     max-width: 1120px; margin: 0 auto; padding: 0 2rem;
     display: flex; align-items: center; gap: 3rem; flex-wrap: wrap;
   }
-  /* "Trusted across" label — uppercase small text */
   .trust-label { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; white-space: nowrap; }
   .trust-items { display: flex; gap: 2.5rem; flex-wrap: wrap; align-items: center; }
-  /* Individual industry name with a teal dot prefix */
   .trust-item { font-size: 14px; color: var(--muted); font-weight: 500; display: flex; align-items: center; gap: 8px; }
-  /* Small teal bullet dot before each industry name */
   .trust-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--teal); flex-shrink: 0; }
 
-
-  /* ── SECTION DEFAULTS ──
-     Consistent vertical padding for all major page sections. */
+  /* ── SECTION DEFAULTS ── */
   .section { padding: 80px 0; }
-
-  /* Small uppercase label above section titles — e.g. "Core Capability", "Insights" */
   .section-eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; color: var(--teal); text-transform: uppercase; margin-bottom: 1rem; }
-
-  /* Main section heading — fluid font size using clamp() */
   .section-title { font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 800; color: var(--white); letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 1rem; }
-
-  /* Section subheading — muted description below the title */
   .section-sub { font-size: 17px; color: var(--muted); max-width: 800px; line-height: 1.75; margin-bottom: 3rem; }
-
 
   /* ── CARD GRID (2-column) ── */
   .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-
-  /* Base card style used across service cards, insight cards, and case study cards.
-     position: relative + overflow: hidden allows the ::before gradient top border
-     to be clipped to the card's rounded corners. */
   .card {
     background: var(--bg-card); border: 1px solid var(--border2);
     border-radius: 16px; padding: 2rem;
     transition: border-color 0.25s, transform 0.25s;
     position: relative; overflow: hidden;
   }
-  /* Lift card 3px and brighten border on hover — subtle interactive feedback */
   .card:hover { border-color: var(--border); transform: translateY(-3px); }
-
-  /* The gradient top border accent — hidden by default, revealed on hover.
-     Using opacity transition instead of display change allows smooth fade. */
   .card::before {
     content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
     background: var(--grad); opacity: 0; transition: opacity 0.25s;
@@ -583,150 +422,97 @@
   .card h3, .card-heading { font-size: 17px; font-weight: 600; color: var(--white); margin-bottom: 0.75rem; letter-spacing: -0.01em; }
   .card p { font-size: 15px; color: var(--muted); line-height: 1.7; }
 
-
-  /* ── PRIVACY BOX ── Dashed border box used for privacy-related callouts */
+  /* ── PRIVACY BOX ── */
   .privacy-box { background: rgba(11,191,191,0.03); border: 1px dashed var(--border); border-radius: 20px; padding: 3rem; margin-top: 1rem; }
   .privacy-box h3 { font-size: 1.4rem; font-weight: 700; color: var(--white); letter-spacing: -0.02em; margin-bottom: 0.5rem; }
   .privacy-box > p { font-size: 15px; color: var(--muted); margin-bottom: 2rem; }
-  /* auto-fit grid — columns are at least 240px wide, grow to fill available space */
   .privacy-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem; }
   .privacy-item h4 { color: var(--teal); margin-bottom: 0.5rem; font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
   .privacy-item p { font-size: 14px; color: var(--muted); line-height: 1.6; }
-
 
   /* ── BLOG / FEED CARD STYLES ── */
   .blog-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 2.5rem; gap: 1.5rem; flex-wrap: wrap; }
   .blog-sub { font-size: 16px; color: var(--muted); line-height: 1.6; margin-top: 0.5rem; max-width: 520px; }
   .blog-badge { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: var(--teal); border: 1px solid rgba(11,191,191,0.25); background: rgba(11,191,191,0.05); padding: 7px 14px; border-radius: 999px; white-space: nowrap; align-self: flex-start; margin-top: 6px; }
-
-  /* Pulsing dot animation — used on the "Live" indicator in the hero blog card.
-     Keyframe animation fades and shrinks the dot to simulate a heartbeat. */
   .blog-pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); flex-shrink: 0; animation: pulse 2s ease-in-out infinite; }
   @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }   /* Full size and opacity */
-    50%       { opacity: 0.4; transform: scale(0.8); } /* Half opacity, slightly smaller */
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.4; transform: scale(0.8); }
   }
-
-  /* Blog cards grid — 2 columns with consistent gap */
   .blog-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; margin-bottom: 1.5rem; }
   .blog-card { background: var(--bg-card); border: 1px solid var(--border2); border-radius: 16px; padding: 1.6rem; display: flex; flex-direction: column; gap: 0.8rem; transition: border-color 0.25s, transform 0.25s; position: relative; overflow: hidden; }
   .blog-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--grad); opacity: 0; transition: opacity 0.25s; }
   .blog-card:hover { border-color: var(--border); transform: translateY(-3px); }
   .blog-card:hover::before { opacity: 1; }
   .blog-card-meta { display: flex; align-items: center; gap: 10px; }
-
-  /* Category tag pill — teal background with teal border */
   .blog-tag { font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 999px; background: rgba(11,191,191,0.1); border: 1px solid rgba(11,191,191,0.2); color: var(--teal); letter-spacing: 0.03em; }
   .blog-date { font-size: 12px; color: var(--muted); }
   .blog-card-title { font-size: 15px; font-weight: 700; color: var(--white); line-height: 1.35; letter-spacing: -0.01em; }
   .blog-card-body { font-size: 13px; color: var(--muted); line-height: 1.65; flex: 1; }
-  /* flex: 1 on body makes it grow to fill available card height, pushing footer to bottom */
   .blog-card-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 0.6rem; border-top: 1px solid var(--border2); }
   .blog-source { font-size: 12px; color: var(--muted); font-style: italic; }
   .blog-read-more { font-size: 12px; font-weight: 600; color: var(--teal); transition: color 0.2s; }
   .blog-read-more:hover { color: var(--blue-light); }
-
-  /* Footer bar at the bottom of the blog section */
   .blog-footer-bar { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.2rem; background: var(--bg-card); border: 1px solid var(--border2); border-radius: 12px; flex-wrap: wrap; gap: 0.8rem; }
   .blog-agent-note { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
   .blog-agent-note svg { color: var(--teal); flex-shrink: 0; }
   .blog-archive-link { font-size: 13px; font-weight: 600; color: var(--teal); transition: color 0.2s; }
   .blog-archive-link:hover { color: var(--blue-light); }
 
-
-  /* ── HERO EYEBROW ──
-     The small pill label above the hero headline — e.g. "Legacy ERP · Integration · Modernization" */
+  /* ── HERO EYEBROW ── */
   .hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; color: var(--teal); text-transform: uppercase; border: 1px solid rgba(11,191,191,0.3); padding: 5px 14px; border-radius: 999px; margin-bottom: 1.5rem; }
-  /* Small solid teal dot inside the eyebrow pill */
   .hero-eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); flex-shrink: 0; }
-
-  /* Blog card variant used in the hero — padding:0 because the header/feed/footer
-     have their own internal padding for precise layout control */
   .hero-card-blog { padding: 0; overflow: hidden; }
   .hero-blog-label { color: var(--white); font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
   .hero-blog-sublabel { font-size: 12px; color: var(--muted); margin-top: 3px; }
-
-  /* "Live" indicator row with pulsing dot */
   .hero-blog-live { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; color: var(--teal); }
-  /* Uses the same @keyframes pulse animation defined in the blog section above */
   .hero-blog-live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--teal); flex-shrink: 0; animation: pulse 2s ease-in-out infinite; }
 
-
   /* ── HERO BLOG CARD LAYOUT ── */
-  /* Header row inside the blog card — title left, "Live" indicator right */
   .hero-blog-header { display: flex; align-items: center; justify-content: space-between; padding: 1.3rem 1.5rem 1rem; border-bottom: 1px solid var(--border2); }
-
-  /* Scrollable feed container — max-height creates the fixed-height scrollable window.
-     Custom scrollbar styles use the teal brand color for the thumb. */
   .hero-blog-feed {
-    overflow-y: scroll;    /* Always show scrollbar, never auto-hide */
-    max-height: 480px;     /* Fixed height — content scrolls within this */
+    overflow-y: scroll;
+    max-height: 480px;
     padding: 0.4rem 0;
-    scrollbar-width: auto; /* Firefox scrollbar width */
-    scrollbar-color: rgba(11,191,191,0.5) rgba(255,255,255,0.04); /* Firefox: thumb track */
+    scrollbar-width: auto;
+    scrollbar-color: rgba(11,191,191,0.5) rgba(255,255,255,0.04);
   }
-  /* Chrome/Safari custom scrollbar styling */
   .hero-blog-feed::-webkit-scrollbar { width: 7px; }
   .hero-blog-feed::-webkit-scrollbar-track { background: rgba(255,255,255,0.04); border-radius: 4px; }
   .hero-blog-feed::-webkit-scrollbar-thumb { background: rgba(11,191,191,0.5); border-radius: 4px; }
   .hero-blog-feed::-webkit-scrollbar-thumb:hover { background: rgba(11,191,191,0.8); }
-
-  /* Individual feed entry row — subtle hover background for interactivity feedback */
   .hero-blog-entry { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border2); transition: background 0.15s; cursor: default; }
-  /* Remove border from last entry to avoid double border with footer */
   .hero-blog-entry:last-child { border-bottom: none; }
   .hero-blog-entry:hover { background: rgba(255,255,255,0.02); }
-
-  /* Category tag inside each feed entry */
   .hero-blog-tag { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 0.06em; color: var(--teal); background: rgba(11,191,191,0.1); border: 1px solid rgba(11,191,191,0.2); padding: 2px 8px; border-radius: 999px; margin-bottom: 6px; }
   .hero-blog-title { font-size: 13px; font-weight: 600; color: var(--white); line-height: 1.4; margin-bottom: 5px; letter-spacing: -0.01em; }
   .hero-blog-snippet { font-size: 12px; color: var(--muted); line-height: 1.55; margin-bottom: 6px; }
-  /* Source attribution — italic and slightly faded */
   .hero-blog-meta { font-size: 11px; color: rgba(138,155,176,0.6); font-style: italic; }
-
-  /* Footer bar at the bottom of the hero blog card */
   .hero-blog-footer { display: flex; align-items: center; justify-content: space-between; padding: 0.9rem 1.5rem; border-top: 1px solid var(--border2); background: rgba(255,255,255,0.02); }
-
-  /* Extra top padding on the ERP Bridge section to account for the
-     erp-bridge-section class adding padding-top: 240px. This large value
-     ensures the section clears the fixed nav when scrolled to via anchor link. */
   .erp-bridge-section { padding-top: 240px; }
 
-
-  /* ── LEGACY ENV STRIP ──
-     Horizontal row of legacy system tags (AS400, Oracle, SAP, etc.)
-     displayed above the ERP Bridge service cards. */
+  /* ── LEGACY ENV STRIP ── */
   .env-strip { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 2.5rem; padding: 1rem 1.4rem; background: var(--bg-card); border: 1px solid var(--border2); border-radius: 12px; }
   .env-label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap; }
   .env-tags { display: flex; flex-wrap: wrap; gap: 7px; }
-  /* Individual system name pill tags */
   .env-tag { font-size: 12px; font-weight: 500; padding: 4px 11px; border-radius: 999px; border: 1px solid rgba(11,191,191,0.2); background: rgba(11,191,191,0.06); color: var(--teal); }
 
-
-  /* ── 3-COLUMN CARD GRID ── Used for the ERP Bridge service cards */
+  /* ── 3-COLUMN CARD GRID ── */
   .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin-bottom: 2rem; }
 
-
-  /* ── TRIGGER BOX ──
-     The "The conversation usually starts the same way" callout block.
-     Uses a flex row with icon left and text right. The gradient top border
-     is always visible (no hover required) to draw attention. */
+  /* ── TRIGGER BOX ── */
   .trigger-box { display: flex; align-items: flex-start; gap: 1.2rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 1.8rem 2rem; position: relative; overflow: hidden; }
-  /* Gradient top border always visible — not hidden behind opacity:0 like cards */
   .trigger-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--grad); }
-  /* flex-shrink: 0 prevents the icon from shrinking when text is long */
   .trigger-icon { font-size: 2rem; flex-shrink: 0; margin-top: 2px; }
   .trigger-title { font-size: 16px; font-weight: 700; color: var(--white); margin-bottom: 6px; letter-spacing: -0.01em; }
   .trigger-body { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 1rem; }
   .trigger-cta { font-size: 14px; font-weight: 600; color: var(--teal); transition: color 0.2s; }
   .trigger-cta:hover { color: var(--blue-light); }
 
-
   /* ── FOOTER ── */
   footer { border-top: 1px solid var(--border2); padding: 3rem 0; margin-top: 4rem; }
   .footer-inner { max-width: 1120px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; }
   .footer-brand { display: flex; align-items: center; gap: 12px; }
-  /* Smaller version of the nav logo mark */
   .footer-brand-mark { width: 32px; height: 32px; border-radius: 7px; background: var(--grad); display: flex; align-items: center; justify-content: center; }
   .footer-brand-mark svg { width: 18px; height: 18px; }
   .footer-name { font-size: 14px; font-weight: 600; color: var(--white); }
@@ -734,19 +520,11 @@
   .footer-email a { font-size: 13px; color: var(--muted); transition: color 0.2s; }
   .footer-email a:hover { color: var(--teal); }
 
-
-  /* ── RESPONSIVE BREAKPOINTS ──
-     At 900px and below, multi-column grids collapse to single column.
-     The hero blog card is hidden on mobile — too complex for small screens.
-     At 768px and below, the nav links are hidden — mobile nav not yet implemented. */
-  /* ── TABLET & MOBILE (max-width: 900px) ──
-     All multi-column grids collapse to single column.
-     Blog feed card is shown on mobile — moved below the headline.
-     Nav links hidden at 768px — hamburger menu shown instead. */
+  /* ── RESPONSIVE BREAKPOINTS ── */
   @media (max-width: 900px) {
     .hero-grid { grid-template-columns: 1fr; }
-    .hero-card { display: block; margin-top: 2rem; }  /* Show blog card below headline on mobile */
-    .hero-blog-feed { max-height: 320px; }            /* Shorter feed height on mobile */
+    .hero-card { display: block; margin-top: 2rem; }
+    .hero-blog-feed { max-height: 320px; }
     .grid-2 { grid-template-columns: 1fr; }
     .grid-3 { grid-template-columns: 1fr; }
     .blog-grid { grid-template-columns: 1fr; }
@@ -759,26 +537,18 @@
     .cta-band-inner { flex-direction: column; align-items: flex-start; }
     .cta-band-actions { align-items: flex-start; }
     .trigger-box { flex-direction: column; }
-    .section { padding: 50px 0; }                     /* Reduce section padding on mobile */
-    .hero { padding: 100px 0 50px; }                  /* Reduce hero padding on mobile */
-    .hero h1 { font-size: clamp(1.6rem, 5vw, 2.4rem); } /* Smaller headline on mobile */
+    .section { padding: 50px 0; }
+    .hero { padding: 100px 0 50px; }
+    .hero h1 { font-size: clamp(1.6rem, 5vw, 2.4rem); }
     .hero-sub { font-size: 15px; }
     .section-title { font-size: clamp(1.4rem, 5vw, 2rem); }
-    .contact-card { padding: 1.5rem; }                /* Tighter modal padding on mobile */
-    .form-row { grid-template-columns: 1fr; }         /* Stack first/last name on mobile */
+    .contact-card { padding: 1.5rem; }
+    .form-row { grid-template-columns: 1fr; }
   }
-
-  /* ── MOBILE (max-width: 900px) ──
-     On mobile, hide all nav links EXCEPT the Products dropdown.
-     Products is kept visible so users can tap it on mobile.
-     The Get Assessment button is hidden to save space. */
   @media (max-width: 900px) {
     .container { padding: 0 1rem; }
-    /* Hide all nav items except the Products dropdown */
     .nav-right > li:not(.nav-dropdown) { display: none; }
-    /* Keep nav-right visible so Products shows */
     .nav-right { display: flex; }
-    /* Make dropdown work on touch — larger tap target */
     .nav-dropdown > a {
       font-size: 15px;
       font-weight: 600;
@@ -789,115 +559,35 @@
     }
   }
 
-  /* ── MOBILE NAV MENU — open state ──
-     When hamburger is clicked, mobile menu slides down below the nav bar. */
-  .mobile-nav {
-    display: none;
-    position: fixed;
-    top: 68px; left: 0; right: 0;
-    background: rgba(8,12,16,0.98);
-    backdrop-filter: blur(14px);
-    border-bottom: 1px solid var(--border2);
-    z-index: 99;
-    flex-direction: column;
-    padding: 1rem;
-    gap: 0.5rem;
-  }
-  .mobile-nav.open { display: flex; }
-  .mobile-nav a {
-    color: var(--muted); font-size: 15px; font-weight: 500;
-    padding: 12px 16px; border-radius: 8px;
-    text-decoration: none; display: block;
-    transition: background 0.15s, color 0.15s;
-  }
-  .mobile-nav a:hover { background: rgba(255,255,255,0.05); color: var(--white); }
-  .mobile-nav .mobile-nav-divider { height: 1px; background: var(--border2); margin: 4px 0; }
-  .mobile-nav .mobile-nav-label {
-    font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
-    text-transform: uppercase; color: var(--muted);
-    padding: 8px 16px 4px;
-  }
-
-  /* Hamburger button — hidden on desktop, shown on mobile via media query above */
-  .nav-hamburger {
-    display: none;
-    background: none; border: 1px solid rgba(255,255,255,0.07);
-    color: #8A9BB0; width: 40px; height: 40px;
-    border-radius: 8px; cursor: pointer;
-    align-items: center; justify-content: center;
-    transition: border-color 0.2s, color 0.2s;
-    font-family: 'Inter', sans-serif;
-    font-size: 18px; line-height: 1;
-    -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
-    touch-action: manipulation;               /* Prevents double-tap zoom on iOS */
-  }
-  .nav-hamburger:hover,
-  .nav-hamburger:active { border-color: #0BBFBF; color: #E8EEF4; }
-
-  /* ── LANDSCAPE MOBILE (orientation: landscape, max-height: 500px) ──
-     When phone is rotated sideways, the viewport is wide but short.
-     Reduce vertical padding and font sizes so content fits without excessive scrolling. */
-  @media (orientation: landscape) and (max-height: 500px) {
-    .hero { padding: 80px 0 30px; }
-    .hero h1 { font-size: clamp(1.4rem, 4vw, 2rem); margin-bottom: 0.75rem; }
-    .hero-sub { font-size: 14px; margin-bottom: 1rem; }
-    .hero-grid { gap: 2rem; }
-    .hero-blog-feed { max-height: 200px; }
-    .section { padding: 40px 0; }
-    nav { height: 54px; }
-    .nav-inner { height: 54px; }
-    .mobile-nav { top: 54px; }
-  }
-
-
-  /* ── INSIGHTS SECTION ──
-     2-column grid for the long-form insight articles.
-     flex column layout on cards allows sources section to always sit at the bottom. */
+  /* ── INSIGHTS SECTION ── */
   .insights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
   .insight-card { background: var(--bg-card); border: 1px solid var(--border2); border-radius: 16px; padding: 1.8rem; display: flex; flex-direction: column; gap: 0.8rem; transition: border-color 0.25s, transform 0.25s; position: relative; overflow: hidden; }
   .insight-card:hover { border-color: var(--border); transform: translateY(-3px); }
-  /* Gradient top border — revealed on hover */
   .insight-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--grad); opacity: 0; transition: opacity 0.25s; }
   .insight-card:hover::before { opacity: 1; }
-
-  /* Category label pill at top of insight card */
   .insight-category { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: rgba(11,191,191,0.1); border: 1px solid rgba(11,191,191,0.2); color: var(--teal); display: inline-block; width: fit-content; }
   .insight-title { font-size: 17px; font-weight: 700; color: var(--white); line-height: 1.3; letter-spacing: -0.02em; }
-
-  /* flex: 1 makes the body grow to fill available space, pushing sources to the bottom */
   .insight-body { font-size: 14px; color: var(--muted); line-height: 1.7; flex: 1; }
-
-  /* Sources section at the bottom of each insight card */
   .insight-sources { margin-top: 0.5rem; padding-top: 0.8rem; border-top: 1px solid var(--border2); }
   .insight-sources-label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 6px; display: block; }
-  /* Vertical stack of source links */
   .insight-source-links { display: flex; flex-direction: column; gap: 4px; }
   .insight-source-link { font-size: 12px; color: var(--teal); text-decoration: none; display: inline-flex; align-items: center; gap: 5px; transition: color 0.2s; }
   .insight-source-link:hover { color: var(--blue-light); }
-  /* Arrow icon prepended to each source link via CSS — no extra HTML needed */
   .insight-source-link::before { content: '↗'; font-size: 11px; }
-
-  /* Source link style used inside the hero blog feed entries */
   .blog-source-link { color: var(--teal); text-decoration: none; font-size: 11px; font-weight: 500; transition: color 0.2s; }
   .blog-source-link:hover { color: var(--blue-light); }
 
-
-  /* ── SECONDARY HERO BUTTON ──
-     Ghost button style — transparent background, visible border.
-     Used alongside the primary gradient button in the hero CTA row. */
+  /* ── SECONDARY HERO BUTTON ── */
   .btn-secondary-hero { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--border); color: var(--text); padding: 13px 24px; border-radius: 10px; font-size: 15px; font-weight: 500; transition: border-color 0.2s, background 0.2s; text-decoration: none; }
   .btn-secondary-hero:hover { border-color: var(--teal); background: rgba(11,191,191,0.05); color: var(--text); }
 
-
-  /* ── TRUST STATS — thin vertical divider and stat pairs ── */
+  /* ── TRUST STATS ── */
   .trust-divider { width: 1px; height: 20px; background: var(--border2); }
   .trust-stats { display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: center; }
   .trust-stat { font-size: 13px; color: var(--muted); }
   .trust-stat strong { color: var(--white); font-weight: 600; }
 
-
-  /* ── CASE STUDY CARDS ──
-     Same hover pattern as insight cards — lift + teal border + gradient top reveal. */
+  /* ── CASE STUDY CARDS ── */
   .case-card { background: var(--bg-card); border: 1px solid var(--border2); border-radius: 16px; padding: 1.8rem; display: flex; flex-direction: column; gap: 1rem; transition: border-color 0.25s, transform 0.25s; position: relative; overflow: hidden; }
   .case-card:hover { border-color: var(--border); transform: translateY(-3px); }
   .case-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--grad); opacity: 0; transition: opacity 0.25s; }
@@ -909,94 +599,60 @@
   .case-block { display: flex; flex-direction: column; gap: 4px; }
   .case-label { font-size: 11px; font-weight: 600; color: var(--teal); text-transform: uppercase; letter-spacing: 0.07em; }
   .case-text { font-size: 13px; color: var(--muted); line-height: 1.6; }
-  /* Outcome highlight box — always pinned to bottom via margin-top: auto */
   .case-outcome { display: flex; align-items: center; gap: 10px; background: rgba(11,191,191,0.06); border: 1px solid rgba(11,191,191,0.15); border-radius: 10px; padding: 12px 14px; margin-top: auto; }
-  /* Large gradient number — the headline metric of the case study */
   .outcome-num { font-size: 2rem; font-weight: 800; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
   .outcome-label { font-size: 13px; color: var(--muted); line-height: 1.4; }
 
-
-  /* ── FOUNDER SECTION ──
-     Different background to visually separate from surrounding sections. */
+  /* ── FOUNDER SECTION ── */
   .founder-section { background: var(--bg-card); border-top: 1px solid var(--border2); border-bottom: 1px solid var(--border2); }
-  /* Asymmetric 2-column layout — bio text slightly wider than the stat card */
   .founder-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 5rem; align-items: center; }
   .founder-body { font-size: 16px; color: var(--muted); line-height: 1.75; }
-  /* Skill pill tags row below the bio */
   .founder-skills { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 1.5rem; }
   .founder-skill { font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 999px; border: 1px solid var(--border2); color: var(--muted); background: rgba(255,255,255,0.03); }
-
-  /* The stat card on the right — darker background than the section */
   .founder-card { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; text-align: center; position: relative; overflow: hidden; }
   .founder-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--grad); }
-
-  /* Circular avatar — currently shows initials "FA" as placeholder until photo is added */
   .founder-avatar { width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 1rem; background: var(--grad); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 800; color: white; }
   .founder-name { font-size: 17px; font-weight: 700; color: var(--white); margin-bottom: 3px; }
   .founder-title { font-size: 13px; color: var(--muted); margin-bottom: 1.5rem; }
-
-  /* 2-column grid of stat numbers (years, team size, etc.) */
   .founder-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.5rem; }
   .founder-meta-item { background: rgba(255,255,255,0.04); border-radius: 10px; padding: 10px; }
   .founder-meta-num { display: block; font-size: 1.4rem; font-weight: 800; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
   .founder-meta-lbl { font-size: 11px; color: var(--muted); line-height: 1.3; }
-
-  /* LinkedIn link button — TODO: update href once LinkedIn Company Page is created */
   .founder-linkedin { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 600; color: var(--teal); border: 1px solid rgba(11,191,191,0.25); padding: 8px 18px; border-radius: 8px; transition: background 0.2s; text-decoration: none; }
   .founder-linkedin:hover { background: rgba(11,191,191,0.08); color: var(--teal); }
 
-
-  /* ── HOW WE WORK — 3-column process step cards ── */
+  /* ── HOW WE WORK ── */
   .process-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
   .process-step-card { background: var(--bg-dark); border: 1px solid var(--border2); border-radius: 14px; padding: 1.5rem; transition: border-color 0.2s; }
   .process-step-card:hover { border-color: var(--border); }
-  /* Step number label — e.g. "STEP 01" */
   .process-num { font-size: 11px; font-weight: 700; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.6rem; }
   .process-heading { font-size: 15px; font-weight: 600; color: var(--white); margin-bottom: 6px; }
   .process-body { font-size: 13px; color: var(--muted); line-height: 1.6; }
 
-
-  /* ── FAQ — 2-column grid of question/answer pairs ── */
+  /* ── FAQ ── */
   .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
   .faq-item { background: var(--bg-card); border: 1px solid var(--border2); border-radius: 14px; padding: 1.6rem; transition: border-color 0.2s; }
   .faq-item:hover { border-color: var(--border); }
   .faq-q { font-size: 15px; font-weight: 600; color: var(--white); margin-bottom: 0.8rem; line-height: 1.35; letter-spacing: -0.01em; }
   .faq-a { font-size: 14px; color: var(--muted); line-height: 1.7; }
 
-
-  /* ── CTA BAND ──
-     Full-width call-to-action strip above the footer.
-     Different background color from the page to draw the eye. */
+  /* ── CTA BAND ── */
   .cta-band { background: var(--bg-card); border-top: 1px solid var(--border2); padding: 60px 0; }
-  /* Flex row: headline/subtext left, button right — wraps on mobile */
   .cta-band-inner { display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
   .cta-band-title { font-size: clamp(1.4rem, 2.5vw, 2rem); font-weight: 800; color: var(--white); letter-spacing: -0.03em; margin-bottom: 0.6rem; }
   .cta-band-sub { font-size: 16px; color: var(--muted); line-height: 1.65; max-width: 560px; }
-  /* Right-aligned button group — flex-shrink: 0 prevents it from compressing */
   .cta-band-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 0.6rem; flex-shrink: 0; }
   .cta-reassurance { font-size: 12px; color: var(--muted); }
-
-
 
 </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════════
-     FIXED NAVIGATION BAR
-     Stays at the top of the viewport while scrolling.
-     Products dropdown uses pure CSS hover — no JavaScript.
-     Book a Call button opens the contact modal via openContactModal().
-     ══════════════════════════════════════════════ -->
+<!-- FIXED NAVIGATION BAR -->
 <nav>
   <div class="nav-inner">
-
-    <!-- Logo: clicking takes user back to the top of the page -->
     <a class="nav-logo" href="#">
       <div class="nav-logo-mark">
-        <!-- SVG logo mark: three squares (top-left, top-right, bottom-left)
-             and one circle (bottom-right). The gradient background is applied
-             by the .nav-logo-mark CSS class, not inline here. -->
         <svg viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="3" y="3" width="7" height="7" rx="1.5" fill="white" opacity="0.9"/>
           <rect x="12" y="3" width="7" height="7" rx="1.5" fill="white" opacity="0.6"/>
@@ -1009,85 +665,50 @@
         <span class="nav-brand-sub">IT Consulting</span>
       </div>
     </a>
-
-    <!-- Right side nav links — hidden on mobile (max-width: 768px) -->
     <ul class="nav-right">
-
-      <!-- Products dropdown — pure CSS hover, no JavaScript required.
-           Each product link calls showProduct() which shows the coming-soon overlay.
-           href is set to the future product page URL for SEO crawlability. -->
       <li class="nav-dropdown">
         <a>
           Products
-          <!-- Chevron arrow — rotates 180° on hover via CSS transition -->
           <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
         </a>
         <div class="dropdown-menu">
-          <!-- Quote Recovery — shows coming-soon overlay, does not navigate yet -->
           <a href="/products/quote-recovery" class="dropdown-item" onclick="showProduct('Quote Recovery'); return false;">
             <span class="dropdown-item-name">Quote Recovery</span>
             <span class="dropdown-item-desc">Revenue recovery for stalled distributor quotes</span>
           </a>
           <div class="dropdown-divider"></div>
-          <!-- Vendor Compliance — concept only, shows coming-soon overlay -->
           <a href="/products/vendor-compliance" class="dropdown-item" onclick="showProduct('Vendor Compliance Recovery'); return false;">
             <span class="dropdown-item-name">Vendor Compliance Recovery</span>
             <span class="dropdown-item-desc">Automated vendor compliance tracking and recovery workflows</span>
           </a>
         </div>
       </li>
-
     </ul>
   </div>
 </nav>
 
-
-
-
-<!-- ══════════════════════════════════════════════
-     HERO SECTION
-     Two-column layout: headline/CTAs left, live blog feed card right.
-     The blog feed card is populated dynamically from Supabase on page load
-     by the loadFeed() JavaScript function below.
-     On mobile (max-width: 900px) the card is hidden and the layout is single column.
-     ══════════════════════════════════════════════ -->
+<!-- HERO SECTION -->
 <section class="hero">
   <div class="container">
     <div class="hero-grid">
-
-      <!-- LEFT COLUMN: Headline, subheading, CTA buttons -->
       <div>
-        <!-- Small pill label above the headline — sets context for first-time visitors -->
         <div class="hero-eyebrow">
           <span class="hero-eyebrow-dot"></span>
           Legacy ERP · Integration · Modernization
         </div>
-
-        <!-- Primary headline — "Legacy ERP" has gradient text treatment -->
         <h1>Connect your <span class="grad-text">Legacy ERP</span> to modern systems — without replacing it.</h1>
-
-        <!-- Subheading — outcome-focused, addresses the core pain point -->
         <p class="hero-sub">Your ERP works. The problem is it can't talk to the tools your business needs today. We build the integration layer that eliminates manual workarounds, stops lost revenue, and connects your existing systems to the modern world — in weeks, not years.</p>
-
-        <!-- CTA button row — primary gradient + ghost secondary -->
         <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:0.5rem;">
-          <!-- Scrolls to the ERP Bridge section — internal anchor link -->
           <a href="#erp-bridge" class="btn-primary">
             <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             See How We Work
           </a>
-          <!-- Opens the contact modal — return false prevents page navigation -->
           <a href="#" onclick="openContactModal(); return false;" class="btn-secondary-hero">
             Get a Free Assessment →
           </a>
         </div>
       </div>
-
-      <!-- RIGHT COLUMN: Live blog feed card -->
-      <!-- aside is semantically correct here — this is supplementary content -->
       <aside class="hero-card hero-card-blog">
-
-        <!-- Card header: title left, "Live" pulsing indicator right -->
         <div class="hero-blog-header">
           <div>
             <div class="hero-blog-label">Legacy Systems are Changing</div>
@@ -1098,15 +719,9 @@
             Live
           </div>
         </div>
-
-        <!-- Feed container — populated dynamically by loadFeed() on page load.
-             Shows "Loading latest insights…" until Supabase data arrives.
-             id="feedContainer" is the target that loadFeed() writes into. -->
         <div class="hero-blog-feed" id="feedContainer">
           <div class="hero-blog-entry" style="color:var(--muted);font-size:13px;padding:1.5rem;">Loading latest insights…</div>
         </div>
-
-        <!-- Card footer: timestamp label left, link to insights section right -->
         <div class="hero-blog-footer">
           <span style="font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px;">
             <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
@@ -1114,18 +729,12 @@
           </span>
           <a href="#insights" style="font-size:12px;font-weight:600;color:var(--teal);">More insights →</a>
         </div>
-
       </aside>
     </div>
   </div>
 </section>
 
-
-<!-- ══════════════════════════════════════════════
-     TRUST BAR
-     Simple horizontal strip listing the four industries we serve.
-     Provides immediate credibility signal below the hero.
-     ══════════════════════════════════════════════ -->
+<!-- TRUST BAR -->
 <div class="trust">
   <div class="trust-inner">
     <span class="trust-label">Trusted across</span>
@@ -1138,113 +747,77 @@
   </div>
 </div>
 
-
-<!-- ══════════════════════════════════════════════
-     INSIGHTS SECTION
-     Four long-form articles grounded in real research.
-     Populated dynamically from Supabase insight_articles table on page load
-     by the loadInsights() JavaScript function below.
-     id="insightsContainer" is the target that loadInsights() writes into.
-     ══════════════════════════════════════════════ -->
+<!-- INSIGHTS SECTION -->
 <section class="section" id="insights">
   <div class="container">
     <div class="section-eyebrow">Insights</div>
     <h2 class="section-title">What the data says about legacy modernization.</h2>
     <p class="section-sub">Articles grounded in current research — for IT directors and operations leaders evaluating their options.</p>
-
-    <!-- Populated by loadInsights() — shows loading state until data arrives -->
     <div class="insights-grid" id="insightsContainer">
       <div class="insight-card" style="grid-column:1/-1;color:var(--muted);font-size:14px;">Loading insights…</div>
     </div>
   </div>
 </section>
 
-
-<!-- ══════════════════════════════════════════════
-     ERP BRIDGE SECTION
-     Seven service cards describing the integration types we build.
-     Static content — does not fetch from Supabase.
-     Large padding-top accounts for the fixed nav when scrolled to via #erp-bridge anchor.
-     ══════════════════════════════════════════════ -->
+<!-- ERP BRIDGE SECTION -->
 <section class="section erp-bridge-section" id="erp-bridge">
   <div class="container">
     <div class="section-eyebrow">Core Capability</div>
     <h2 class="section-title">Custom API Bridge &amp; Integration Solutions for Legacy ERPs</h2>
     <p class="section-sub">Stop waiting for an ERP upgrade that never comes. We build middleware architecture and data transformation pipelines directly on top of your existing systems — AS400, older Oracle and SAP instances, Infor, Eclipse, Epicor — to solve modern problems without the cost or risk of full replacement.</p>
-
-    <!-- 3-column service card grid — collapses to 1 column on mobile -->
     <div class="grid-3">
-
       <div class="card">
         <div class="card-icon">🌐</div>
         <h2 class="card-heading">ERP to Web App &amp; Customer Portal</h2>
         <p>Your ERP holds the data your customers and partners need — but they have no way to access it without calling your team. We build secure web-facing layers that expose the right data to the right people through a modern portal, without touching your core ERP schema. Inventory visibility, order status, quote history — available in a browser, in real time.</p>
       </div>
-
       <div class="card">
         <div class="card-icon">🔗</div>
         <h2 class="card-heading">ERP to Third-Party API (REST / GraphQL)</h2>
         <p>A vendor is demanding an API your system doesn't have. A modern SaaS tool you just purchased won't talk to your ERP. We build the integration layer — REST or GraphQL — that bridges your legacy system to any modern platform. Field mapping, authentication, error handling, and retry logic handled end to end. Your ERP becomes API-capable without a replacement project.</p>
       </div>
-
       <div class="card">
         <div class="card-icon">🗄️</div>
         <h2 class="card-heading">Industrial Data Ingestion &amp; ETL Pipelines</h2>
         <p>We specialize in messy, legacy data. Whether it's an automated FTP export from a 20-year-old AS400, a manual CSV from a legacy system or a SQL Server dump from an older Oracle instance — our pipeline cleans, transforms, and structures it for modern workflows. Batch and real-time ETL both handled. Agent-to-agent automation ready.</p>
       </div>
-
       <div class="card">
         <div class="card-icon">☁️</div>
         <h2 class="card-heading">Legacy System to Cloud Migration</h2>
         <p>Moving to Azure or AWS without breaking what works is an operational challenge most cloud vendors underestimate. We approach legacy-to-cloud migrations with a parallel-run model — your existing system stays live while the cloud layer is validated against it. When confidence is high, we cut over. No big-bang risk, no data integrity surprises, no production downtime.</p>
       </div>
-
       <div class="card">
         <div class="card-icon">📂</div>
         <h2 class="card-heading">EDI, Flat-File &amp; CSV Pipeline Automation</h2>
         <p>EDI transactions, flat-file exports, and manual CSV handoffs are still the operational backbone of distribution, manufacturing, and healthcare. We automate these pipelines — scheduled pulls, format normalization, validation rules, error alerting, and downstream routing — so your team stops babysitting file transfers and starts relying on them. From daily batch to near-real-time processing.</p>
       </div>
-
       <div class="card">
         <div class="card-icon">🏥</div>
         <h2 class="card-heading">HL7 &amp; FHIR Healthcare Integrations</h2>
         <p>Healthcare system integrations require precision that general-purpose middleware rarely delivers. We build HL7 v2 and FHIR R4 integration layers between EHR platforms, clinical systems, revenue cycle management, and third-party health data services. Compliance-aware, audit-trail-ready, and built for the reliability standards that clinical environments demand. Interface engines and custom FHIR APIs both in scope.</p>
       </div>
-
       <div class="card">
         <div class="card-icon">🔄</div>
         <h2 class="card-heading">Database-to-Database Migration</h2>
         <p>Moving data between systems — whether you're consolidating platforms, decommissioning a legacy database, or onboarding after an acquisition — is where data integrity problems are born. We design migration pipelines with reconciliation checkpoints, row-count validation, field-level comparison, and rollback plans. Data arrives in the target system clean, complete, and verifiable. Not approximately right — exactly right.</p>
       </div>
-
     </div>
-
-    <!-- Trigger box — conversational CTA that mirrors how prospects actually describe their problem -->
     <div class="trigger-box">
       <div class="trigger-icon">💬</div>
       <div>
         <p class="trigger-title">The conversation usually starts the same way.</p>
         <p class="trigger-body">"We just bought a new tool and it won't talk to our system." If that's where you are — your ERP can't connect to something modern your team needs — that's exactly the problem we solve. We assess the integration gap, design the bridge, and deliver it in production without disrupting what's already running.</p>
-        <!-- Opens contact modal — return false prevents the # href from jumping to page top -->
         <a href="#" onclick="openContactModal(); return false;" class="trigger-cta">Tell us what you're working on →</a>
       </div>
     </div>
-
   </div>
 </section>
 
-
-<!-- ══════════════════════════════════════════════
-     FOOTER
-     Minimal footer: logo left, email right.
-     No street address by design — policy decision from project brief.
-     Philadelphia PA listed for local SEO match with JSON-LD schema above.
-     ══════════════════════════════════════════════ -->
+<!-- FOOTER -->
 <footer>
   <div class="footer-inner">
     <div class="footer-brand">
       <div class="footer-brand-mark">
-        <!-- Smaller version of the same SVG logo mark used in the nav -->
         <svg viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="3" y="3" width="7" height="7" rx="1.5" fill="white" opacity="0.9"/>
           <rect x="12" y="3" width="7" height="7" rx="1.5" fill="white" opacity="0.6"/>
@@ -1254,55 +827,32 @@
       </div>
       <div>
         <div class="footer-name">Beneficial Enterprise Group Inc.</div>
-        <!-- Philadelphia PA listed for SEO — matches the JSON-LD schema address -->
         <div class="footer-copy">© 2026 · IT Consulting · Philadelphia, PA · Northeast US</div>
       </div>
     </div>
-    <!-- Clicking the email address opens the contact modal instead of launching an email client -->
     <div class="footer-email">
-      <a href="#" onclick="openContactModal(); return false;">info@beneficialenterprise.com</a>
+      <a href="#" onclick="openContactModal(); return false;">info@beneficialenterprisegroup.com</a>
     </div>
   </div>
 </footer>
 
-
-<!-- ══════════════════════════════════════════════
-     PRODUCT COMING-SOON OVERLAY
-     Shown when a user clicks Quote Recovery or Vendor Compliance Recovery
-     in the Products dropdown. Both products are in development.
-     The product name is injected dynamically by showProduct() so this
-     one overlay works for any product without duplication.
-     Clicking outside the card or pressing Escape closes it.
-     ══════════════════════════════════════════════ -->
+<!-- PRODUCT COMING-SOON OVERLAY -->
 <div class="overlay" id="productOverlay" onclick="handleOverlayClick(event)">
   <div class="overlay-card">
     <div class="overlay-badge"><span></span> Coming Soon</div>
     <span class="overlay-icon">🚧</span>
-    <!-- id="overlayProductName" is updated by showProduct() with the actual product name -->
     <h2 class="overlay-title"><span class="overlay-name" id="overlayProductName">Product</span><br>is not yet implemented.</h2>
-    <!-- id="overlayProductDesc" is also updated by showProduct() -->
     <p class="overlay-desc" id="overlayProductDesc">This product is currently in development. Get in touch to be notified when it launches.</p>
-    <!-- Notify Me button: closes this overlay then opens the contact modal -->
     <a href="#" onclick="closeOverlay(); openContactModal(); return false;" style="display:inline-flex;align-items:center;gap:6px;background:var(--grad);color:#fff;padding:10px 22px;border-radius:8px;font-size:14px;font-weight:600;margin-bottom:1rem;text-decoration:none;">
       <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
       Notify Me at Launch
     </a>
     <br>
-    <!-- Back button — closes overlay and returns user to the site -->
     <button class="overlay-close" onclick="closeOverlay()">← Back to Site</button>
   </div>
 </div>
 
-
-<!-- ══════════════════════════════════════════════
-     CONTACT MODAL
-     Opened by any CTA on the page that calls openContactModal().
-     Fields are cleared every time the modal opens to prevent stale data.
-     On submit: posts JSON to /.netlify/functions/contact (server-side function).
-     On success: hides the form, shows the success confirmation screen.
-     On failure: re-enables the button, shows an alert with the direct email address.
-     Clicking outside the card or pressing Escape closes it.
-     ══════════════════════════════════════════════ -->
+<!-- CONTACT MODAL -->
 <div class="contact-modal" id="contactModal" onclick="handleContactOverlayClick(event)">
   <div class="contact-card">
     <div class="contact-card-header">
@@ -1310,18 +860,12 @@
         <h2>Tell us how we can help</h2>
         <p>Tell us what you're working on. We'll map your integration gap and respond within one business day — no commitment required.</p>
       </div>
-      <!-- X close button — top right corner of the modal card -->
       <button class="modal-close-btn" onclick="closeContactModal()" aria-label="Close">✕</button>
     </div>
-
-    <!-- The form itself — id="contactForm" is hidden after successful submission -->
     <div id="contactForm">
-
-      <!-- First and last name in a 2-column row -->
       <div class="form-row">
         <div class="form-group">
           <label>First Name</label>
-          <!-- autocomplete hints help browsers pre-fill known user data -->
           <input type="text" id="firstName" placeholder="Jane" autocomplete="given-name">
         </div>
         <div class="form-group">
@@ -1329,19 +873,14 @@
           <input type="text" id="lastName" placeholder="Smith" autocomplete="family-name">
         </div>
       </div>
-
       <div class="form-group">
         <label>Work Email</label>
-        <!-- type="email" triggers mobile keyboard with @ symbol and basic validation -->
         <input type="email" id="emailField" placeholder="jane@company.com" autocomplete="email">
       </div>
-
       <div class="form-group">
         <label>Company</label>
         <input type="text" id="company" placeholder="Your company name" autocomplete="organization">
       </div>
-
-      <!-- Service interest dropdown — helps route the inquiry internally -->
       <div class="form-group">
         <label>I'm interested in</label>
         <select id="interest">
@@ -1354,22 +893,15 @@
           <option>General Consultation</option>
         </select>
       </div>
-
       <div class="form-group">
         <label>Brief Description</label>
         <textarea id="message" placeholder="Describe what you're looking to solve…"></textarea>
       </div>
-
-      <!-- Submit button — id="submitBtn" is disabled and text changed during submission
-           to prevent double-submits and give visual feedback -->
       <button class="form-submit" id="submitBtn" onclick="submitContactForm()">
         <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg>
         Send Message
       </button>
     </div>
-
-    <!-- Success state — hidden by default, shown by JavaScript after successful submit.
-         Replaces the form in the same card space without closing the modal. -->
     <div class="form-success" id="formSuccess">
       <span class="success-icon">✅</span>
       <h3>Message received.</h3>
@@ -1378,89 +910,34 @@
   </div>
 </div>
 
-
-<!-- ══════════════════════════════════════════════
-     JAVASCRIPT
-     All site JavaScript in one <script> block at the bottom of the body.
-     Placed at the bottom so the HTML is fully parsed before any JS runs —
-     this means all getElementById() calls will find their targets immediately.
-     ══════════════════════════════════════════════ -->
+<!-- JAVASCRIPT -->
 <script>
 
-  /* ─────────────────────────────────────────────
-     SUPABASE CONFIGURATION
-     These credentials connect the site to the content database.
-     SUPABASE_URL: the REST API endpoint for our Supabase project.
-     SUPABASE_KEY: the publishable/anon key — safe to expose in browser code
-     because Row Level Security (RLS) limits it to SELECT on active rows only.
-     The service role key (full write access) is never used here — it lives
-     only in GitHub Actions secrets for the daily content agent.
-     ───────────────────────────────────────────── */
+  /* ── SUPABASE CONFIGURATION ── */
   const SUPABASE_URL = 'https://svitcbtzdqwsbmkudufo.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_65lb7sjkAxZxJ5Q-P2TFjw_y1tcfOHa';
 
-  /* ─────────────────────────────────────────────
-     SUPABASE FETCH HELPER
-     A reusable async function that handles all Supabase REST API requests.
-     Accepts a 'path' string (the table name + query parameters) and always
-     attaches the required auth headers.
-
-     'async' marks this function as asynchronous — it can pause and wait
-     for network responses without blocking other JavaScript from running.
-
-     The template literal builds the full URL:
-     e.g. path = 'feed_entries?active=eq.true&limit=10'
-     becomes: https://svitcbtzdqwsbmkudufo.supabase.co/rest/v1/feed_entries?active=eq.true&limit=10
-
-     Both apikey and Authorization headers are required by Supabase —
-     apikey identifies the project, Authorization carries the JWT token.
-
-     If the HTTP response status is not 2xx (success), we throw an error
-     so the calling function's catch block can handle it gracefully.
-     ───────────────────────────────────────────── */
+  /* ── SUPABASE FETCH HELPER ── */
   async function supabaseFetch(path) {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
       headers: {
-        'apikey': SUPABASE_KEY,           /* Identifies which Supabase project */
-        'Authorization': `Bearer ${SUPABASE_KEY}`, /* JWT token for RLS evaluation */
-        'Content-Type': 'application/json'         /* Tells Supabase to return JSON */
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json'
       }
     });
-    if (!res.ok) throw new Error(`Supabase error: ${res.status}`); /* Triggers catch block */
-    return res.json(); /* Parse the response body as JSON and return it */
+    if (!res.ok) throw new Error(`Supabase error: ${res.status}`);
+    return res.json();
   }
 
-
-  /* ─────────────────────────────────────────────
-     LOAD FEED ENTRIES
-     Fetches the 10 most recent active feed entries from Supabase
-     and renders them into the hero blog card.
-
-     Query breakdown:
-     - select=*          → return all columns
-     - active=eq.true    → only rows where active = true (RLS also enforces this)
-     - order=published_at.desc → newest entries first
-     - limit=10          → cap at 10 rows — only the most recent matter
-
-     The .map() loop transforms each database row (e) into an HTML string.
-     .join('') stitches all the HTML strings into one block with no separator.
-     container.innerHTML replaces the loading placeholder with the real content.
-
-     The ternary for source_url builds a clickable link if a URL exists,
-     or falls back to plain text if only a source name is available.
-
-     The try/catch ensures that if Supabase is unreachable or returns an error,
-     the page shows a friendly "Unable to load feed" message instead of crashing.
-     ───────────────────────────────────────────── */
+  /* ── LOAD FEED ENTRIES ── */
   async function loadFeed() {
-    const container = document.getElementById('feedContainer'); /* The scrollable feed div in the hero */
+    const container = document.getElementById('feedContainer');
     try {
       const entries = await supabaseFetch(
         'feed_entries?select=*&active=eq.true&order=published_at.desc&limit=10'
       );
-      if (!entries.length) return; /* No data — leave the loading placeholder as-is */
-
-      /* Build HTML for each entry and inject into the container */
+      if (!entries.length) return;
       container.innerHTML = entries.map(e => `
         <div class="hero-blog-entry">
           <span class="hero-blog-tag">${e.category || ''}</span>
@@ -1468,57 +945,28 @@
           <p class="hero-blog-snippet">${e.snippet || ''}</p>
           <span class="hero-blog-meta">
             ${e.source_url
-              /* If source URL exists: render a clickable link with source name as label */
               ? `<a href="${e.source_url}" target="_blank" rel="noopener" class="blog-source-link">${e.source_name || e.source_url}</a>`
-              /* If no URL: render plain source name text, or empty string if neither exists */
               : e.source_name || ''}
           </span>
         </div>
-      `).join(''); /* join('') merges the array of strings into one HTML block */
-
+      `).join('');
     } catch (err) {
-      /* Log the error for debugging, show user-friendly fallback */
       console.error('Feed load error:', err);
       container.innerHTML = '<div class="hero-blog-entry" style="color:var(--muted);font-size:13px;">Unable to load feed.</div>';
     }
   }
 
-
-  /* ─────────────────────────────────────────────
-     LOAD INSIGHT ARTICLES
-     Fetches the 4 most recent active insight articles AND all their source
-     links simultaneously, then renders both into the insights section.
-
-     Promise.all fires both requests at the same time rather than sequentially.
-     The destructuring [ articles, sources ] unpacks the two results into
-     separate variables once both requests complete.
-
-     For each article, sources are filtered by article_id to find only the
-     sources that belong to that specific article.
-
-     Body text is split on double newlines (\n\n) and each paragraph is
-     wrapped in <p> tags — this converts the plain text stored in Supabase
-     back into proper HTML paragraph structure.
-
-     The try/catch uses grid-column:1/-1 on the error message to make it
-     span the full width of the 2-column insights grid.
-     ───────────────────────────────────────────── */
+  /* ── LOAD INSIGHT ARTICLES ── */
   async function loadInsights() {
-    const container = document.getElementById('insightsContainer'); /* The insights grid div */
+    const container = document.getElementById('insightsContainer');
     try {
-      /* Fire both requests simultaneously — faster than sequential await calls */
       const [articles, sources] = await Promise.all([
         supabaseFetch('insight_articles?select=*&active=eq.true&order=published_at.desc&limit=4'),
-        supabaseFetch('insight_sources?select=*&order=display_order.asc') /* All sources, sorted */
+        supabaseFetch('insight_sources?select=*&order=display_order.asc')
       ]);
-
-      if (!articles.length) return; /* No articles — leave loading placeholder */
-
+      if (!articles.length) return;
       container.innerHTML = articles.map(a => {
-        /* Filter the full sources array to get only sources for this article */
         const articleSources = sources.filter(s => s.article_id === a.id);
-
-        /* Build the sources HTML block — only rendered if sources exist */
         const sourcesHtml = articleSources.length ? `
           <div class="insight-sources">
             <span class="insight-sources-label">Sources</span>
@@ -1527,12 +975,8 @@
                 <a href="${s.source_url}" target="_blank" rel="noopener" class="insight-source-link">${s.source_name}</a>
               `).join('')}
             </div>
-          </div>` : ''; /* Empty string if no sources — nothing renders */
-
-        /* Convert double-newline paragraph breaks back to HTML <p> tags */
+          </div>` : '';
         const bodyHtml = (a.body || '').split('\n\n').map(p => `<p>${p}</p>`).join('');
-
-        /* Build and return the complete insight card HTML for this article */
         return `
           <div class="insight-card">
             <span class="insight-category">${a.category || ''}</span>
@@ -1540,96 +984,49 @@
             <div class="insight-body">${bodyHtml}</div>
             ${sourcesHtml}
           </div>`;
-      }).join(''); /* Merge all 4 article cards into one HTML string */
-
+      }).join('');
     } catch (err) {
       console.error('Insights load error:', err);
-      /* grid-column:1/-1 spans the error message across both columns of the insights grid */
       container.innerHTML = '<div class="insight-card" style="color:var(--muted);font-size:14px;grid-column:1/-1;">Unable to load insights.</div>';
     }
   }
 
-
-  /* ─────────────────────────────────────────────
-     PAGE LOAD INITIALIZER
-     DOMContentLoaded fires as soon as the HTML is fully parsed —
-     before images and stylesheets finish loading.
-     This is the safe moment to call functions that look up DOM elements,
-     because all elements (feedContainer, insightsContainer, etc.) exist by now.
-     Both feed and insights load simultaneously for maximum speed.
-     ───────────────────────────────────────────── */
+  /* ── PAGE LOAD INITIALIZER ── */
   document.addEventListener('DOMContentLoaded', () => {
-    loadFeed();     /* Populate the hero blog feed card */
-    loadInsights(); /* Populate the insights section articles */
+    loadFeed();
+    loadInsights();
   });
 
-
-  /* ─────────────────────────────────────────────
-     CONTACT MODAL — OPEN
-     Called by any CTA button on the page (hero, trigger box, etc.).
-     Adds the .active class to show the modal with CSS transitions.
-     overflow: hidden on body prevents the page from scrolling behind the modal.
-     All fields are cleared on every open — prevents stale data from a previous
-     session or from a modal that was closed mid-fill and reopened.
-     The form view is reset in case the success screen was showing from
-     a previous submission in the same page session.
-     ───────────────────────────────────────────── */
+  /* ── CONTACT MODAL — OPEN ── */
   function openContactModal() {
-    document.getElementById('contactModal').classList.add('active'); /* Show modal */
-    document.body.style.overflow = 'hidden'; /* Lock page scroll behind modal */
-
-    /* Clear all form fields to prevent data from previous opens */
+    document.getElementById('contactModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
     document.getElementById('firstName').value = '';
     document.getElementById('lastName').value = '';
     document.getElementById('emailField').value = '';
     document.getElementById('company').value = '';
-    document.getElementById('interest').selectedIndex = 0; /* Reset to placeholder option */
+    document.getElementById('interest').selectedIndex = 0;
     document.getElementById('message').value = '';
-
-    /* Reset to form view in case success screen was showing */
     document.getElementById('contactForm').style.display = 'block';
     document.getElementById('formSuccess').style.display = 'none';
-
-    /* Reset submit button to its default state */
     const btn = document.getElementById('submitBtn');
     btn.disabled = false;
     btn.innerHTML = `<svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg> Send Message`;
   }
 
-  /* ─────────────────────────────────────────────
-     CONTACT MODAL — CLOSE
-     Removes .active class to hide modal with CSS transitions.
-     Restores page scrolling.
-     ───────────────────────────────────────────── */
+  /* ── CONTACT MODAL — CLOSE ── */
   function closeContactModal() {
     document.getElementById('contactModal').classList.remove('active');
-    document.body.style.overflow = ''; /* Restore page scroll */
+    document.body.style.overflow = '';
   }
 
-  /* ─────────────────────────────────────────────
-     CONTACT MODAL — CLICK OUTSIDE TO CLOSE
-     Called on every click on the modal overlay element.
-     Only closes if the click target IS the overlay itself (the dark backdrop),
-     not if the click is on the card inside it.
-     e.target is the element that was actually clicked.
-     ───────────────────────────────────────────── */
+  /* ── CONTACT MODAL — CLICK OUTSIDE TO CLOSE ── */
   function handleContactOverlayClick(e) {
     if (e.target === document.getElementById('contactModal')) closeContactModal();
   }
 
-
-  /* ─────────────────────────────────────────────
-     CONTACT FORM — SUBMIT
-     1. Reads and trims all field values
-     2. Validates that first name and email are present (minimum required fields)
-     3. Disables the button and shows "Sending…" to prevent double-submits
-     4. Posts JSON to /.netlify/functions/contact (the server-side Netlify Function)
-     5. On success (HTTP 200): hides form, shows success confirmation screen
-     6. On failure (non-200 or network error): re-enables button, shows alert
-        with direct email address as fallback so the lead is never lost
-     ───────────────────────────────────────────── */
+  /* ── CONTACT FORM — SUBMIT ── */
   function submitContactForm() {
-    /* Read all field values — .trim() removes leading/trailing whitespace */
     const first    = document.getElementById('firstName').value.trim();
     const last     = document.getElementById('lastName').value.trim();
     const email    = document.getElementById('emailField').value.trim();
@@ -1637,42 +1034,34 @@
     const interest = document.getElementById('interest').value;
     const message  = document.getElementById('message').value.trim();
 
-    /* Minimum validation — first name and email are required */
     if (!first || !email) {
       alert('Please enter at least your first name and email address.');
-      return; /* Stop execution — do not submit */
+      return;
     }
 
-    /* Disable button and show loading state to prevent duplicate submissions */
     const btn = document.getElementById('submitBtn');
     btn.disabled = true;
     btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg> Sending…`;
 
-    /* Build the payload object — fallback strings replace empty optional fields */
     const payload = {
-      from_name:  first + (last ? ' ' + last : ''), /* Full name — last name optional */
+      from_name:  first + (last ? ' ' + last : ''),
       from_email: email,
       company:    company || 'Not provided',
       interest:   interest || 'Not specified',
       message:    message  || 'No message provided'
     };
 
-    /* POST the payload as JSON to the Netlify Function.
-       The function runs server-side and forwards the email via Resend API.
-       The RESEND_API_KEY never touches the browser — it lives in Netlify env vars. */
     fetch('/.netlify/functions/contact', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload) /* Convert the object to a JSON string */
+      body: JSON.stringify(payload)
     })
       .then(res => {
-        if (!res.ok) throw new Error('Server error'); /* Trigger catch if non-200 */
-        /* Success: hide form, show confirmation screen */
+        if (!res.ok) throw new Error('Server error');
         document.getElementById('contactForm').style.display = 'none';
         document.getElementById('formSuccess').style.display = 'block';
       })
       .catch((err) => {
-        /* Failure: log error, re-enable button, show fallback message */
         console.error('Contact form error:', err);
         btn.disabled = false;
         btn.innerHTML = `<svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg> Send Message`;
@@ -1680,124 +1069,54 @@
       });
   }
 
-
-  /* ─────────────────────────────────────────────
-     PRODUCT OVERLAY — SHOW
-     Called when a user clicks a product in the nav dropdown.
-     Injects the product name into the overlay title and description
-     so one overlay serves all products without duplicating HTML.
-     ───────────────────────────────────────────── */
+  /* ── PRODUCT OVERLAY — SHOW ── */
   function showProduct(name) {
-    /* Update the product name in the overlay title */
     document.getElementById('overlayProductName').textContent = name;
-    /* Update the description with the specific product name */
     document.getElementById('overlayProductDesc').textContent = 'This product is currently in development. Get in touch to be notified when ' + name + ' launches.';
-    /* Show the overlay */
     document.getElementById('productOverlay').classList.add('active');
-    document.body.style.overflow = 'hidden'; /* Lock page scroll */
+    document.body.style.overflow = 'hidden';
   }
 
-  /* ─────────────────────────────────────────────
-     PRODUCT OVERLAY — CLOSE
-     Removes .active class to hide with CSS transitions.
-     ───────────────────────────────────────────── */
+  /* ── PRODUCT OVERLAY — CLOSE ── */
   function closeOverlay() {
     document.getElementById('productOverlay').classList.remove('active');
-    document.body.style.overflow = ''; /* Restore page scroll */
+    document.body.style.overflow = '';
   }
 
-  /* ─────────────────────────────────────────────
-     PRODUCT OVERLAY — CLICK OUTSIDE TO CLOSE
-     Same pattern as the contact modal — only closes when clicking
-     the dark backdrop, not the card itself.
-     ───────────────────────────────────────────── */
+  /* ── PRODUCT OVERLAY — CLICK OUTSIDE TO CLOSE ── */
   function handleOverlayClick(e) {
     if (e.target === document.getElementById('productOverlay')) closeOverlay();
   }
 
-
-  /* ─────────────────────────────────────────────
-     KEYBOARD ESCAPE — CLOSE ANY OPEN MODAL
-     Listens for the Escape key globally on the document.
-     Closes both the contact modal and the product overlay if either is open.
-     Calling both close functions is safe even if one is already closed —
-     removing a class that doesn't exist has no effect.
-     ───────────────────────────────────────────── */
+  /* ── KEYBOARD ESCAPE — CLOSE ANY OPEN MODAL ── */
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
-      closeContactModal(); /* Close contact modal if open */
-      closeOverlay();      /* Close product overlay if open */
-      document.getElementById('mobileNav').style.display = 'none'; /* Close mobile nav */
-      document.getElementById('hamburgerBtn').innerHTML = '☰';
-      closeDropdowns();    /* Close any open dropdowns */
+      closeContactModal();
+      closeOverlay();
+      closeDropdowns();
     }
   });
 
-  /* ─────────────────────────────────────────────
-     PRODUCTS DROPDOWN — TOUCH SUPPORT
-     On desktop the dropdown works via CSS :hover.
-     On touch devices (phones, tablets) there is no hover state —
-     tapping the Products link must toggle the dropdown open/closed.
-     This JavaScript adds .open class on tap which CSS uses to show the menu.
-     ───────────────────────────────────────────── */
+  /* ── PRODUCTS DROPDOWN — TOUCH SUPPORT ── */
   function closeDropdowns() {
     document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
   }
 
-  /* Find all dropdown toggles and add touch/click handler */
   document.querySelectorAll('.nav-dropdown > a').forEach(function(toggle) {
     toggle.addEventListener('click', function(e) {
       const dropdown = toggle.parentElement;
       const isOpen = dropdown.classList.contains('open');
-      closeDropdowns(); /* Close any other open dropdowns first */
+      closeDropdowns();
       if (!isOpen) {
-        e.preventDefault(); /* Prevent navigation on first tap — show menu instead */
+        e.preventDefault();
         dropdown.classList.add('open');
       }
     });
   });
 
-  /* Close dropdown when clicking/tapping outside of it */
   document.addEventListener('click', function(e) {
     if (!e.target.closest('.nav-dropdown')) {
       closeDropdowns();
-    }
-  });
-
-  /* ─────────────────────────────────────────────
-     MOBILE NAV — TOGGLE
-     Opens or closes the mobile nav menu when the hamburger button is clicked.
-     The hamburger icon switches between ☰ (open) and ✕ (close).
-     ───────────────────────────────────────────── */
-  /* ─────────────────────────────────────────────
-     MOBILE NAV — TOGGLE
-     Uses inline style display instead of CSS classes for
-     maximum compatibility across Android and iOS Safari.
-     ───────────────────────────────────────────── */
-  function toggleMobileNav() {
-    const nav = document.getElementById('mobileNav');
-    const btn = document.getElementById('hamburgerBtn');
-    const isOpen = nav.style.display === 'flex';
-    if (isOpen) {
-      nav.style.display = 'none';
-      btn.innerHTML = '☰';
-    } else {
-      nav.style.display = 'flex';
-      btn.innerHTML = '✕';
-    }
-  }
-
-  function closeMobileNav() {
-    document.getElementById('mobileNav').style.display = 'none';
-    document.getElementById('hamburgerBtn').innerHTML = '☰';
-  }
-
-  /* Close mobile nav when tapping outside — works on both touch and mouse */
-  document.addEventListener('click', function(e) {
-    const nav = document.getElementById('mobileNav');
-    const btn = document.getElementById('hamburgerBtn');
-    if (nav.style.display === 'flex' && !nav.contains(e.target) && !btn.contains(e.target)) {
-      closeMobileNav();
     }
   });
 
