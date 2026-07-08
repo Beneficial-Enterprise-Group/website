@@ -152,11 +152,11 @@ async function isAgentEnabled(settingKey) {
    ```
    This function returns the parsed object: { entries: [...] }
    ══════════════════════════════════════════════ */
-function parseJSON(text) {
-  /* Remove markdown code fences if present — ```json ... ``` */
-  const clean = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-  return JSON.parse(clean);
-}
+// function parseJSON(text) {
+//   /* Remove markdown code fences if present — ```json ... ``` */
+//   const clean = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+//   return JSON.parse(clean);
+// }
 
 
 /* ══════════════════════════════════════════════
@@ -165,6 +165,26 @@ function parseJSON(text) {
    Generates 4 feed entries and inserts them into Supabase feed_entries table.
    Runs every day at 6am EST via GitHub Actions.
    ══════════════════════════════════════════════ */
+
+function extractJSON(text) {
+  let cleaned = text.trim();
+
+  // Prefer content inside a ```json ... ``` fence if present
+  const fence = cleaned.match(/```(?:json)?\s*([\s\S]*?)```/);
+  if (fence) {
+    cleaned = fence[1].trim();
+  } else {
+    // Otherwise slice from the first { to the last }
+    const start = cleaned.indexOf('{');
+    const end = cleaned.lastIndexOf('}');
+    if (start !== -1 && end > start) {
+      cleaned = cleaned.slice(start, end + 1);
+    }
+  }
+
+  return JSON.parse(cleaned);
+}
+
 async function runFeedAgent(agentRunId) {
   console.log('Starting feed agent...');
 
@@ -203,7 +223,7 @@ RULES — follow these exactly:
   /* Parse the JSON response */
   let parsed;
   try {
-    parsed = parseJSON(responseText);
+    parsed = extractJSON(responseText);
   } catch (err) {
     throw new Error(`Failed to parse feed entries JSON: ${err.message}\nResponse: ${responseText}`);
   }
@@ -332,7 +352,7 @@ RULES — follow these exactly:
     /* Parse the JSON response */
     let parsed;
     try {
-      parsed = parseJSON(responseText);
+      parsed = extractJSON(responseText);
     } catch (err) {
       console.error(`Failed to parse insight article JSON for ${cat.category}:`, err.message);
       continue; /* Skip this article and move to the next category */
