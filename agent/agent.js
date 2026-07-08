@@ -70,6 +70,26 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
    rather than generating content from training data alone.
    This is what ensures every feed entry has a real verifiable source URL.
    ══════════════════════════════════════════════ */
+
+function extractJSON(text) {
+  let cleaned = text.trim();
+
+  // Prefer content inside a ```json ... ``` fence if present
+  const fence = cleaned.match(/```(?:json)?\s*([\s\S]*?)```/);
+  if (fence) {
+    cleaned = fence[1].trim();
+  } else {
+    // Otherwise slice from the first { to the last }
+    const start = cleaned.indexOf('{');
+    const end = cleaned.lastIndexOf('}');
+    if (start !== -1 && end > start) {
+      cleaned = cleaned.slice(start, end + 1);
+    }
+  }
+
+  return JSON.parse(cleaned);
+}
+
 async function callClaude(prompt) {
   const response = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
@@ -166,24 +186,6 @@ async function isAgentEnabled(settingKey) {
    Runs every day at 6am EST via GitHub Actions.
    ══════════════════════════════════════════════ */
 
-function extractJSON(text) {
-  let cleaned = text.trim();
-
-  // Prefer content inside a ```json ... ``` fence if present
-  const fence = cleaned.match(/```(?:json)?\s*([\s\S]*?)```/);
-  if (fence) {
-    cleaned = fence[1].trim();
-  } else {
-    // Otherwise slice from the first { to the last }
-    const start = cleaned.indexOf('{');
-    const end = cleaned.lastIndexOf('}');
-    if (start !== -1 && end > start) {
-      cleaned = cleaned.slice(start, end + 1);
-    }
-  }
-
-  return JSON.parse(cleaned);
-}
 
 async function runFeedAgent(agentRunId) {
   console.log('Starting feed agent...');
