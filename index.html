@@ -28,11 +28,36 @@
      Keyword-first format: primary service first, then brand name.
      Optimized for searches like "legacy ERP modernization" and "API automation". -->
 
-<meta name="description" content="Extend the life of your legacy ERP — Visual legacy system, AS400, Oracle, SAP, Infor, Eclipse. We build secure API middleware and data transformation pipelines without the risk of full replacement. Book a discovery call.">
+<meta name="description" content="Extend the life of your legacy ERP — AS400, Oracle, SAP, Infor, Eclipse. We build secure API middleware and data transformation pipelines without the risk of full replacement. Book a discovery call.">
 <!-- The description shown under the page title in Google search results.
      Includes specific legacy system names (AS400, Oracle, SAP, Infor, Eclipse)
      because buyers search for their exact system, not generic terms.
      Keep under 160 characters for Google not to truncate it. -->
+
+<link rel="canonical" href="https://beneficialenterprisegroup.com/">
+<!-- Canonical URL. The site answers on the apex domain, so the apex is declared
+     authoritative. Prevents apex/www and trailing-slash variants competing. -->
+
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<meta name="theme-color" content="#080C10">
+
+<!-- Open Graph — controls the preview card on LinkedIn, Slack, Facebook.
+     Without these, shared links render as a bare grey box with no image. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Beneficial Enterprise Group">
+<meta property="og:url" content="https://beneficialenterprisegroup.com/">
+<meta property="og:title" content="Legacy ERP Modernization &amp; API Automation | Beneficial Enterprise Group">
+<meta property="og:description" content="Connect your legacy ERP to modern systems without replacing it. Secure API middleware and data transformation pipelines for AS400, Oracle, SAP, Infor and Eclipse.">
+<meta property="og:image" content="https://beneficialenterprisegroup.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+
+<!-- Twitter/X card. summary_large_image renders the full-width image variant. -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Legacy ERP Modernization &amp; API Automation | Beneficial Enterprise Group">
+<meta name="twitter:description" content="Connect your legacy ERP to modern systems without replacing it. API middleware and data pipelines for AS400, Oracle, SAP, Infor and Eclipse.">
+<meta name="twitter:image" content="https://beneficialenterprisegroup.com/og-image.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -74,8 +99,9 @@
   "@context": "https://schema.org",
   "@type": ["Organization", "ProfessionalService"],
   "name": "Beneficial Enterprise Group Inc.",
-  "url": "https://www.beneficialenterprisegroup.com",
-  "logo": "https://www.beneficialenterprisegroup.com/logo.png",
+  "@id": "https://beneficialenterprisegroup.com/#organization",
+  "url": "https://beneficialenterprisegroup.com/",
+  "logo": "https://beneficialenterprisegroup.com/logo.png",
   "description": "IT consulting firm specializing in legacy ERP modernization, API middleware architecture, data transformation pipelines, and production support for small and mid-market businesses across the Northeast US.",
   "address": {
     "@type": "PostalAddress",
@@ -106,8 +132,17 @@
     "HL7 FHIR healthcare integration",
     "EDI flat-file CSV pipeline automation",
     "Production support"
-  ],
-  "sameAs": []
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Beneficial Enterprise Group Inc.",
+  "url": "https://beneficialenterprisegroup.com/",
+  "publisher": { "@id": "https://beneficialenterprisegroup.com/#organization" }
 }
 </script>
 
@@ -133,6 +168,15 @@
   }
 
   html { scroll-behavior: smooth; }
+  :focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; border-radius: 4px; }
+  .skip-link { position: absolute; left: -9999px; top: 0; z-index: 999; background: var(--grad);
+    color: #fff; padding: 10px 18px; border-radius: 0 0 8px 0; font-size: 14px; font-weight: 600; }
+  .skip-link:focus { left: 0; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
   body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; }
   a { text-decoration: none; }
   .container { max-width: 1120px; margin: 0 auto; padding: 0 2rem; }
@@ -331,7 +375,7 @@
     display: flex; align-items: flex-start; justify-content: space-between;
     margin-bottom: 1.8rem;
   }
-  .contact-card-header h2 {
+  .contact-card-header .contact-modal-title {
     font-size: 1.4rem; font-weight: 800; color: var(--white);
     letter-spacing: -0.03em; line-height: 1.2;
   }
@@ -384,7 +428,7 @@
   .form-submit:hover { opacity: 0.88; transform: translateY(-1px); }
   .form-success { text-align: center; padding: 1.5rem 0; display: none; }
   .form-success .success-icon { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
-  .form-success h3 { font-size: 1.2rem; font-weight: 700; color: var(--white); margin-bottom: 0.5rem; }
+  .form-success .form-success-title { font-size: 1.2rem; font-weight: 700; color: var(--white); margin-bottom: 0.5rem; }
   .form-success p { font-size: 14px; color: var(--muted); }
 
   /* ── TRUST BAR ── */
@@ -648,10 +692,12 @@
 </head>
 <body>
 
+<a class="skip-link" href="#erp-bridge">Skip to main content</a>
+
 <!-- FIXED NAVIGATION BAR -->
 <nav>
   <div class="nav-inner">
-    <a class="nav-logo" href="#">
+    <a class="nav-logo" href="/" aria-label="Beneficial Enterprise Group — home">
       <div class="nav-logo-mark">
         <svg viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="3" y="3" width="7" height="7" rx="1.5" fill="white" opacity="0.9"/>
@@ -666,23 +712,28 @@
       </div>
     </a>
     <ul class="nav-right">
+      <!-- Real internal links. Anchor sections previously had no nav entry, so
+           they received no internal link signal from the site's own navigation. -->
+      <li><a href="#erp-bridge">Services</a></li>
+      <li><a href="#insights">Insights</a></li>
       <li class="nav-dropdown">
-        <a>
+        <a href="#" aria-haspopup="true" aria-expanded="false" onclick="return false;">
           Products
-          <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+          <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
         </a>
         <div class="dropdown-menu">
-          <a href="/products/quote-recovery" class="dropdown-item" onclick="showProduct('Quote Recovery'); return false;">
+          <a href="/products/quote-recovery/" class="dropdown-item">
             <span class="dropdown-item-name">Quote Recovery</span>
             <span class="dropdown-item-desc">Revenue recovery for stalled distributor quotes</span>
           </a>
           <div class="dropdown-divider"></div>
-          <a href="/products/vendor-compliance" class="dropdown-item" onclick="showProduct('Vendor Compliance Recovery'); return false;">
+          <a href="/products/vendor-compliance/" class="dropdown-item">
             <span class="dropdown-item-name">Vendor Compliance Recovery</span>
             <span class="dropdown-item-desc">Automated vendor compliance tracking and recovery workflows</span>
           </a>
         </div>
       </li>
+      <li><a href="#" class="btn-primary" onclick="openContactModal(); return false;">Book a call</a></li>
     </ul>
   </div>
 </nav>
@@ -768,37 +819,37 @@
     <div class="grid-3">
       <div class="card">
         <div class="card-icon">🌐</div>
-        <h2 class="card-heading">ERP to Web App &amp; Customer Portal</h2>
+        <h3 class="card-heading">ERP to Web App &amp; Customer Portal</h3>
         <p>Your ERP holds the data your customers and partners need — but they have no way to access it without calling your team. We build secure web-facing layers that expose the right data to the right people through a modern portal, without touching your core ERP schema. Inventory visibility, order status, quote history — available in a browser, in real time.</p>
       </div>
       <div class="card">
         <div class="card-icon">🔗</div>
-        <h2 class="card-heading">ERP to Third-Party API (REST / GraphQL)</h2>
+        <h3 class="card-heading">ERP to Third-Party API (REST / GraphQL)</h3>
         <p>A vendor is demanding an API your system doesn't have. A modern SaaS tool you just purchased won't talk to your ERP. We build the integration layer — REST or GraphQL — that bridges your legacy system to any modern platform. Field mapping, authentication, error handling, and retry logic handled end to end. Your ERP becomes API-capable without a replacement project.</p>
       </div>
       <div class="card">
         <div class="card-icon">🗄️</div>
-        <h2 class="card-heading">Industrial Data Ingestion &amp; ETL Pipelines</h2>
+        <h3 class="card-heading">Industrial Data Ingestion &amp; ETL Pipelines</h3>
         <p>We specialize in messy, legacy data. Whether it's an automated FTP export from a 20-year-old AS400, a manual CSV from a legacy system or a SQL Server dump from an older Oracle instance — our pipeline cleans, transforms, and structures it for modern workflows. Batch and real-time ETL both handled. Agent-to-agent automation ready.</p>
       </div>
       <div class="card">
         <div class="card-icon">☁️</div>
-        <h2 class="card-heading">Legacy System to Cloud Migration</h2>
+        <h3 class="card-heading">Legacy System to Cloud Migration</h3>
         <p>Moving to Azure or AWS without breaking what works is an operational challenge most cloud vendors underestimate. We approach legacy-to-cloud migrations with a parallel-run model — your existing system stays live while the cloud layer is validated against it. When confidence is high, we cut over. No big-bang risk, no data integrity surprises, no production downtime.</p>
       </div>
       <div class="card">
         <div class="card-icon">📂</div>
-        <h2 class="card-heading">EDI, Flat-File &amp; CSV Pipeline Automation</h2>
+        <h3 class="card-heading">EDI, Flat-File &amp; CSV Pipeline Automation</h3>
         <p>EDI transactions, flat-file exports, and manual CSV handoffs are still the operational backbone of distribution, manufacturing, and healthcare. We automate these pipelines — scheduled pulls, format normalization, validation rules, error alerting, and downstream routing — so your team stops babysitting file transfers and starts relying on them. From daily batch to near-real-time processing.</p>
       </div>
       <div class="card">
         <div class="card-icon">🏥</div>
-        <h2 class="card-heading">HL7 &amp; FHIR Healthcare Integrations</h2>
+        <h3 class="card-heading">HL7 &amp; FHIR Healthcare Integrations</h3>
         <p>Healthcare system integrations require precision that general-purpose middleware rarely delivers. We build HL7 v2 and FHIR R4 integration layers between EHR platforms, clinical systems, revenue cycle management, and third-party health data services. Compliance-aware, audit-trail-ready, and built for the reliability standards that clinical environments demand. Interface engines and custom FHIR APIs both in scope.</p>
       </div>
       <div class="card">
         <div class="card-icon">🔄</div>
-        <h2 class="card-heading">Database-to-Database Migration</h2>
+        <h3 class="card-heading">Database-to-Database Migration</h3>
         <p>Moving data between systems — whether you're consolidating platforms, decommissioning a legacy database, or onboarding after an acquisition — is where data integrity problems are born. We design migration pipelines with reconciliation checkpoints, row-count validation, field-level comparison, and rollback plans. Data arrives in the target system clean, complete, and verifiable. Not approximately right — exactly right.</p>
       </div>
     </div>
@@ -841,7 +892,7 @@
   <div class="overlay-card">
     <div class="overlay-badge"><span></span> Coming Soon</div>
     <span class="overlay-icon">🚧</span>
-    <h2 class="overlay-title"><span class="overlay-name" id="overlayProductName">Product</span><br>is not yet implemented.</h2>
+    <p class="overlay-title"><span class="overlay-name" id="overlayProductName">Product</span><br>is not yet implemented.</p>
     <p class="overlay-desc" id="overlayProductDesc">This product is currently in development. Get in touch to be notified when it launches.</p>
     <a href="#" onclick="closeOverlay(); openContactModal(); return false;" style="display:inline-flex;align-items:center;gap:6px;background:var(--grad);color:#fff;padding:10px 22px;border-radius:8px;font-size:14px;font-weight:600;margin-bottom:1rem;text-decoration:none;">
       <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
@@ -857,7 +908,7 @@
   <div class="contact-card">
     <div class="contact-card-header">
       <div>
-        <h2>Tell us how we can help</h2>
+        <p class="contact-modal-title">Tell us how we can help</p>
         <p>Tell us what you're working on. We'll map your integration gap and respond within one business day — no commitment required.</p>
       </div>
       <button class="modal-close-btn" onclick="closeContactModal()" aria-label="Close">✕</button>
@@ -904,7 +955,7 @@
     </div>
     <div class="form-success" id="formSuccess">
       <span class="success-icon">✅</span>
-      <h3>Message received.</h3>
+      <p class="form-success-title">Message received.</p>
       <p>Thank you for reaching out. A member of the Beneficial Enterprise Group team will be in touch within one business day.</p>
     </div>
   </div>
@@ -980,7 +1031,7 @@
         return `
           <div class="insight-card">
             <span class="insight-category">${a.category || ''}</span>
-            <h2 class="insight-title">${a.title}</h2>
+            <h3 class="insight-title">${a.title}</h3>
             <div class="insight-body">${bodyHtml}</div>
             ${sourcesHtml}
           </div>`;

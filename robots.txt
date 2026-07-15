@@ -5,11 +5,12 @@
 User-agent: *
 Allow: /
 
-# Block access to Netlify function endpoints — not indexable content
+# Block Netlify function endpoints — not indexable content
 Disallow: /.netlify/
 
-# Block access to any hidden or system files
+# Block hidden or system files
 Disallow: /.git/
 
-# Sitemap location — tells Google where to find the sitemap
-Sitemap: https://www.beneficialenterprisegroup.com/sitemap.xml
+# Sitemap location. Must match the canonical host exactly — the site answers
+# on the apex domain, so no www here.
+Sitemap: https://beneficialenterprisegroup.com/sitemap.xml

@@ -13,6 +13,9 @@ node_modules/
 .DS_Store
 Thumbs.db
 
+# Local backup copies (created ad hoc before edits)
+*.bak
+
 # VS Code
 .vscode/
 # Agent dependencies — installed fresh by GitHub Actions on each run
