@@ -1,0 +1,16 @@
+# Deploy configuration, committed so it is reproducible and reviewable
+# rather than living only in the Netlify UI.
+
+[build]
+  publish = "."
+  command = ""
+
+[build.processing]
+  skip_processing = false
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"

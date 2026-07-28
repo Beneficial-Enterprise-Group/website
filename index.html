@@ -771,7 +771,9 @@
           </div>
         </div>
         <div class="hero-blog-feed" id="feedContainer">
-          <div class="hero-blog-entry" style="color:var(--muted);font-size:13px;padding:1.5rem;">Loading latest insights…</div>
+          <!-- FEED:START -->
+          <div class="hero-blog-entry" style="color:var(--muted);font-size:13px;padding:1.5rem;">Industry developments are published here daily.</div>
+          <!-- FEED:END -->
         </div>
         <div class="hero-blog-footer">
           <span style="font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px;">
@@ -805,7 +807,9 @@
     <h2 class="section-title">What the data says about legacy modernization.</h2>
     <p class="section-sub">Articles grounded in current research — for IT directors and operations leaders evaluating their options.</p>
     <div class="insights-grid" id="insightsContainer">
-      <div class="insight-card" style="grid-column:1/-1;color:var(--muted);font-size:14px;">Loading insights…</div>
+      <!-- INSIGHTS:START -->
+      <div class="insight-card" style="grid-column:1/-1;color:var(--muted);font-size:14px;">New articles are published here weekly.</div>
+      <!-- INSIGHTS:END -->
     </div>
   </div>
 </section>
@@ -964,89 +968,9 @@
 <!-- JAVASCRIPT -->
 <script>
 
-  /* ── SUPABASE CONFIGURATION ── */
-  const SUPABASE_URL = 'https://svitcbtzdqwsbmkudufo.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_65lb7sjkAxZxJ5Q-P2TFjw_y1tcfOHa';
-
-  /* ── SUPABASE FETCH HELPER ── */
-  async function supabaseFetch(path) {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
-      headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`,
-        'Content-Type': 'application/json'
-      }
-    });
-    if (!res.ok) throw new Error(`Supabase error: ${res.status}`);
-    return res.json();
-  }
-
-  /* ── LOAD FEED ENTRIES ── */
-  async function loadFeed() {
-    const container = document.getElementById('feedContainer');
-    try {
-      const entries = await supabaseFetch(
-        'feed_entries?select=*&active=eq.true&order=published_at.desc&limit=10'
-      );
-      if (!entries.length) return;
-      container.innerHTML = entries.map(e => `
-        <div class="hero-blog-entry">
-          <span class="hero-blog-tag">${e.category || ''}</span>
-          <p class="hero-blog-title">${e.title}</p>
-          <p class="hero-blog-snippet">${e.snippet || ''}</p>
-          <span class="hero-blog-meta">
-            ${e.source_url
-              ? `<a href="${e.source_url}" target="_blank" rel="noopener" class="blog-source-link">${e.source_name || e.source_url}</a>`
-              : e.source_name || ''}
-          </span>
-        </div>
-      `).join('');
-    } catch (err) {
-      console.error('Feed load error:', err);
-      container.innerHTML = '<div class="hero-blog-entry" style="color:var(--muted);font-size:13px;">Unable to load feed.</div>';
-    }
-  }
-
-  /* ── LOAD INSIGHT ARTICLES ── */
-  async function loadInsights() {
-    const container = document.getElementById('insightsContainer');
-    try {
-      const [articles, sources] = await Promise.all([
-        supabaseFetch('insight_articles?select=*&active=eq.true&order=published_at.desc&limit=4'),
-        supabaseFetch('insight_sources?select=*&order=display_order.asc')
-      ]);
-      if (!articles.length) return;
-      container.innerHTML = articles.map(a => {
-        const articleSources = sources.filter(s => s.article_id === a.id);
-        const sourcesHtml = articleSources.length ? `
-          <div class="insight-sources">
-            <span class="insight-sources-label">Sources</span>
-            <div class="insight-source-links">
-              ${articleSources.map(s => `
-                <a href="${s.source_url}" target="_blank" rel="noopener" class="insight-source-link">${s.source_name}</a>
-              `).join('')}
-            </div>
-          </div>` : '';
-        const bodyHtml = (a.body || '').split('\n\n').map(p => `<p>${p}</p>`).join('');
-        return `
-          <div class="insight-card">
-            <span class="insight-category">${a.category || ''}</span>
-            <h3 class="insight-title">${a.title}</h3>
-            <div class="insight-body">${bodyHtml}</div>
-            ${sourcesHtml}
-          </div>`;
-      }).join('');
-    } catch (err) {
-      console.error('Insights load error:', err);
-      container.innerHTML = '<div class="insight-card" style="color:var(--muted);font-size:14px;grid-column:1/-1;">Unable to load insights.</div>';
-    }
-  }
-
-  /* ── PAGE LOAD INITIALIZER ── */
-  document.addEventListener('DOMContentLoaded', () => {
-    loadFeed();
-    loadInsights();
-  });
+  /* Feed and insight content is injected into the HTML at build time by
+     agent/inject.js. No client-side fetch runs here, so crawlers that do
+     not execute JavaScript still see the full content. */
 
   /* ── CONTACT MODAL — OPEN ── */
   function openContactModal() {

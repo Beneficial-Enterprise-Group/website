@@ -8,6 +8,10 @@
 #
 # GitHub Actions uses UTC time — EST is UTC-5, so 6am EST = 11:00 UTC
 #
+# After the agent writes to Supabase, agent/inject.js writes that content
+# directly into index.html so the served HTML contains the real articles.
+# Crawlers that do not execute JavaScript can then read them.
+#
 # To pause the agent without changing this file:
 # Go to Supabase → agent_settings table and set
 # feed_agent_enabled or insight_agent_enabled to 'false'
@@ -38,10 +42,22 @@ on:
           - feed
           - insights
 
+# Queue overlapping runs instead of letting them collide. Both Monday crons
+# fire at the same minute, and two runs pushing index.html at once would leave
+# one of them failing on a non-fast-forward.
+concurrency:
+  group: content-agent
+  cancel-in-progress: false
+
 jobs:
   run-agent:
     # Run on Ubuntu — lightweight and free for public repos
     runs-on: ubuntu-latest
+
+    # Required so GITHUB_TOKEN can push the injected index.html back to the
+    # repo. Without this the default token is read-only and the push fails 403.
+    permissions:
+      contents: write
 
     steps:
       # Step 1 — Check out the repository code
@@ -88,3 +104,28 @@ jobs:
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           RUN_MODE:            ${{ env.RUN_MODE }}
         run: node agent.js
+
+      # Step 6 — Write the Supabase content into index.html at build time.
+      # Exits non-zero and leaves index.html untouched if Supabase returns
+      # nothing, so a bad run can never blank the homepage.
+      - name: Inject content into index.html
+        run: node agent/inject.js
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+
+      # Step 7 — Commit the refreshed HTML. The push triggers a Netlify deploy.
+      # Pushes made with GITHUB_TOKEN do not trigger workflow runs, so this
+      # cannot loop.
+      - name: Commit and push if content changed
+        run: |
+          git config user.name "content-agent"
+          git config user.email "agent@beneficialenterprisegroup.com"
+          git add index.html
+          if git diff --staged --quiet; then
+            echo "No content change — nothing to commit."
+          else
+            git commit -m "content: refresh injected feed and insights"
+            git pull --rebase
+            git push
+          fi

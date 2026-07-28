@@ -1,16 +1,6 @@
-# robots.txt — Beneficial Enterprise Group Inc.
 # beneficialenterprisegroup.com
 
-# Allow all search engine crawlers to index the site
 User-agent: *
 Allow: /
 
-# Block Netlify function endpoints — not indexable content
-Disallow: /.netlify/
-
-# Block hidden or system files
-Disallow: /.git/
-
-# Sitemap location. Must match the canonical host exactly — the site answers
-# on the apex domain, so no www here.
 Sitemap: https://beneficialenterprisegroup.com/sitemap.xml

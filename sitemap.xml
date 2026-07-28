@@ -1,28 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
-  <!-- Homepage — highest priority, changes daily via the content agent -->
   <url>
     <loc>https://beneficialenterprisegroup.com/</loc>
-    <lastmod>2026-07-14</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
-
-  <!-- Product pages. Trailing slash matches how Netlify serves the directory,
-       avoiding a 301 hop on every crawl. -->
   <url>
     <loc>https://beneficialenterprisegroup.com/products/quote-recovery/</loc>
-    <lastmod>2026-07-14</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
-
   <url>
     <loc>https://beneficialenterprisegroup.com/products/vendor-compliance/</loc>
-    <lastmod>2026-07-14</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.8</priority>
   </url>
-
 </urlset>
