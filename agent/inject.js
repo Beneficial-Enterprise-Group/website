@@ -25,7 +25,7 @@ import fs from 'node:fs';
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
 const FILE = 'index.html';
-const FEED_LIMIT = 10;
+const FEED_LIMIT = 4;
 const ARTICLE_LIMIT = 4;
 
 if (!SUPABASE_URL || !SUPABASE_KEY) {
