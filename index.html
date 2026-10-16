@@ -23,7 +23,7 @@
      width=device-width: use the device's actual screen width, not a fake 980px desktop width.
      initial-scale=1.0: don't zoom in or out on first load. -->
 
-<title>Legacy ERP Modernization & API Automation | Beneficial Enterprise Group</title>
+<title>Legacy ERP Integration & API Middleware | Beneficial Enterprise Group</title>
 <!-- The title shown in browser tabs and search engine results.
      Keyword-first format: primary service first, then brand name.
      Optimized for searches like "legacy ERP modernization" and "API automation". -->
@@ -46,7 +46,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Beneficial Enterprise Group">
 <meta property="og:url" content="https://beneficialenterprisegroup.com/">
-<meta property="og:title" content="Legacy ERP Modernization &amp; API Automation | Beneficial Enterprise Group">
+<meta property="og:title" content="Legacy ERP Integration &amp; API Middleware | Beneficial Enterprise Group">
 <meta property="og:description" content="Connect your legacy ERP to modern systems without replacing it. Secure API middleware and data transformation pipelines for AS400, Oracle, SAP, Infor and Eclipse.">
 <meta property="og:image" content="https://beneficialenterprisegroup.com/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -55,7 +55,7 @@
 
 <!-- Twitter/X card. summary_large_image renders the full-width image variant. -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Legacy ERP Modernization &amp; API Automation | Beneficial Enterprise Group">
+<meta name="twitter:title" content="Legacy ERP Integration &amp; API Middleware | Beneficial Enterprise Group">
 <meta name="twitter:description" content="Connect your legacy ERP to modern systems without replacing it. API middleware and data pipelines for AS400, Oracle, SAP, Infor and Eclipse.">
 <meta name="twitter:image" content="https://beneficialenterprisegroup.com/og-image.png">
 
@@ -143,6 +143,63 @@
   "name": "Beneficial Enterprise Group Inc.",
   "url": "https://beneficialenterprisegroup.com/",
   "publisher": { "@id": "https://beneficialenterprisegroup.com/#organization" }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Do we have to replace our ERP to connect it to modern tools?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. In most cases the faster, lower-risk path is an API or middleware layer on top of the system you already run. Your ERP stays the system of record, and the new layer handles the connections to web portals, SaaS tools, vendors, and customers. Replacement is sometimes the right call, but it should be a deliberate decision, not the default."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which legacy systems do you work with?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "AS400 / IBM iSeries, Oracle E-Business Suite, Infor, Eclipse, Epicor, older SAP instances, SQL Server, Microsoft Access, and Classic ASP / VB6 applications. We also handle the files these systems produce: EDI, flat files, CSV exports, and HL7 messages."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "We don't have an IT department. Can you still work with us?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Most of our clients are companies with 10 to 200 employees and no internal IT team. We explain decisions in operational terms, document what we build, and stay on for production support so you're never left holding a system nobody understands."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long does an integration project take?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It depends on the system and the scope, so we give you a written estimate after the assessment rather than a guess on the first call. We deliver in stages, so a working piece reaches production early instead of everything arriving at the end."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Will this disrupt our day-to-day operations?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It shouldn't. We build alongside your live system and run the new layer in parallel before cutover, reconciling the results against what you have today. Your team keeps working the whole time, and nothing switches over until the numbers match."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can AI help with our legacy system?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, once your data is reachable. AI tools need clean, accessible data, and most legacy ERPs keep theirs locked behind green screens and nightly exports. The API layer we build is what makes practical automation possible, such as flagging stalled quotes or drafting routine follow-ups for your team to review."
+      }
+    }
+  ]
 }
 </script>
 
@@ -687,6 +744,14 @@
   .cta-band-sub { font-size: 16px; color: var(--muted); line-height: 1.65; max-width: 560px; }
   .cta-band-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 0.6rem; flex-shrink: 0; }
   .cta-reassurance { font-size: 12px; color: var(--muted); }
+  /* Mobile overrides for the sections above (must follow their base rules) */
+  @media (max-width: 900px) {
+    .founder-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .process-grid { grid-template-columns: 1fr; }
+    .faq-grid { grid-template-columns: 1fr; }
+    .cta-band-inner { flex-direction: column; align-items: flex-start; }
+    .cta-band-actions { align-items: flex-start; }
+  }
 
 </style>
 </head>
@@ -927,6 +992,135 @@
         <p class="trigger-title">The conversation usually starts the same way.</p>
         <p class="trigger-body">"We just bought a new tool and it won't talk to our system." If that's where you are — your ERP can't connect to something modern your team needs — that's exactly the problem we solve. We assess the integration gap, design the bridge, and deliver it in production without disrupting what's already running.</p>
         <a href="#" onclick="openContactModal(); return false;" class="trigger-cta">Tell us what you're working on →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER SECTION (draft for Franklin to review: photo + LinkedIn URL still needed) -->
+<section class="section founder-section" id="founder">
+  <div class="container">
+    <div class="founder-grid">
+      <div>
+        <div class="section-eyebrow">Who You Work With</div>
+        <h2 class="section-title">Built by someone who has supported these systems in production.</h2>
+        <p class="founder-body">Franklin Ariwodo founded Beneficial Enterprise Group in 2019 after more than 15 years building and supporting enterprise applications: the ERP back ends, SQL Server databases, ETL jobs, and integrations that operations teams depend on every day. That work taught one lesson above all: the systems that run a business are rarely the newest ones, and replacing them is usually the riskiest option on the table.</p>
+        <p class="founder-body" style="margin-top:1rem;">BEG is a team of four specialists. When you work with us, the people who scope your project are the people who build it and support it after go-live.</p>
+        <div class="founder-skills">
+          <span class="founder-skill">C# / .NET</span>
+          <span class="founder-skill">SQL Server / T-SQL</span>
+          <span class="founder-skill">SSIS / ETL</span>
+          <span class="founder-skill">REST APIs</span>
+          <span class="founder-skill">HL7 / FHIR</span>
+          <span class="founder-skill">Azure / AWS</span>
+          <span class="founder-skill">AS400 / IBM iSeries</span>
+          <span class="founder-skill">Classic ASP / VB6</span>
+        </div>
+      </div>
+      <div class="founder-card">
+        <div class="founder-avatar" aria-hidden="true">FA</div>
+        <div class="founder-name">Franklin Ariwodo</div>
+        <div class="founder-title">Founder &amp; Principal Consultant</div>
+        <div class="founder-meta-grid">
+          <div class="founder-meta-item"><span class="founder-meta-num">15+</span><span class="founder-meta-lbl">Years in enterprise IT</span></div>
+          <div class="founder-meta-item"><span class="founder-meta-num">2019</span><span class="founder-meta-lbl">BEG founded</span></div>
+          <div class="founder-meta-item"><span class="founder-meta-num">4</span><span class="founder-meta-lbl">Specialists on the team</span></div>
+          <div class="founder-meta-item"><span class="founder-meta-num">4</span><span class="founder-meta-lbl">Industries served</span></div>
+        </div>
+        <p class="founder-meta-lbl" style="font-size:12px;">CSM · CSPO · AWS Certified Cloud Practitioner · BSc, Concordia University</p>
+        <!-- LinkedIn button goes here once the profile URL is confirmed:
+        <a class="founder-linkedin" href="LINKEDIN_URL" target="_blank" rel="noopener">Connect on LinkedIn →</a> -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW WE WORK -->
+<section class="section" id="how-we-work">
+  <div class="container">
+    <div class="section-eyebrow">How We Work</div>
+    <h2 class="section-title">A process built around keeping your business running.</h2>
+    <p class="section-sub">Integration work fails when it disrupts the operation it was meant to help. Every engagement follows the same six steps, so you always know what happens next.</p>
+    <div class="process-grid">
+      <div class="process-step-card">
+        <div class="process-num">STEP 01</div>
+        <h3 class="process-heading">Free assessment call</h3>
+        <p class="process-body">A 30-minute conversation about what's broken, what's manual, and what your team needs your system to do. No slides, no sales script.</p>
+      </div>
+      <div class="process-step-card">
+        <div class="process-num">STEP 02</div>
+        <h3 class="process-heading">System &amp; data review</h3>
+        <p class="process-body">We look at the actual system — the database, the exports, the screens your staff work around — so the plan is based on what's really there.</p>
+      </div>
+      <div class="process-step-card">
+        <div class="process-num">STEP 03</div>
+        <h3 class="process-heading">Written proposal</h3>
+        <p class="process-body">A plain-language scope with the approach, the risks, the deliverables, and the price. You know exactly what you're buying before work starts.</p>
+      </div>
+      <div class="process-step-card">
+        <div class="process-num">STEP 04</div>
+        <h3 class="process-heading">Build beside production</h3>
+        <p class="process-body">We build the integration layer alongside your live system. Your ERP keeps running and your team keeps working while we develop and test.</p>
+      </div>
+      <div class="process-step-card">
+        <div class="process-num">STEP 05</div>
+        <h3 class="process-heading">Validate, then cut over</h3>
+        <p class="process-body">We run the new layer in parallel and reconcile it against the existing system. We switch over only when the numbers match.</p>
+      </div>
+      <div class="process-step-card">
+        <div class="process-num">STEP 06</div>
+        <h3 class="process-heading">Production support</h3>
+        <p class="process-body">We stay on after go-live to monitor, fix, and adjust as your business changes. The people who built it are the people who support it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq">
+  <div class="container">
+    <div class="section-eyebrow">FAQ</div>
+    <h2 class="section-title">Questions we hear before every project.</h2>
+    <div class="faq-grid">
+      <div class="faq-item">
+        <h3 class="faq-q">Do we have to replace our ERP to connect it to modern tools?</h3>
+        <p class="faq-a">No. In most cases the faster, lower-risk path is an API or middleware layer on top of the system you already run. Your ERP stays the system of record, and the new layer handles the connections to web portals, SaaS tools, vendors, and customers. Replacement is sometimes the right call, but it should be a deliberate decision, not the default.</p>
+      </div>
+      <div class="faq-item">
+        <h3 class="faq-q">Which legacy systems do you work with?</h3>
+        <p class="faq-a">AS400 / IBM iSeries, Oracle E-Business Suite, Infor, Eclipse, Epicor, older SAP instances, SQL Server, Microsoft Access, and Classic ASP / VB6 applications. We also handle the files these systems produce: EDI, flat files, CSV exports, and HL7 messages.</p>
+      </div>
+      <div class="faq-item">
+        <h3 class="faq-q">We don&#x27;t have an IT department. Can you still work with us?</h3>
+        <p class="faq-a">Yes. Most of our clients are companies with 10 to 200 employees and no internal IT team. We explain decisions in operational terms, document what we build, and stay on for production support so you're never left holding a system nobody understands.</p>
+      </div>
+      <div class="faq-item">
+        <h3 class="faq-q">How long does an integration project take?</h3>
+        <p class="faq-a">It depends on the system and the scope, so we give you a written estimate after the assessment rather than a guess on the first call. We deliver in stages, so a working piece reaches production early instead of everything arriving at the end.</p>
+      </div>
+      <div class="faq-item">
+        <h3 class="faq-q">Will this disrupt our day-to-day operations?</h3>
+        <p class="faq-a">It shouldn't. We build alongside your live system and run the new layer in parallel before cutover, reconciling the results against what you have today. Your team keeps working the whole time, and nothing switches over until the numbers match.</p>
+      </div>
+      <div class="faq-item">
+        <h3 class="faq-q">Can AI help with our legacy system?</h3>
+        <p class="faq-a">Yes, once your data is reachable. AI tools need clean, accessible data, and most legacy ERPs keep theirs locked behind green screens and nightly exports. The API layer we build is what makes practical automation possible, such as flagging stalled quotes or drafting routine follow-ups for your team to review.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section class="cta-band">
+  <div class="container">
+    <div class="cta-band-inner">
+      <div>
+        <h2 class="cta-band-title">Start with a free ERP assessment.</h2>
+        <p class="cta-band-sub">Tell us what your system is and what it needs to connect to. We'll tell you honestly whether an API layer is the right fix, and what it would take.</p>
+      </div>
+      <div class="cta-band-actions">
+        <a href="#" class="btn-primary" onclick="openContactModal(); return false;">Book a free assessment</a>
+        <span class="cta-reassurance">No obligation. No sales script.</span>
       </div>
     </div>
   </div>
