@@ -1,0 +1,49 @@
+# ══════════════════════════════════════════════
+# BENEFICIAL ENTERPRISE GROUP — DAILY SITE HEALTH CHECK
+# File location: .github/workflows/site-health.yml
+#
+# Loads the LIVE site every morning, after the content agent has run and
+# Netlify has deployed, and checks it the way a visitor and a crawler see it.
+#
+#   All checks pass  → green run, report in the run summary
+#   Any check fails  → red run, and GitHub emails you
+#
+# To read a report: GitHub → Actions → Site Health Check → pick a run.
+# To run it now:    Actions → Site Health Check → Run workflow
+#
+# This workflow never commits or deploys, so it uses no Netlify credits.
+# ══════════════════════════════════════════════
+
+name: Site Health Check
+
+on:
+  schedule:
+    # 12:17 UTC = 8:17am EDT / 7:17am EST — about an hour after the
+    # content agent (11:00 UTC), so its deploy is live before we look.
+    - cron: '17 12 * * *'
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read   # lets the check see whether the content agent succeeded
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Check the live site
+        run: node agent/health-check.mjs
+        env:
+          SITE_URL: https://beneficialenterprisegroup.com
+          FEED_MAX: '4'
+          INSIGHTS_MAX: '4'
+          SITEMAP_MIN: '7'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
