@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AS400 / IBM i to REST API Integration | Beneficial Enterprise Group</title>
+<meta name="description" content="Give your AS400 / IBM i system a modern REST API. Connect it to web portals, SaaS tools and AI without replacing it or rewriting RPG. Northeast US.">
+<link rel="canonical" href="https://beneficialenterprisegroup.com/services/as400-api-integration/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#080C10">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Beneficial Enterprise Group">
+<meta property="og:url" content="https://beneficialenterprisegroup.com/services/as400-api-integration/">
+<meta property="og:title" content="AS400 / IBM i to REST API Integration | Beneficial Enterprise Group">
+<meta property="og:description" content="Give your AS400 / IBM i system a modern REST API. Connect it to web portals, SaaS tools and AI without replacing it or rewriting RPG. Northeast US.">
+<meta property="og:image" content="https://beneficialenterprisegroup.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AS400 / IBM i to REST API Integration | Beneficial Enterprise Group">
+<meta name="twitter:description" content="Give your AS400 / IBM i system a modern REST API. Connect it to web portals, SaaS tools and AI without replacing it or rewriting RPG. Northeast US.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://beneficialenterprisegroup.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Services",
+      "item": "https://beneficialenterprisegroup.com/#erp-bridge"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "AS400 to API Integration",
+      "item": "https://beneficialenterprisegroup.com/services/as400-api-integration/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "AS400 to API Integration",
+  "serviceType": "AS400 to API Integration",
+  "description": "Give your AS400 / IBM i system a modern REST API. Connect it to web portals, SaaS tools and AI without replacing it or rewriting RPG. Northeast US.",
+  "url": "https://beneficialenterprisegroup.com/services/as400-api-integration/",
+  "provider": {
+    "@id": "https://beneficialenterprisegroup.com/#organization",
+    "@type": "ProfessionalService",
+    "name": "Beneficial Enterprise Group Inc."
+  },
+  "areaServed": {
+    "@type": "GeoRegion",
+    "name": "Northeast United States"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Will this slow down or destabilize our AS400?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It shouldn't. The API layer runs on separate infrastructure and reads from the IBM i through standard database connections, with load-tested limits. We build and validate it alongside your live system before anything goes into production."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do we have to rewrite our RPG programs?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The point of an API layer is to put a modern interface in front of the logic you already have. Where existing programs hold important business rules, the API can call them directly instead of duplicating that logic somewhere else."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this a step toward replacing the AS400 later?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It can be, but it doesn't have to be. An API layer decouples your other systems from the AS400, which makes any future migration far less risky. Many companies find that once the integration problem is solved, the pressure to replace disappears."
+      }
+    }
+  ]
+}
+</script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --teal: #0BBFBF; --blue: #1A6FD4; --blue-light: #2E8EFF;
+    --bg-dark: #080C10; --bg-card: #0E1420;
+    --border: rgba(11,191,191,0.18); --border2: rgba(255,255,255,0.07);
+    --text: #E8EEF4; --muted: #8A9BB0; --white: #FFFFFF;
+    --grad: linear-gradient(135deg, #0BBFBF 0%, #1A6FD4 100%);
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  a { text-decoration: none; color: var(--teal); }
+  :focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; border-radius: 4px; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 2rem; }
+  nav { border-bottom: 1px solid var(--border2); background: rgba(8,12,16,0.9); backdrop-filter: blur(14px); position: sticky; top: 0; z-index: 10; }
+  .nav-inner { max-width: 1040px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 1rem; }
+  .nav-logo { display: flex; align-items: center; gap: 12px; }
+  .nav-logo-mark { background: var(--grad); width: 38px; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .nav-logo-mark svg { width: 22px; height: 22px; }
+  .nav-brand-name { font-size: 15px; font-weight: 700; color: var(--white); letter-spacing: -0.01em; display: block; line-height: 1.25; }
+  .nav-brand-sub { font-size: 11px; color: var(--muted); letter-spacing: 0.04em; }
+  .btn-primary { background: var(--grad); color: var(--white); padding: 11px 22px; border-radius: 8px; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; transition: opacity 0.2s, transform 0.2s; white-space: nowrap; }
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+  .btn-secondary { border: 1px solid var(--border); color: var(--text); padding: 11px 22px; border-radius: 8px; font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; transition: border-color 0.2s, background 0.2s; }
+  .btn-secondary:hover { border-color: var(--teal); background: rgba(11,191,191,0.05); }
+  .nav-cta { padding: 9px 18px; }
+  .crumbs { font-size: 13px; color: var(--muted); padding-top: 2rem; }
+  .crumbs a { color: var(--muted); }
+  .crumbs a:hover { color: var(--teal); }
+  .hero { padding: 2.5rem 0 3.5rem; }
+  .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; color: var(--teal); text-transform: uppercase; margin-bottom: 1rem; }
+  h1 { font-size: clamp(2rem, 4vw, 2.9rem); font-weight: 800; color: var(--white); letter-spacing: -0.035em; line-height: 1.1; margin-bottom: 1.25rem; max-width: 820px; }
+  .grad-text { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .lede { font-size: 18px; color: var(--muted); line-height: 1.75; max-width: 760px; margin-bottom: 2rem; }
+  .actions { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+  section.block { padding: 3.5rem 0; border-top: 1px solid var(--border2); }
+  h2 { font-size: clamp(1.5rem, 2.6vw, 2rem); font-weight: 800; color: var(--white); letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 1.5rem; }
+  .problems { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 0 2.5rem; }
+  .problems li { font-size: 15px; color: var(--muted); padding: 12px 0 12px 22px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border2); }
+  .problems li::before { content: ''; position: absolute; left: 0; top: 21px; width: 6px; height: 6px; border-radius: 50%; background: var(--teal); }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+  .card { background: var(--bg-card); border: 1px solid var(--border2); border-radius: 16px; padding: 1.75rem; position: relative; overflow: hidden; transition: border-color 0.25s; }
+  .card:hover { border-color: var(--border); }
+  .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--grad); opacity: 0; transition: opacity 0.25s; }
+  .card:hover::before { opacity: 1; }
+  h3 { font-size: 17px; font-weight: 600; color: var(--white); margin-bottom: 0.6rem; letter-spacing: -0.01em; }
+  .card p { font-size: 15px; color: var(--muted); line-height: 1.7; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { font-size: 13px; font-weight: 500; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--border2); color: var(--text); background: rgba(255,255,255,0.03); }
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; counter-reset: s; }
+  .step { background: var(--bg-card); border: 1px solid var(--border2); border-radius: 14px; padding: 1.4rem; }
+  .step-num { font-size: 11px; font-weight: 700; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+  .step h3 { font-size: 15px; }
+  .step p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .faq { display: grid; gap: 1rem; }
+  .faq .card h3 { font-size: 16px; }
+  .cta { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 2.5rem; display: flex; justify-content: space-between; align-items: center; gap: 2rem; flex-wrap: wrap; position: relative; overflow: hidden; }
+  .cta::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--grad); }
+  .cta h2 { margin-bottom: 0.5rem; }
+  .cta p { color: var(--muted); max-width: 560px; }
+  .related { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .related a.card { display: block; }
+  .related .card p { font-size: 14px; }
+  .related .arrow { color: var(--teal); font-size: 14px; font-weight: 600; margin-top: 0.6rem; display: inline-block; }
+  footer { border-top: 1px solid var(--border2); padding: 2rem; text-align: center; margin-top: 3.5rem; }
+  .footer-copy { font-size: 12px; color: var(--muted); }
+  .footer-copy a { color: var(--muted); }
+  .footer-copy a:hover { color: var(--teal); }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; } html { scroll-behavior: auto; } }
+  @media (max-width: 860px) {
+    .problems, .grid-2, .related { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px) {
+    .wrap, .nav-inner { padding: 0 1rem; }
+    .nav-brand-sub { display: none; }
+    .nav-brand-name { font-size: 14px; }
+    .nav-cta { padding: 8px 12px; font-size: 13px; }
+    .steps { grid-template-columns: 1fr; }
+    .lede { font-size: 16px; }
+    .cta { padding: 1.75rem 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="/" aria-label="Beneficial Enterprise Group — home">
+      <div class="nav-logo-mark">
+        <svg viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="3" y="3" width="7" height="7" rx="1.5" fill="white" opacity="0.9"/>
+          <rect x="12" y="3" width="7" height="7" rx="1.5" fill="white" opacity="0.6"/>
+          <rect x="3" y="12" width="7" height="7" rx="1.5" fill="white" opacity="0.6"/>
+          <circle cx="15.5" cy="15.5" r="3.5" fill="white" opacity="0.9"/>
+        </svg>
+      </div>
+      <div>
+        <span class="nav-brand-name">Beneficial Enterprise Group</span>
+        <span class="nav-brand-sub">IT Consulting</span>
+      </div>
+    </a>
+    <a class="btn-primary nav-cta" href="mailto:info@beneficialenterprisegroup.com?subject=AS400%20to%20API%20Integration">Book a call</a>
+  </div>
+</nav>
+
+<main>
+<div class="wrap">
+  <p class="crumbs"><a href="/">Home</a> / <a href="/#erp-bridge">Services</a> / AS400 to API Integration</p>
+  <header class="hero">
+    <div class="eyebrow">AS400 / IBM i Integration</div>
+    <h1><span class="grad-text">Give your AS400 a modern API</span> without rewriting what already works.</h1>
+    <p class="lede">Your AS400 or IBM i system has run the business reliably for years. The problem is that nothing new can talk to it: not the e-commerce platform, not the customer portal, not the SaaS tool the team just bought. We build a secure REST API layer on top of the system you have, so modern applications can read and write its data without touching the core.</p>
+    <div class="actions">
+      <a class="btn-primary" href="mailto:info@beneficialenterprisegroup.com?subject=AS400%20to%20API%20Integration">Book a free assessment</a>
+      <a class="btn-secondary" href="/#erp-bridge">All services</a>
+    </div>
+  </header>
+
+  <section class="block">
+    <h2>What we usually find</h2>
+    <ul class="problems">
+      <li>Customers and sales reps calling in for order status and inventory that lives only on green screens</li>
+      <li>Nightly batch exports to feed other systems, so every downstream tool works with yesterday's data</li>
+      <li>A new SaaS platform purchased with no way to connect it to the system of record</li>
+      <li>A replacement project quoted in the millions and years, for a system that otherwise works fine</li>
+      <li>Fewer and fewer people on staff who understand the RPG programs underneath</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h2>What we build</h2>
+    <div class="grid-2">
+      <div class="card">
+        <h3>REST API layer</h3>
+        <p>Secure, documented endpoints in front of your IBM i data and business logic. Modern applications call the API; the AS400 stays the system of record and doesn't need to change.</p>
+      </div>
+      <div class="card">
+        <h3>Real-time data access</h3>
+        <p>Direct reads from DB2 for i, and where it matters, calls into existing RPG or CL programs so the API uses the business rules you've already proven, rather than reimplementing them.</p>
+      </div>
+      <div class="card">
+        <h3>Web portals and app connections</h3>
+        <p>Customer and partner portals for order status, inventory, quotes and invoices, plus connections to e-commerce, CRM and other SaaS platforms.</p>
+      </div>
+      <div class="card">
+        <h3>A path to AI and automation</h3>
+        <p>Once the data is reachable through an API, practical automation becomes possible: flagging stalled quotes, drafting routine follow-ups, or feeding analytics, all with people reviewing the output.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Technologies</h2>
+    <div class="chips">
+      <span class="chip">IBM i / iSeries / AS400</span>
+      <span class="chip">DB2 for i</span>
+      <span class="chip">RPG / CL programs</span>
+      <span class="chip">ODBC / JDBC</span>
+      <span class="chip">C# / .NET</span>
+      <span class="chip">REST / JSON</span>
+      <span class="chip">Azure / AWS</span>
+      <span class="chip">SQL Server</span>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>How an engagement runs</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">STEP 01</div>
+        <h3>Free assessment call</h3>
+        <p>We talk through what's broken, what's manual, and what the systems need to do.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">STEP 02</div>
+        <h3>System review</h3>
+        <p>We look at the real system, data and files, so the plan matches what's actually there.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">STEP 03</div>
+        <h3>Build beside production</h3>
+        <p>We build and test alongside your live system. Your team keeps working.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">STEP 04</div>
+        <h3>Validate and support</h3>
+        <p>We run in parallel, reconcile, cut over when the numbers match, and stay on for support.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Common questions</h2>
+    <div class="faq">
+      <div class="card">
+        <h3>Will this slow down or destabilize our AS400?</h3>
+        <p>It shouldn't. The API layer runs on separate infrastructure and reads from the IBM i through standard database connections, with load-tested limits. We build and validate it alongside your live system before anything goes into production.</p>
+      </div>
+      <div class="card">
+        <h3>Do we have to rewrite our RPG programs?</h3>
+        <p>No. The point of an API layer is to put a modern interface in front of the logic you already have. Where existing programs hold important business rules, the API can call them directly instead of duplicating that logic somewhere else.</p>
+      </div>
+      <div class="card">
+        <h3>Is this a step toward replacing the AS400 later?</h3>
+        <p>It can be, but it doesn't have to be. An API layer decouples your other systems from the AS400, which makes any future migration far less risky. Many companies find that once the integration problem is solved, the pressure to replace disappears.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="cta">
+      <div>
+        <h2>Start with a free assessment.</h2>
+        <p>Tell us what your system is and what it needs to connect to. We'll tell you honestly whether an integration layer is the right fix, and what it would take.</p>
+      </div>
+      <a class="btn-primary" href="mailto:info@beneficialenterprisegroup.com?subject=AS400%20to%20API%20Integration">Email us about this</a>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Related services</h2>
+    <div class="related">
+      <a class="card" href="/services/hl7-fhir-integration/">
+        <h3>HL7 &amp; FHIR Integration</h3>
+        <p>HL7 v2 and FHIR R4 integration for hospitals and clinics.</p>
+        <span class="arrow">Learn more →</span>
+      </a>
+      <a class="card" href="/services/edi-flat-file-automation/">
+        <h3>EDI &amp; Flat-File Automation</h3>
+        <p>Automate EDI, flat-file and CSV exchanges between your legacy ERP, trading partners and modern tools.</p>
+        <span class="arrow">Learn more →</span>
+      </a>
+      <a class="card" href="/#erp-bridge">
+        <h3>All integration services</h3>
+        <p>Portals, third-party APIs, ETL pipelines, cloud and database migrations.</p>
+        <span class="arrow">See all →</span>
+      </a>
+    </div>
+  </section>
+</div>
+</main>
+
+<footer>
+  <p class="footer-copy">
+    © 2026 Beneficial Enterprise Group Inc. · IT Consulting · Philadelphia, PA · Northeast US ·
+    <a href="mailto:info@beneficialenterprisegroup.com">info@beneficialenterprisegroup.com</a>
+  </p>
+</footer>
+
+</body>
+</html>
