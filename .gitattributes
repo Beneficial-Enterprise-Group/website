@@ -1,0 +1,14 @@
+# Store and check out every text file with LF, on every OS.
+# Stops Windows checkouts from showing whole files as modified (CRLF vs LF).
+* text=auto eol=lf
+
+# Binary assets — never touch line endings
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.woff binary
+*.woff2 binary
+*.pdf binary
