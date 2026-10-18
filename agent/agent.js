@@ -31,6 +31,7 @@
 import { createClient } from '@supabase/supabase-js';
 import fetch from 'node-fetch';
 import ws from 'ws';
+import { filterNewEntries } from './dedupe.js';
 
 /* Supabase's createClient() builds a realtime client that needs a global
    WebSocket. Node 20 doesn't provide one (Node 22 does). Supply it here,
@@ -187,8 +188,37 @@ async function isAgentEnabled(settingKey) {
    ══════════════════════════════════════════════ */
 
 
+/* How far back to look when checking for repeats, and how many recent
+   source links to hand Claude so it searches for different stories. */
+const DEDUPE_DAYS = 90;
+const AVOID_URLS_IN_PROMPT = 40;
+
+/* Recent feed entries, active or archived. If this read fails the agent
+   still runs; inject.js dedupes on display as a second safety net. */
+async function loadRecentFeed() {
+  const since = new Date(Date.now() - DEDUPE_DAYS * 864e5).toISOString();
+  const { data, error } = await supabase
+    .from('feed_entries')
+    .select('title, snippet, source_url, published_at')
+    .gte('published_at', since)
+    .order('published_at', { ascending: false })
+    .limit(500);
+  if (error) {
+    console.warn(`Could not load recent feed entries for dedupe: ${error.message}`);
+    return [];
+  }
+  return data || [];
+}
+
 async function runFeedAgent(agentRunId) {
   console.log('Starting feed agent...');
+
+  const recent = await loadRecentFeed();
+  console.log(`Loaded ${recent.length} feed entries from the last ${DEDUPE_DAYS} days for dedupe`);
+  const avoidList = [...new Set(recent.map(r => r.source_url).filter(Boolean))]
+    .slice(0, AVOID_URLS_IN_PROMPT)
+    .map(u => `- ${u}`)
+    .join('\n');
 
   /* Build the prompt for Claude.
      The JSON format instruction is precise — this is what allows reliable parsing.
@@ -217,7 +247,11 @@ RULES — follow these exactly:
 - Never fabricate statistics or attribute quotes to sources that don't contain them
 - Snippet must be 2-3 sentences only — no longer
 - If you cannot find 4 real sources, return fewer entries rather than fabricating
-- Categories must be exactly one of the options listed above`;
+- Categories must be exactly one of the options listed above
+- Find stories that are DIFFERENT from what we already published. Do not use
+  these sources, and do not re-report the same study or statistics under a
+  different headline:
+${avoidList || '- (none yet)'}`;
 
   /* Call Claude with web search enabled */
   const responseText = await callClaude(prompt);
@@ -238,8 +272,17 @@ RULES — follow these exactly:
     return 0;
   }
 
-  /* Insert all entries into Supabase feed_entries table */
-  const rows = entries.map(e => ({
+  /* Dedupe — drop stories already published (same link, near-identical
+     headline, or the same figures) and repeats within this batch */
+  const { fresh, skipped } = filterNewEntries(entries, recent);
+  skipped.forEach(s => console.log(`Skipping repeat: "${s.title}" — ${s.reason}`));
+  if (fresh.length === 0) {
+    console.log('All entries were repeats of recent stories. Nothing new to insert.');
+    return 0;
+  }
+
+  /* Insert the new entries into Supabase feed_entries table */
+  const rows = fresh.map(e => ({
     title:        e.title,
     category:     e.category,
     snippet:      e.snippet,
