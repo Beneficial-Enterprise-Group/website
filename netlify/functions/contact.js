@@ -53,6 +53,12 @@ exports.handler = async function(event) {
      same validation as the client-side check in index.html. */
   const { from_name, from_email, company, interest, message } = payload;
 
+  /* ── Escape user input before it goes into the email HTML ──
+     Visitors type these fields; escaping stops stray markup or links
+     from rendering in the notification email. Newlines become <br>. */
+  const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const escLines = (v) => esc(v).replace(/\r?\n/g, '<br>');
+
   if (!from_name || !from_email) {
     return {
       statusCode: 400,
@@ -82,12 +88,12 @@ exports.handler = async function(event) {
      from your inbox without copying the address manually. */
   const emailHtml = `
     <h2>New Contact Form Submission</h2>
-    <p><strong>Name:</strong> ${from_name}</p>
-    <p><strong>Email:</strong> ${from_email}</p>
-    <p><strong>Company:</strong> ${company || 'Not provided'}</p>
-    <p><strong>Interest:</strong> ${interest || 'Not specified'}</p>
+    <p><strong>Name:</strong> ${esc(from_name)}</p>
+    <p><strong>Email:</strong> ${esc(from_email)}</p>
+    <p><strong>Company:</strong> ${esc(company || 'Not provided')}</p>
+    <p><strong>Interest:</strong> ${esc(interest || 'Not specified')}</p>
     <p><strong>Message:</strong></p>
-    <p>${message || 'No message provided'}</p>
+    <p>${escLines(message || 'No message provided')}</p>
     <hr>
     <p style="color:#888;font-size:12px;">Submitted via beneficialenterprisegroup.com contact form</p>
   `;

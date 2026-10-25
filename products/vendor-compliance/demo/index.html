@@ -1,0 +1,1034 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Supplier Recovery Demo | Beneficial Enterprise Group</title>
+<meta name="description" content="Try the supplier recovery workbench on sample data or your own export. Finds disputable deductions, chargebacks, duplicate payments and unapplied vendor credits. Runs in your browser.">
+<link rel="canonical" href="https://beneficialenterprisegroup.com/products/vendor-compliance/demo/">
+<meta name="robots" content="noindex, follow">
+<meta name="theme-color" content="#0E1420">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Beneficial Enterprise Group">
+<meta property="og:url" content="https://beneficialenterprisegroup.com/products/vendor-compliance/demo/">
+<meta property="og:title" content="Supplier Recovery Demo | Beneficial Enterprise Group">
+<meta property="og:description" content="Find disputable deductions, chargebacks, duplicate payments and unapplied vendor credits in your ERP export. Runs in your browser.">
+<meta property="og:image" content="https://beneficialenterprisegroup.com/og-image.png">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: recovery ledger — mode switch and data source up top, totals strip, then a findings ledger with an inspector beside it. Dark-first BEG brand. */
+:root{
+  color-scheme:dark;
+  --bg:#080C10; --surface:#0E1420; --surface-2:#131C2B; --line:#1E2A3C; --line-strong:#2A3A52;
+  --fg:#E7EEF6; --muted:#8C9AAE; --faint:#5F6E84;
+  --teal:#0BBFBF; --blue:#1A6FD4; --accent-ink:#5FE0E0; --on-grad:#04121A;
+  --grad:linear-gradient(135deg,#0BBFBF 0%,#1A6FD4 100%);
+  --good:#35C77B; --good-bg:rgba(53,199,123,.14);
+  --warn:#E3A93B; --warn-bg:rgba(227,169,59,.14);
+  --crit:#EF6461; --crit-bg:rgba(239,100,97,.14);
+  --info:#6FA8F5; --info-bg:rgba(26,111,212,.18);
+  --chip:#172235; --row-hover:#111A28; --row-sel:#10243A;
+  --shadow:0 18px 40px rgba(0,0,0,.45);
+  --font-ui:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --font-data:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+
+:root[data-theme="light"]{
+  color-scheme:light;
+  --bg:#F3F6F9; --surface:#FFFFFF; --surface-2:#EEF3F7; --line:#D9E1EA; --line-strong:#C3CFDC;
+  --fg:#0C1622; --muted:#566476; --faint:#7D8A9B;
+  --accent-ink:#087F86; --on-grad:#FFFFFF;
+  --good:#1C8A52; --good-bg:rgba(28,138,82,.12);
+  --warn:#9A6400; --warn-bg:rgba(201,138,20,.15);
+  --crit:#C2362F; --crit-bg:rgba(194,54,47,.11);
+  --info:#1A5FB8; --info-bg:rgba(26,111,212,.11);
+  --chip:#E7EEF4; --row-hover:#F2F7FA; --row-sel:#E3F3F5;
+  --shadow:0 18px 40px rgba(12,22,34,.16);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-ui);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.num,.mono{font-family:var(--font-data);font-variant-numeric:tabular-nums}
+.wrap{max-width:1360px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* Header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding-block:12px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.mark{width:32px;height:32px;border-radius:8px;background:var(--grad);display:grid;place-items:center;color:var(--on-grad);font-weight:700;font-size:12px;letter-spacing:.04em;flex:none}
+.brand h1{font-size:16px;font-weight:600;margin:0;letter-spacing:-.01em;white-space:nowrap}
+.brand small{display:block;color:var(--muted);font-size:12px;font-weight:400}
+.modes{margin-left:auto;display:flex;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:3px;gap:2px;flex-wrap:wrap}
+.modes button{border:0;background:transparent;padding:7px 12px;border-radius:7px;cursor:pointer;color:var(--muted);font-weight:500;font-size:13px}
+.modes button[aria-pressed="true"]{background:var(--grad);color:var(--on-grad)}
+
+main{padding-block:20px 48px;display:flex;flex-direction:column;gap:18px}
+.lede{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-end}
+.lede h2{margin:0;font-size:22px;letter-spacing:-.02em;font-weight:650;text-wrap:balance}
+.lede p{margin:4px 0 0;color:var(--muted);max-width:68ch}
+.privacy{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.privacy::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--good);flex:none}
+
+/* Panels */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.data{padding:16px;display:flex;flex-direction:column;gap:12px}
+.data-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.src{flex:1 1 260px;min-width:0}
+.src strong{display:block;font-weight:600}
+.src span{color:var(--muted);font-size:13px}
+.tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:5px;background:var(--warn-bg);color:var(--warn);vertical-align:2px;margin-left:6px}
+.btn{border:1px solid var(--line-strong);background:var(--surface-2);padding:8px 13px;border-radius:8px;cursor:pointer;font-weight:500;font-size:13px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn:hover{border-color:var(--teal)}
+.btn.primary{background:var(--grad);color:var(--on-grad);border-color:transparent;font-weight:600}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent}
+.btn.danger{color:var(--crit)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.drop{border:1px dashed var(--line-strong);border-radius:10px;padding:10px 12px;color:var(--muted);font-size:13px}
+.drop.over{border-color:var(--teal);background:var(--info-bg)}
+details{border-top:1px solid var(--line);padding-top:10px}
+summary{cursor:pointer;font-weight:600;font-size:13px;list-style:none;display:flex;align-items:center;gap:8px}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"";width:6px;height:6px;border-right:1.5px solid var(--muted);border-bottom:1.5px solid var(--muted);transform:rotate(-45deg);transition:transform .15s}
+details[open] summary::before{transform:rotate(45deg)}
+summary .hint{font-weight:400;color:var(--muted)}
+.grid-form{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px 14px;margin-top:12px}
+.field{display:flex;flex-direction:column;gap:4px;min-width:0}
+.field label{font-size:12px;color:var(--muted)}
+.field label b{color:var(--crit);font-weight:600}
+.field select,.field input{background:var(--surface-2);border:1px solid var(--line);border-radius:7px;padding:7px 9px;width:100%;min-width:0}
+.field .help{font-size:11.5px;color:var(--faint)}
+.filehelp{display:flex;gap:8px 16px;flex-wrap:wrap;align-items:center;font-size:13px;color:var(--muted)}
+.filehelp a{color:var(--accent-ink);text-decoration:none;font-weight:500;display:inline-flex;align-items:center;gap:5px}
+.filehelp a:hover{text-decoration:underline}
+.layout{margin-top:12px;display:flex;flex-direction:column;gap:10px}
+.layout p{margin:0;color:var(--muted);font-size:13px;max-width:80ch}
+.layout .tablewrap{border:1px solid var(--line);border-radius:8px}
+.layout table{font-size:12.5px}
+.layout td,.layout th{padding:7px 10px}
+.layout td.col{font-family:var(--font-data);white-space:nowrap}
+.layout td.ex{font-family:var(--font-data);color:var(--muted)}
+.req{font-size:11px;font-weight:600;padding:1px 7px;border-radius:999px;background:var(--crit-bg);color:var(--crit);white-space:nowrap}
+.opt{font-size:11px;color:var(--faint)}
+.warnbox{background:var(--warn-bg);color:var(--warn);border-radius:8px;padding:9px 12px;font-size:13px}
+
+/* Totals */
+.totals{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.tot{background:var(--surface);padding:14px 16px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.tot .k{font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.tot .v{font-family:var(--font-data);font-variant-numeric:tabular-nums;font-size:24px;font-weight:500;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tot .s{font-size:12px;color:var(--muted)}
+.tot.lead .v{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+@media (max-width:760px){.totals{grid-template-columns:repeat(2,minmax(0,1fr))}.tot .v{font-size:20px}}
+
+/* Breakdown */
+.breakdown{padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.breakdown h3,.findings-head h3{margin:0;font-size:13px;font-weight:600}
+.bars{display:flex;flex-direction:column;gap:6px}
+.bar{display:grid;grid-template-columns:minmax(120px,240px) 1fr auto;gap:12px;align-items:center;font-size:13px;cursor:pointer;border-radius:6px;padding:2px 4px;border:0;background:transparent;text-align:left;width:100%}
+.bar:hover{background:var(--row-hover)}
+.bar[aria-pressed="true"]{background:var(--row-sel)}
+.bar .lbl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar .lbl em{font-style:normal;color:var(--muted);margin-left:6px}
+.track{height:8px;background:var(--surface-2);border-radius:4px;overflow:hidden}
+.track{display:block}
+.fill{display:block;height:100%;background:var(--grad);border-radius:4px}
+@media (max-width:760px){.top{position:static}.modes{margin-left:0}}
+.bar .amt{font-family:var(--font-data);font-variant-numeric:tabular-nums;min-width:96px;text-align:right}
+@media (max-width:560px){.bar{grid-template-columns:1fr auto}.bar .track{grid-column:1/-1;order:3}}
+
+/* Findings */
+.work{display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:18px;align-items:start}
+.findings{min-width:0;overflow:hidden}
+.findings-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:12px 14px;border-bottom:1px solid var(--line)}
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.fchip{border:1px solid var(--line);background:transparent;border-radius:999px;padding:4px 11px;font-size:12.5px;cursor:pointer;color:var(--muted)}
+.fchip[aria-pressed="true"]{border-color:var(--teal);color:var(--fg);background:var(--info-bg)}
+.findings-head .spacer{flex:1}
+.findings-head select,.findings-head input{background:var(--surface-2);border:1px solid var(--line);border-radius:7px;padding:5px 8px;font-size:12.5px;min-width:0}
+.findings-head input{flex:1 1 160px;max-width:260px}
+@media (max-width:1500px){.findings-head input{max-width:none}}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:9px 12px;border-bottom:1px solid var(--line);white-space:nowrap;background:var(--surface)}
+td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tbody tr{cursor:pointer}
+tbody tr:hover{background:var(--row-hover)}
+tbody tr[aria-selected="true"]{background:var(--row-sel);box-shadow:inset 3px 0 0 var(--teal)}
+tbody tr.muted td{color:var(--faint)}
+td.r,th.r{text-align:right}
+td .sub{display:block;color:var(--muted);font-size:12px}
+.cp{font-weight:500}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.c-High{background:var(--good-bg);color:var(--good)}
+.c-Medium{background:var(--warn-bg);color:var(--warn)}
+.c-Review{background:var(--chip);color:var(--muted)}
+.s-new{background:var(--chip);color:var(--muted)}
+.s-approved{background:var(--info-bg);color:var(--info)}
+.s-sent{background:var(--info-bg);color:var(--accent-ink)}
+.s-recovered{background:var(--good-bg);color:var(--good)}
+.s-dismissed,.s-denied{background:var(--chip);color:var(--faint)}
+.dl-urgent{color:var(--crit);font-weight:600}
+.dl-soon{color:var(--warn);font-weight:600}
+.dl-past{color:var(--faint);text-decoration:line-through}
+.empty{padding:40px 20px;text-align:center;color:var(--muted)}
+.foot-actions{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;border-top:1px solid var(--line);align-items:center}
+.foot-actions .note{color:var(--muted);font-size:12px;flex:1 1 200px}
+
+/* Inspector */
+.inspector{position:sticky;top:calc(env(safe-area-inset-top,0px) + 76px);max-height:calc(100vh - 96px);overflow:auto;display:flex;flex-direction:column}
+.insp-empty{padding:28px 22px;color:var(--muted);display:flex;flex-direction:column;gap:10px}
+.insp-empty h3{margin:0;color:var(--fg);font-size:15px}
+.insp-empty ol{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+.insp-head{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:6px;position:relative}
+.eyebrow{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-ink);font-weight:600}
+.insp-head h2{margin:0;font-size:17px;font-weight:600;padding-right:36px;text-wrap:balance}
+.insp-amt{font-family:var(--font-data);font-size:26px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.insp-chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--muted)}
+.close{position:absolute;top:12px;right:12px;width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:transparent;cursor:pointer;font-size:16px;line-height:1;color:var(--muted)}
+.insp-sec{padding:14px 18px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.insp-sec h3{margin:0;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.insp-sec p{margin:0;max-width:62ch}
+.ev{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0;font-size:12.5px}
+.ev dt{color:var(--muted)}
+.ev dd{margin:0;font-family:var(--font-data);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.ev .grp{grid-column:1/-1;font-family:var(--font-ui);font-weight:600;color:var(--fg);margin-top:6px;font-size:12px}
+textarea{width:100%;min-height:240px;background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-family:var(--font-data);font-size:12px;line-height:1.55;resize:vertical}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.insp-actions{padding:14px 18px;display:flex;flex-direction:column;gap:10px;background:var(--surface-2);border-radius:0 0 12px 12px}
+.insp-actions .row input{width:130px;background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:7px 9px}
+.insp-actions .note{font-size:12px;color:var(--muted)}
+@media (max-width:1100px){
+  .work{grid-template-columns:minmax(0,1fr)}
+  .inspector{position:fixed;inset:0;z-index:40;max-height:none;border-radius:0;border:0;
+    padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+    padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+  .inspector.is-empty{display:none}
+  .insp-actions{border-radius:0}
+}
+@media (min-width:1101px){.close{display:none}}
+
+.brand small a.back{color:var(--muted);text-decoration:none}.brand small a.back:hover{color:var(--accent-ink)}
+.mark{text-decoration:none}
+.review-cta{display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between;padding:12px 16px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2)}
+.review-cta p{margin:0;color:var(--muted);font-size:13px;max-width:70ch}
+.review-cta p strong{color:var(--fg);font-weight:600}
+.review-cta a{text-decoration:none}
+.gate{position:fixed;inset:0;z-index:70;background:rgba(4,8,12,.72);display:grid;place-items:center;
+  padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.gate-card{background:var(--surface);border:1px solid var(--line-strong);border-radius:14px;box-shadow:var(--shadow);width:100%;max-width:440px;padding:22px;display:flex;flex-direction:column;gap:12px;position:relative}
+.gate-card h2{margin:0;font-size:18px;letter-spacing:-.01em}
+.gate-card p{margin:0;color:var(--muted);font-size:13px}
+.gate-card .sum{background:var(--surface-2);border-radius:8px;padding:10px 12px;font-size:13px;color:var(--fg)}
+.gate-card .sum b{font-family:var(--font-data);font-weight:500}
+.gate-err{color:var(--crit);font-size:13px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:9px 16px;border-radius:8px;font-size:13px;font-weight:500;z-index:60;box-shadow:var(--shadow);max-width:calc(100vw - 32px)}
+footer{color:var(--faint);font-size:12px;padding-block:8px 24px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <a class="mark" href="/" aria-label="Beneficial Enterprise Group home"><svg viewBox="0 0 22 22" width="20" height="20" fill="none" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5" fill="white" opacity="0.9"/><rect x="12" y="3" width="7" height="7" rx="1.5" fill="white" opacity="0.6"/><rect x="3" y="12" width="7" height="7" rx="1.5" fill="white" opacity="0.6"/><circle cx="15.5" cy="15.5" r="3.5" fill="white" opacity="0.9"/></svg></a>
+      <div><h1>Supplier Recovery Workbench</h1><small><a class="back" href="/products/vendor-compliance/">← Supplier recovery overview</a></small></div>
+    </div>
+    <div class="modes" role="group" aria-label="What are you recovering?">
+      <button type="button" id="mode-deductions" data-mode="deductions" aria-pressed="true">Deductions &amp; chargebacks</button>
+      <button type="button" id="mode-payables" data-mode="payables" aria-pressed="false">Overpayments &amp; vendor credits</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="lede">
+    <div>
+      <h2 id="lede-title"></h2>
+      <p id="lede-text"></p>
+    </div>
+    <div class="privacy">Your files are read in this browser and never uploaded</div>
+  </div>
+
+  <section class="panel data" aria-label="Data source">
+    <div class="data-row">
+      <div class="src" id="src"></div>
+      <label class="btn primary" for="file">Upload CSV or Excel<input id="file" type="file" accept=".csv,.txt,.tsv,.xlsx,.xls" hidden></label>
+      <button class="btn" id="load-sample" type="button">Load sample data</button>
+    </div>
+    <div class="drop" id="drop">Or drop a file here. Export your deduction log or AP payment history from your ERP or accounting system; one row per document.</div>
+    <div class="filehelp" id="filehelp"></div>
+    <details id="layout-details">
+      <summary>File layout <span class="hint">columns the scan looks for</span></summary>
+      <div class="layout" id="layout"></div>
+    </details>
+    <div id="map-warn"></div>
+    <details id="map-details">
+      <summary>Match your columns <span class="hint" id="map-hint"></span></summary>
+      <div class="grid-form" id="map-form"></div>
+    </details>
+    <details>
+      <summary>Recovery rules <span class="hint">thresholds used by the scan</span></summary>
+      <div class="grid-form" id="rules-form"></div>
+    </details>
+    <details>
+      <summary>Your details for claim letters</summary>
+      <div class="grid-form">
+        <div class="field"><label for="me-company">Company name</label><input id="me-company" placeholder="Your company"></div>
+        <div class="field"><label for="me-name">Contact name</label><input id="me-name" placeholder="Your name"></div>
+        <div class="field"><label for="me-email">Email</label><input id="me-email" placeholder="ar@yourcompany.com"></div>
+      </div>
+    </details>
+  </section>
+
+  <section class="totals" id="totals" aria-label="Recovery totals"></section>
+
+  <div class="review-cta">
+    <p><strong>These are leads to verify, not verdicts.</strong> Send us the export and we'll check the strongest findings against your documentation, free.</p>
+    <a class="btn primary" href="/products/vendor-compliance/#review">Get a free recovery review</a>
+  </div>
+
+  <section class="panel breakdown" aria-label="Where the money is">
+    <h3>Where the money is</h3>
+    <div class="bars" id="bars"></div>
+  </section>
+
+  <div class="work">
+    <section class="panel findings" aria-label="Findings">
+      <div class="findings-head">
+        <h3 id="find-count">Findings</h3>
+        <div class="filters" id="conf-filters" role="group" aria-label="Confidence">
+          <button class="fchip" type="button" data-conf="all" aria-pressed="true">All</button>
+          <button class="fchip" type="button" data-conf="High" aria-pressed="false">High</button>
+          <button class="fchip" type="button" data-conf="Medium" aria-pressed="false">Medium</button>
+          <button class="fchip" type="button" data-conf="Review" aria-pressed="false">Needs review</button>
+        </div>
+        <span class="spacer"></span>
+        <select id="status-filter" aria-label="Status">
+          <option value="open">Open claims</option>
+          <option value="all">All statuses</option>
+          <option value="new">New</option>
+          <option value="approved">Approved</option>
+          <option value="sent">Sent</option>
+          <option value="recovered">Recovered</option>
+          <option value="closed">Dismissed or denied</option>
+        </select>
+        <select id="sort" aria-label="Sort">
+          <option value="amount">Largest first</option>
+          <option value="deadline">Deadline soonest</option>
+          <option value="conf">Strongest first</option>
+        </select>
+        <input id="search" type="search" placeholder="Search" aria-label="Search findings">
+      </div>
+      <div class="tablewrap"><table>
+        <thead id="thead"></thead>
+        <tbody id="tbody"></tbody>
+      </table></div>
+      <div class="foot-actions">
+        <button class="btn" id="approve-high" type="button">Approve all new High findings</button>
+        <button class="btn" id="export-csv" type="button">Export claims (CSV)</button>
+        <button class="btn" id="export-letters" type="button">Export approved letters</button>
+        <span class="note">Nothing is sent from here. Approve a claim, then send the letter from your own email.</span>
+      </div>
+    </section>
+    <aside class="panel inspector is-empty" id="inspector" aria-label="Finding detail"></aside>
+  </div>
+
+  <footer>© 2026 Beneficial Enterprise Group Inc. · Philadelphia, PA · Northeast US · info@beneficialenterprisegroup.com · Findings are leads to verify against your records, not determinations.</footer>
+</main>
+<div class="gate" id="gate" hidden>
+  <form class="gate-card" id="gate-form" role="dialog" aria-modal="true" aria-labelledby="gate-title" novalidate>
+    <button class="close" type="button" id="gate-close" aria-label="Close" style="display:block">×</button>
+    <h2 id="gate-title">Where should we send follow-ups?</h2>
+    <p>Your export downloads right after this. We only ask once.</p>
+    <div class="sum" id="gate-sum"></div>
+    <div class="field"><label for="g-name">Name</label><input id="g-name" autocomplete="name" required></div>
+    <div class="field"><label for="g-company">Company</label><input id="g-company" autocomplete="organization"></div>
+    <div class="field"><label for="g-email">Work email</label><input id="g-email" type="email" autocomplete="email" required></div>
+    <div class="gate-err" id="gate-err" role="alert"></div>
+    <button class="btn primary" type="submit" id="gate-submit">Download my export</button>
+    <p>We receive your name, company, email and the totals above. Your file stays in your browser.</p>
+  </form>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+(function(){
+"use strict";
+/* ---------- helpers ---------- */
+const $=(s,r=document)=>r.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const usd=new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'});
+const money=n=>usd.format(Math.round((n||0)*100)/100);
+const DAY=86400000;
+const TODAY=(()=>{const d=new Date();return Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/DAY)})();
+const dstr=d=>d==null?'—':new Date(d*DAY).toLocaleDateString('en-US',{timeZone:'UTC',month:'short',day:'numeric',year:'numeric'});
+const dus=d=>{const x=new Date(d*DAY);return `${x.getUTCMonth()+1}/${x.getUTCDate()}/${x.getUTCFullYear()}`};
+const str=v=>v==null?'':(v instanceof Date?dus(parseDay(v)):String(v).trim());
+const normH=h=>String(h??'').toLowerCase().replace(/[^a-z0-9]/g,'');
+const normRef=s=>String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'').replace(/^(INVOICE|INV|IN|NO)(?=\d)/,'').replace(/^0+/,'');
+function parseNum(v){
+  if(v==null||v==='')return null; if(typeof v==='number')return isFinite(v)?v:null;
+  let s=String(v).trim(); if(!s)return null; let neg=false;
+  if(/^\(.*\)$/.test(s)){neg=true;s=s.slice(1,-1)}
+  if(/-$/.test(s)){neg=true;s=s.slice(0,-1)}
+  s=s.replace(/[$,\s]/g,''); if(s.startsWith('-')){neg=!neg;s=s.slice(1)}
+  const n=parseFloat(s); if(isNaN(n))return null; return neg?-n:n;
+}
+function parseDay(v){
+  if(v==null||v==='')return null;
+  if(v instanceof Date)return isNaN(v)?null:Math.floor(Date.UTC(v.getFullYear(),v.getMonth(),v.getDate())/DAY);
+  if(typeof v==='number'){return (v>20000&&v<80000)?Math.floor(v-25569):null}
+  const s=String(v).trim(); let m;
+  if((m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/)))return Math.floor(Date.UTC(+m[1],m[2]-1,+m[3])/DAY);
+  if((m=s.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/))){let y=+m[3];if(y<100)y+=2000;return Math.floor(Date.UTC(y,m[1]-1,+m[2])/DAY)}
+  if(/^\d{5}$/.test(s))return parseDay(+s);
+  const t=Date.parse(s); if(isNaN(t))return null; const d=new Date(t);
+  return Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/DAY);
+}
+function parseBool(v){
+  const s=String(v??'').trim().toLowerCase(); if(!s)return null;
+  if(/^(y|yes|true|1|x|on file|signed|received|ok)$/.test(s))return true;
+  if(/^(n|no|false|0|none|missing|not on file)$/.test(s))return false;
+  return null;
+}
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function parseCSV(text){
+  const first=text.split(/\r?\n/,1)[0]||'';
+  const delim=(first.split('\t').length>first.split(',').length)?'\t':(first.split(';').length>first.split(',').length?';':',');
+  const rows=[];let row=[],f='',q=false;
+  for(let i=0;i<text.length;i++){const c=text[i];
+    if(q){if(c==='"'){if(text[i+1]==='"'){f+='"';i++}else q=false}else f+=c}
+    else if(c==='"')q=true; else if(c===delim){row.push(f);f=''} else if(c==='\n'){row.push(f);rows.push(row);row=[];f=''} else if(c!=='\r')f+=c;
+  }
+  if(f!==''||row.length){row.push(f);rows.push(row)}
+  return rows.filter(r=>r.some(x=>String(x).trim()!==''));
+}
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+/* ---------- mode definitions ---------- */
+const MODES={
+  deductions:{
+    title:'Recover invalid deductions and chargebacks',
+    text:'For suppliers and distributors. Upload your deduction log and the scan flags retailer and customer deductions you can dispute: shortages with proof of delivery, on-time fines for on-time deliveries, unauthorized promo deductions, pricing claims, compliance fines and duplicates.',
+    party:'Customer', refLabel:'Deduction', recordWord:'deductions',
+    files:{sample:'samples/sample-deductions.csv',sampleLabel:'Sample deduction log (61 rows)',template:'samples/template-deductions.csv'},
+    fields:[
+      {key:'customer',label:'Customer or retailer',col:'Customer',ex:'Northgate Home Centers',req:1,syn:['customer','customername','retailer','account','accountname','billto','soldto','client','payer']},
+      {key:'deduction_id',label:'Deduction ID',col:'Deduction #',ex:'DM-48261',req:1,syn:['deduction','deductionid','deductionnumber','deductionno','chargeback','chargebackid','chargebacknumber','claim','claimid','debitmemo','dmnumber','reference','refno']},
+      {key:'deduction_date',label:'Deduction date',col:'Deduction Date',ex:'10/14/2026',req:1,syn:['deductiondate','date','chargebackdate','debitdate','postdate','posteddate','createddate','claimdate']},
+      {key:'amount',label:'Amount',col:'Amount',ex:'1240.00',req:1,syn:['amount','deductionamount','chargebackamount','amt','value','debitamount','claimamount']},
+      {key:'reason',label:'Reason code or description',col:'Reason',ex:'SHORT SHIP - QTY',req:1,syn:['reason','reasoncode','reasondescription','reasondesc','description','deductiontype','type','category']},
+      {key:'invoice_number',label:'Invoice number',col:'Invoice #',ex:'INV-314081',syn:['invoice','invoicenumber','invoiceno','invno','invoiceid']},
+      {key:'po_number',label:'PO number',col:'PO #',ex:'PO7712349',syn:['po','ponumber','pono','purchaseorder','purchaseordernumber']},
+      {key:'pod_on_file',label:'Proof of delivery on file (Y/N)',col:'POD on File',ex:'Y',syn:['pod','podonfile','proofofdelivery','signedpod','bolsigned','podsigned']},
+      {key:'required_date',label:'Required delivery date',col:'Must Arrive By',ex:'09/22/2026',syn:['mustarriveby','mabd','requireddate','requireddeliverydate','duedate','deliverby']},
+      {key:'delivered_date',label:'Actual delivery date',col:'Delivered Date',ex:'09/20/2026',syn:['delivereddate','deliverydate','actualdeliverydate','arrivaldate','receiveddate']},
+      {key:'promo_id',label:'Promotion or agreement ID',col:'Promo ID',ex:'PR-2026-041',syn:['promoid','promo','promotion','promotionid','agreement','agreementid','dealid','coopid']},
+      {key:'promo_authorized',label:'Promo authorized in your records (Y/N)',col:'Promo Authorized',ex:'N',syn:['promoauthorized','authorized','approved','promoapproved']},
+      {key:'agreed_price',label:'Agreed unit price',col:'Agreed Price',ex:'18.40',syn:['agreedprice','contractprice','priceagreed','netprice','listprice']},
+      {key:'invoiced_price',label:'Invoiced unit price',col:'Invoiced Price',ex:'18.40',syn:['invoicedprice','invoiceprice','billedprice','unitprice']},
+    ],
+    rules:[
+      {key:'minAmount',label:'Ignore deductions under ($)',def:25},
+      {key:'window',label:'Dispute window (days)',def:90,help:'Use the shortest window in your customer agreements.'},
+    ]
+  },
+  payables:{
+    title:'Recover overpayments and unused vendor credits',
+    text:'For buyers. Upload your AP payment history and the scan flags money owed back to you: duplicate and near-duplicate payments, payments above the invoice, invoices above the PO, credit memos never applied, and early-pay discounts you qualified for but did not take.',
+    party:'Vendor', refLabel:'Invoice', recordWord:'AP lines',
+    files:{sample:'samples/sample-ap-payments.csv',sampleLabel:'Sample AP payment history (88 rows)',template:'samples/template-ap-payments.csv'},
+    fields:[
+      {key:'vendor',label:'Vendor',col:'Vendor',ex:'Allied Electrical Supply',req:1,syn:['vendor','vendorname','supplier','suppliername','payee','remitto']},
+      {key:'invoice_number',label:'Invoice or document number',col:'Invoice No',ex:'AES-52115',req:1,syn:['invoiceno','invoicenumber','invoice','invno','documentnumber','docno','reference']},
+      {key:'invoice_date',label:'Invoice date',col:'Invoice Date',ex:'08/12/2026',req:1,syn:['invoicedate','docdate','documentdate','date']},
+      {key:'invoice_amount',label:'Invoice amount',col:'Invoice Amount',ex:'4120.00 (credit memos negative)',req:1,syn:['invoiceamount','amount','invoicetotal','grossamount','docamount','total']},
+      {key:'paid_amount',label:'Paid amount',col:'Paid Amount',ex:'4210.00',syn:['paidamount','paymentamount','amountpaid','paid','checkamount']},
+      {key:'paid_date',label:'Paid date',col:'Paid Date',ex:'09/10/2026',syn:['paiddate','paymentdate','checkdate','datepaid','cleareddate']},
+      {key:'doc_type',label:'Document type (invoice or credit memo)',col:'Doc Type',ex:'INV or CM',syn:['doctype','documenttype','type','transactiontype']},
+      {key:'credit_applied',label:'Credit applied (Y/N)',col:'Credit Applied',ex:'Y or N',syn:['creditapplied','applied','isapplied','creditused']},
+      {key:'po_amount',label:'PO amount',col:'PO Amount',ex:'4120.00',syn:['poamount','poextended','povalue','ordertotal','poTotal'.toLowerCase()]},
+      {key:'terms',label:'Payment terms',col:'Terms',ex:'2/10 Net 30',syn:['terms','paymentterms','termscode']},
+      {key:'payment_ref',label:'Check or payment number',col:'Check No',ex:'CHK 20632',syn:['checkno','checknumber','check','paymentnumber','paymentref','achref','eftnumber']},
+    ],
+    rules:[
+      {key:'minAmount',label:'Ignore items under ($)',def:25},
+      {key:'dupDays',label:'Same-amount window (days)',def:7,help:'Two invoices for the same amount this close together get flagged.'},
+      {key:'creditAge',label:'Flag unapplied credits older than (days)',def:45},
+      {key:'poTol',label:'PO price tolerance (%)',def:2},
+    ]
+  }
+};
+const RULES={
+  'D-DUP':{name:'Duplicate deduction'},
+  'D-POD':{name:'Shortage with proof of delivery'},
+  'D-POD?':{name:'Shortage, POD not checked'},
+  'D-OTIF':{name:'On-time fine on an on-time delivery'},
+  'D-OTIF?':{name:'On-time fine, dates missing'},
+  'D-PROMO':{name:'Unauthorized promo deduction'},
+  'D-PROMO?':{name:'Promo deduction with no reference'},
+  'D-PRICE':{name:'Pricing claim at agreed price'},
+  'D-PRICE?':{name:'Pricing claim, price not checked'},
+  'D-COMP':{name:'Compliance fine'},
+  'D-DMG':{name:'Damage claim'},
+  'D-RTN':{name:'Return deduction'},
+  'D-UNK':{name:'No recognizable reason'},
+  'P-DUP':{name:'Duplicate payment'},
+  'P-NEAR':{name:'Near-duplicate invoice paid twice'},
+  'P-SAME':{name:'Same amount billed twice'},
+  'P-OVER':{name:'Paid more than invoiced'},
+  'P-PO':{name:'Invoice above PO'},
+  'P-CM':{name:'Unapplied credit memo'},
+  'P-DISC':{name:'Early-pay discount not taken'},
+};
+const CONF_ORDER={High:0,Medium:1,Review:2};
+
+/* ---------- classification ---------- */
+const CATS=[
+  ['late',/late|otif|on[- ]?time|fill ?rate|mabd|early|delivery window/i],
+  ['compliance',/label|asn|edi|856|routing|pallet|compliance|packag|carton|ticket|vendor ?guide|appointment|fine|penalt/i],
+  ['promo',/promo|co-?op|mdf|advertis|\bad\b|allowance|markdown|scan|billback|rebate|display|slotting|deal/i],
+  ['pricing',/price|pricing|cost|overcharge/i],
+  ['shortage',/short|missing|qty|quantity|count|non-?receipt/i],
+  ['return',/return|rtv|recall/i],
+  ['damage',/damage|defect|broken|spoil/i],
+];
+const classify=r=>{for(const [c,re] of CATS)if(re.test(r||''))return c;return 'unknown'};
+
+/* ---------- analysis: deductions ---------- */
+function analyzeDeductions(ds,get,cfg){
+  const recs=ds.rows.map((r,i)=>({i,raw:r,
+    party:str(get(r,'customer'))||'(no customer)', id:str(get(r,'deduction_id'))||`Row ${i+2}`,
+    date:parseDay(get(r,'deduction_date')), amount:Math.abs(parseNum(get(r,'amount'))||0), reason:str(get(r,'reason')),
+    invoice:str(get(r,'invoice_number')), po:str(get(r,'po_number')), pod:parseBool(get(r,'pod_on_file')),
+    req:parseDay(get(r,'required_date')), del:parseDay(get(r,'delivered_date')),
+    promo:str(get(r,'promo_id')), promoAuth:parseBool(get(r,'promo_authorized')),
+    agreed:parseNum(get(r,'agreed_price')), invoiced:parseNum(get(r,'invoiced_price'))}));
+  recs.forEach(r=>r.cat=classify(r.reason));
+  const out=[],used=new Set();
+  const base=(r,rule,conf,o)=>{
+    const deadline=r.date!=null?r.date+cfg.window:null;
+    const f={key:rule+'|'+r.party+'|'+r.id,rule,conf,party:r.party,ref:r.id,amount:r.amount,date:r.date,deadline,
+      rec:r,why:'',action:'',facts:[],related:[],...o};
+    if(deadline!=null&&deadline<TODAY){f.conf='Review';f.past=true;
+      f.why+=` This deduction is past your ${cfg.window}-day dispute window, so check whether ${r.party} will still accept a dispute.`}
+    out.push(f);return f;
+  };
+  // duplicates
+  const groups={};
+  recs.forEach(r=>{if(!r.invoice||!r.amount)return;const k=[r.party.toLowerCase(),normRef(r.invoice),Math.round(r.amount*100)].join('|');(groups[k]=groups[k]||[]).push(r)});
+  Object.values(groups).forEach(g=>{
+    if(g.length<2)return; g.sort((a,b)=>(a.date??0)-(b.date??0)); const first=g[0];
+    g.slice(1).forEach(r=>{
+      if(normRef(r.id)===normRef(first.id))return;
+      if(r.amount<cfg.minAmount)return;
+      used.add(r.i);
+      base(r,'D-DUP','High',{related:[first],
+        why:`${r.party} took ${money(r.amount)} twice against invoice ${r.invoice}: deduction ${first.id} on ${dstr(first.date)} and ${r.id} on ${dstr(r.date)}.`,
+        action:`Dispute ${r.id} as a duplicate of ${first.id} and ask for repayment of ${money(r.amount)}.`});
+    });
+  });
+  recs.forEach(r=>{
+    if(used.has(r.i)||r.amount<cfg.minAmount)return;
+    switch(r.cat){
+      case 'shortage':
+        if(r.pod===true)base(r,'D-POD','High',{why:`${r.party} deducted ${money(r.amount)} for a shortage, and your records show a signed proof of delivery for this shipment.`,action:'Send the signed POD or BOL with a dispute and ask for the deduction to be reversed.'});
+        else if(r.pod==null)base(r,'D-POD?','Review',{why:'Shortage claim with no proof-of-delivery status in your file. Shortages are often disputable when the POD shows a clean, full delivery.',action:'Pull the signed POD or BOL. If it shows full delivery with no exceptions noted, dispute the deduction.'});
+        break;
+      case 'late':
+        if(r.req!=null&&r.del!=null){
+          if(r.del<=r.req){const early=r.req-r.del;base(r,'D-OTIF','High',{why:`${r.party} fined you ${money(r.amount)} for a late or incomplete delivery, but it arrived ${early===0?'on':early+' day'+(early>1?'s':'')+' before'} the required date (${dstr(r.del)} against ${dstr(r.req)}).`,action:'Dispute with the carrier delivery confirmation and the required-by date from the PO.'})}
+        }else base(r,'D-OTIF?','Review',{why:'On-time or fill-rate fine with no delivery dates in your file to check it against.',action:'Pull the carrier delivery confirmation and the PO required-by date. Dispute if it arrived inside the window.'});
+        break;
+      case 'promo':
+        if(!r.promo)base(r,'D-PROMO?','Medium',{why:`Promotional deduction of ${money(r.amount)} with no promotion or agreement reference.`,action:'Ask for the signed promotion agreement or co-op authorization. Without one, request reversal.'});
+        else if(r.promoAuth===false)base(r,'D-PROMO','High',{why:`Promotion ${r.promo} is not authorized in your records, but ${r.party} deducted ${money(r.amount)} against it.`,action:'Dispute as an unauthorized promotion and attach your approved promotion list for the period.'});
+        else if(r.promoAuth==null)base(r,'D-PROMO?','Review',{why:`Deduction references promotion ${r.promo}. Your file does not say whether it was authorized.`,action:`Check ${r.promo} against your signed agreements, including dates and rate per unit.`});
+        break;
+      case 'pricing':
+        if(r.agreed!=null&&r.invoiced!=null){
+          if(r.invoiced<=r.agreed+0.005)base(r,'D-PRICE','High',{why:`${r.party} took a pricing deduction, but you invoiced at ${money(r.invoiced)} per unit against an agreed ${money(r.agreed)}.`,action:'Dispute with the price agreement or price list in effect on the order date.'});
+        }else base(r,'D-PRICE?','Review',{why:'Pricing deduction with no agreed or invoiced price in your file.',action:'Compare the invoiced price with the agreed price on the order date. Dispute if they match.'});
+        break;
+      case 'compliance':
+        base(r,'D-COMP','Medium',{why:`Compliance fine of ${money(r.amount)} (${r.reason||'no description'}). These fines need backup from the retailer, and many are reversed when the backup is missing or wrong.`,action:'Request the backup: ASN timestamp, label scan, routing record or appointment log. Compare it with your shipping records before accepting.'});
+        break;
+      case 'damage':
+        base(r,'D-DMG','Review',{why:'Damage deduction. If the goods left in good condition, the damage may belong to the carrier, or it may already be covered by a damage allowance in your agreement.',action:'Check for a damage allowance in the agreement and whether a carrier claim applies.'});
+        break;
+      case 'return':
+        base(r,'D-RTN','Review',{why:'Return deduction. Confirm that there is a return authorization and that the returned quantity was actually received.',action:'Match it to an RA number and your receiving record for the returned goods.'});
+        break;
+      default:
+        base(r,'D-UNK','Medium',{why:`Deduction of ${money(r.amount)} with ${r.reason?`an unrecognized reason ("${r.reason}")`:'no reason code'}.`,action:'Ask for the reason code and backup documentation before accepting it.'});
+    }
+  });
+  return {findings:out,count:recs.length};
+}
+
+/* ---------- analysis: payables ---------- */
+function analyzePayables(ds,get,cfg){
+  const recs=ds.rows.map((r,i)=>{
+    const amt=parseNum(get(r,'invoice_amount'));const type=str(get(r,'doc_type')).toLowerCase();
+    const isCredit=/cm|credit|memo|cr\b/.test(type)||(amt!=null&&amt<0);
+    return {i,raw:r,party:str(get(r,'vendor'))||'(no vendor)',inv:str(get(r,'invoice_number'))||`Row ${i+2}`,
+      date:parseDay(get(r,'invoice_date')),amount:amt??0,paid:parseNum(get(r,'paid_amount')),paidDate:parseDay(get(r,'paid_date')),
+      isCredit,applied:parseBool(get(r,'credit_applied')),po:parseNum(get(r,'po_amount')),terms:str(get(r,'terms')),pref:str(get(r,'payment_ref'))};
+  });
+  const out=[],dupUsed=new Set();
+  const add=(r,rule,conf,amount,o)=>{if(amount<cfg.minAmount)return;out.push({key:rule+'|'+r.party+'|'+r.inv+'|'+(r.pref||r.i),rule,conf,party:r.party,ref:r.inv,amount,date:r.paidDate??r.date,deadline:null,rec:r,facts:[],related:[],...o})};
+  const paid=recs.filter(r=>!r.isCredit&&r.paid!=null&&r.paid>0);
+  // exact and near duplicates
+  const g={};paid.forEach(r=>{const k=r.party.toLowerCase()+'|'+normRef(r.inv);(g[k]=g[k]||[]).push(r)});
+  Object.values(g).forEach(list=>{
+    if(list.length<2)return; list.sort((a,b)=>(a.paidDate??0)-(b.paidDate??0)); const first=list[0];
+    list.slice(1).forEach(r=>{dupUsed.add(r.i);dupUsed.add(first.i);
+      const near=r.inv!==first.inv;
+      add(r,near?'P-NEAR':'P-DUP','High',r.paid,{related:[first],
+        why:near?`Invoice ${first.inv} and ${r.inv} look like the same document keyed two ways, and both were paid: ${money(first.paid)} on ${dstr(first.paidDate)} and ${money(r.paid)} on ${dstr(r.paidDate)}.`
+               :`${r.party} invoice ${r.inv} was paid twice: ${first.pref||'first payment'} on ${dstr(first.paidDate)} and ${r.pref||'second payment'} on ${dstr(r.paidDate)}.`,
+        action:`Ask ${r.party} for a refund of ${money(r.paid)} or a credit memo you can apply to open invoices.`});
+    });
+  });
+  // same amount within window
+  const bv={};paid.forEach(r=>{if(dupUsed.has(r.i))return;const k=r.party.toLowerCase()+'|'+Math.round(r.amount*100);(bv[k]=bv[k]||[]).push(r)});
+  Object.values(bv).forEach(list=>{
+    if(list.length<2)return; list.sort((a,b)=>(a.date??0)-(b.date??0));
+    for(let j=1;j<list.length;j++){const a=list[j-1],b=list[j];
+      if(a.date!=null&&b.date!=null&&b.date-a.date<=cfg.dupDays){
+        add(b,'P-SAME','Medium',b.paid,{related:[a],why:`${b.party} billed ${money(b.amount)} on invoice ${a.inv} (${dstr(a.date)}) and again on ${b.inv} (${dstr(b.date)}), ${b.date-a.date} day${b.date-a.date===1?'':'s'} apart. Both were paid.`,
+          action:'Confirm both invoices are for separate deliveries. If not, request a refund for the second payment.'});
+      }}
+  });
+  paid.forEach(r=>{
+    if(r.paid-r.amount>1) add(r,'P-OVER','High',r.paid-r.amount,{why:`Invoice ${r.inv} was for ${money(r.amount)} but you paid ${money(r.paid)}.`,action:`Request a refund of ${money(r.paid-r.amount)} or a credit against the next invoice.`});
+    if(r.po!=null&&r.po>0&&r.amount>r.po*(1+cfg.poTol/100)){const diff=Math.min(r.amount-r.po,r.paid);
+      add(r,'P-PO','Medium',diff,{why:`Invoice ${r.inv} billed ${money(r.amount)} against a PO of ${money(r.po)}, ${((r.amount/r.po-1)*100).toFixed(1)}% over your ${cfg.poTol}% tolerance.`,action:'Ask for the approved change order. If there is none, request a credit for the difference.'})}
+    const m=r.terms.match(/(\d+(?:\.\d+)?)\s*%?\s*\/\s*(\d+)/);
+    if(m&&r.paidDate!=null&&r.date!=null){const pct=+m[1],days=+m[2];
+      if(pct>0&&pct<10&&r.paidDate-r.date<=days&&r.paid>=r.amount-0.01)
+        add(r,'P-DISC','Review',r.amount*pct/100,{why:`Terms are ${r.terms}. You paid ${r.inv} ${r.paidDate-r.date} days after the invoice date, inside the ${days}-day window, but paid the full ${money(r.paid)}.`,action:`Ask ${r.party} for a ${pct}% discount credit. Some vendors will grant it after the fact. Either way, fix the discount setup so it is taken next time.`})}
+  });
+  recs.filter(r=>r.isCredit).forEach(r=>{
+    const age=r.date!=null?TODAY-r.date:null;
+    if(r.applied!==true&&age!=null&&age>cfg.creditAge)
+      add(r,'P-CM','High',Math.abs(r.amount),{why:`Credit memo ${r.inv} from ${r.party} for ${money(Math.abs(r.amount))} is ${age} days old and has not been applied.`,action:'Apply it to the next payment, or ask for a refund check if you have no open invoices with this vendor.'});
+  });
+  return {findings:out,count:recs.length};
+}
+
+/* ---------- letters ---------- */
+function letter(f,me){
+  const co=me.company||'[Your company]',nm=me.name||'[Your name]',em=me.email||'[your email]';
+  const sig=`\n\nThank you,\n${nm}\n${co}\n${em}`;
+  const r=f.rec,rel=f.related[0];
+  const amt=money(f.amount);
+  if(f.rule.startsWith('D-')){
+    const ref=`deduction ${r.id} for ${amt}, taken on ${dstr(r.date)}`+(r.invoice?` against invoice ${r.invoice}`:'')+(r.po?` (PO ${r.po})`:'');
+    const head=`Subject: Dispute of deduction ${r.id}${r.invoice?' on invoice '+r.invoice:''}\n\nHello ${r.party} Accounts Payable team,\n\nWe are disputing ${ref}.`;
+    const body={
+      'D-DUP':`\n\nThis duplicates deduction ${rel?.id} taken on ${dstr(rel?.date)} for the same invoice and the same amount. Please reverse ${r.id} or include ${amt} in your next remittance.`,
+      'D-POD':`\n\nThe deduction is coded as a shortage. Our signed proof of delivery shows the order was received in full with no exceptions noted. A copy is attached. Please reverse the deduction or include ${amt} in your next remittance.`,
+      'D-POD?':`\n\nThe deduction is coded as a shortage. Our signed proof of delivery shows the order was received in full. A copy is attached. Please reverse the deduction or include ${amt} in your next remittance.`,
+      'D-OTIF':`\n\nThe deduction is an on-time delivery fine. The shipment was delivered on ${dstr(r.del)}, and the required delivery date was ${dstr(r.req)}. Carrier delivery confirmation is attached. Please reverse the fine.`,
+      'D-OTIF?':`\n\nThe deduction is an on-time delivery fine. Our carrier confirmation shows the shipment arrived within the required window. A copy is attached. Please reverse the fine.`,
+      'D-PROMO':`\n\nThe deduction references promotion ${r.promo}, which we have no record of authorizing. Please send the signed agreement for this promotion, or reverse the deduction.`,
+      'D-PROMO?':`\n\nThe deduction is coded as a promotional or advertising allowance${r.promo?` (reference ${r.promo})`:', with no promotion reference'}. Please send the signed promotion agreement and proof of performance. Without them, please reverse the deduction.`,
+      'D-PRICE':`\n\nThe deduction is coded as a pricing discrepancy. We invoiced at ${money(r.invoiced)} per unit, which matches the agreed price of ${money(r.agreed)}. Please reverse the deduction.`,
+      'D-PRICE?':`\n\nThe deduction is coded as a pricing discrepancy. Our invoiced price matches the price agreement in effect on the order date. Please reverse the deduction, or send the price you believe applies.`,
+      'D-COMP':`\n\nThe deduction is a compliance fine ("${r.reason}"). Please send the supporting documentation for this charge (ASN record, label scan, routing or appointment log) so we can review it. Until then we consider the deduction open.`,
+      'D-DMG':`\n\nThe deduction is coded as damage. Please send the damage report, photos and quantities so we can review it against our shipping records and any damage allowance in our agreement.`,
+      'D-RTN':`\n\nThe deduction is coded as a return. Please send the return authorization number and the receiving record for the returned goods so we can match it.`,
+      'D-UNK':`\n\nWe could not identify a valid reason for this deduction${r.reason?` ("${r.reason}")`:''}. Please send the reason code and supporting documentation. Until then we consider the deduction open.`,
+    }[f.rule]||'';
+    return head+body+sig;
+  }
+  const head=`Hello ${r.party} accounts receivable team,\n\n`;
+  const t={
+    'P-DUP':`Subject: Refund request, duplicate payment of invoice ${r.inv}\n\n${head}Our records show invoice ${r.inv} dated ${dstr(r.date)} for ${money(r.amount)} was paid twice: ${rel?.pref||'first payment'} on ${dstr(rel?.paidDate)} and ${r.pref||'second payment'} on ${dstr(r.paidDate)}.\n\nPlease refund ${amt}, or send a credit memo we can apply to open invoices.`,
+    'P-NEAR':`Subject: Refund request, invoice ${rel?.inv} paid twice\n\n${head}We paid invoice ${rel?.inv} (${money(rel?.paid)} on ${dstr(rel?.paidDate)}) and invoice ${r.inv} (${money(r.paid)} on ${dstr(r.paidDate)}). These appear to be the same invoice entered twice.\n\nPlease confirm, and refund ${amt} or send a credit memo we can apply.`,
+    'P-SAME':`Subject: Please confirm invoices ${rel?.inv} and ${r.inv}\n\n${head}We received and paid two invoices for ${money(r.amount)} within a few days: ${rel?.inv} dated ${dstr(rel?.date)} and ${r.inv} dated ${dstr(r.date)}.\n\nPlease confirm that both are for separate deliveries. If one is a duplicate, please refund ${amt} or issue a credit memo.`,
+    'P-OVER':`Subject: Refund request, overpayment on invoice ${r.inv}\n\n${head}Invoice ${r.inv} dated ${dstr(r.date)} was for ${money(r.amount)}. We paid ${money(r.paid)} on ${dstr(r.paidDate)}${r.pref?` (${r.pref})`:''}, an overpayment of ${amt}.\n\nPlease refund ${amt} or credit it against our next invoice.`,
+    'P-PO':`Subject: Invoice ${r.inv} billed above PO\n\n${head}Invoice ${r.inv} billed ${money(r.amount)}. The purchase order for this order was ${money(r.po)}.\n\nPlease send the approved change order for the difference, or issue a credit for ${amt}.`,
+    'P-CM':`Subject: Unapplied credit memo ${r.inv}\n\n${head}Credit memo ${r.inv} dated ${dstr(r.date)} for ${money(Math.abs(r.amount))} is still open on our account.\n\nPlease confirm the balance and either send a refund check or confirm it will be deducted from our next invoice.`,
+    'P-DISC':`Subject: Early-payment discount on invoice ${r.inv}\n\n${head}Invoice ${r.inv} dated ${dstr(r.date)} has terms of ${r.terms}. We paid it in full on ${dstr(r.paidDate)}, within the discount window.\n\nPlease issue a credit of ${amt} for the early-payment discount.`,
+  }[f.rule]||'';
+  return t+sig;
+}
+
+/* ---------- evidence ---------- */
+function evidence(f,mode){
+  const fields=MODES[mode].fields; const map=state[mode].map;
+  const show=r=>fields.filter(x=>map[x.key]&&str(r.raw[map[x.key]])!=='').map(x=>[x.label,str(r.raw[map[x.key]])]);
+  const out=[];
+  out.push(['__grp',f.related.length?'This record':'From your file']); out.push(...show(f.rec));
+  f.related.forEach(r=>{out.push(['__grp','Matching record']);out.push(...show(r))});
+  return out;
+}
+
+/* ---------- sample data ---------- */
+function sampleDeductions(){
+  const R=rng(11),pick=a=>a[Math.floor(R()*a.length)],between=(a,b)=>a+R()*(b-a),amt=(a,b)=>Math.round(between(a,b)*100)/100,int=(a,b)=>Math.floor(between(a,b+1));
+  const custs=['Northgate Home Centers','Keystone Hardware Co-op','Brightline Grocers','Summit Builders Depot','Delaware Valley Supply'];
+  const H=['Customer','Deduction #','Deduction Date','Amount','Reason','Invoice #','PO #','POD on File','Must Arrive By','Delivered Date','Promo ID','Promo Authorized','Agreed Price','Invoiced Price'];
+  const rows=[];let seq=48120;
+  const add=o=>{const age=o.age??int(4,78);const d=TODAY-age;
+    const r={'Customer':o.cust||pick(custs),'Deduction #':'DM-'+(seq+=int(1,9)),'Deduction Date':dus(d),'Amount':o.amt.toFixed(2),'Reason':o.reason,
+      'Invoice #':'INV-'+int(310000,319999),'PO #':'PO'+int(7700000,7799999),'POD on File':o.pod||'',
+      'Must Arrive By':o.req!=null?dus(d-o.req):'','Delivered Date':o.del!=null?dus(d-o.del):'','Promo ID':o.promo||'','Promo Authorized':o.auth||'',
+      'Agreed Price':o.agreed||'','Invoiced Price':o.invoiced||''};rows.push(r);return r};
+  const shortR=['SHORT SHIP - QTY','Shortage','Concealed shortage','Qty short received'];
+  for(let k=0;k<9;k++)add({amt:amt(140,2400),reason:pick(shortR),pod:'Y',age:k===0?int(100,118):undefined});
+  for(let k=0;k<4;k++)add({amt:amt(120,900),reason:pick(shortR),pod:'N'});
+  for(let k=0;k<3;k++)add({amt:amt(150,1100),reason:pick(shortR)});
+  for(let k=0;k<6;k++){const req=int(14,24);add({amt:amt(150,900),reason:pick(['OTIF FINE','Late delivery - MABD','On-time compliance']),req,del:req+int(0,3),age:k===0?int(96,110):undefined})}
+  for(let k=0;k<4;k++){const req=int(14,24);add({amt:amt(150,700),reason:pick(['OTIF FINE','Late delivery - MABD']),req,del:req-int(2,6)})}
+  for(let k=0;k<5;k++)add({amt:amt(300,4500),reason:pick(['Co-op advertising','Promo allowance','Scan-down billback'])});
+  for(let k=0;k<3;k++)add({amt:amt(600,3800),reason:pick(['Promo allowance','Markdown allowance']),promo:'PR-2026-0'+int(40,89),auth:'N'});
+  for(let k=0;k<4;k++)add({amt:amt(400,3000),reason:pick(['Promo allowance','Co-op advertising']),promo:'PR-2026-0'+int(10,39),auth:'Y'});
+  for(let k=0;k<4;k++){const p=amt(8,60);add({amt:amt(90,1200),reason:'Price discrepancy',agreed:p.toFixed(2),invoiced:p.toFixed(2)})}
+  for(let k=0;k<2;k++){const p=amt(8,60);add({amt:amt(90,600),reason:'Price discrepancy',agreed:p.toFixed(2),invoiced:(p*1.06).toFixed(2)})}
+  for(let k=0;k<6;k++)add({amt:amt(50,600),reason:pick(['ASN not received','Label noncompliance','Routing guide violation','Missed appointment fine'])});
+  for(let k=0;k<3;k++)add({amt:amt(90,700),reason:'Damaged in transit'});
+  for(let k=0;k<2;k++)add({amt:amt(200,900),reason:'RTV - defective'});
+  for(let k=0;k<3;k++)add({amt:amt(40,500),reason:pick(['MISC','OTHER',''])});
+  [0,10,26].forEach((ix,n)=>{const src=rows[ix];const d=parseDay(src['Deduction Date'])+int(3,12);const c={...src,'Deduction #':'DM-'+(seq+=int(1,9)),'Deduction Date':dus(Math.min(d,TODAY))};rows.push(c)});
+  rows.sort((a,b)=>parseDay(b['Deduction Date'])-parseDay(a['Deduction Date']));
+  return {headers:H,rows,name:'Sample deduction log',sample:true};
+}
+function samplePayables(){
+  const R=rng(23),between=(a,b)=>a+R()*(b-a),amt=(a,b)=>Math.round(between(a,b)*100)/100,int=(a,b)=>Math.floor(between(a,b+1));
+  const V=[{n:'Allied Electrical Supply',t:'Net 30',p:'AES'},{n:'Penn Industrial Fasteners',t:'2/10 Net 30',p:'PIF'},{n:'Riverside Packaging',t:'Net 45',p:'RP'},{n:'Tri-State HVAC Parts',t:'2/10 Net 30',p:'TS'},{n:'Liberty Freight Lines',t:'Net 15',p:'LF'},{n:'Metro Office Products',t:'Net 30',p:'MOP'}];
+  const H=['Vendor','Invoice No','Invoice Date','Invoice Amount','Paid Amount','Paid Date','Doc Type','Credit Applied','PO Amount','Terms','Check No'];
+  const rows=[];let chk=20410;
+  const row=(v,o)=>{const r={'Vendor':v.n,'Invoice No':o.inv,'Invoice Date':dus(o.date),'Invoice Amount':o.amount.toFixed(2),'Paid Amount':o.paid!=null?o.paid.toFixed(2):'','Paid Date':o.paidDate!=null?dus(o.paidDate):'','Doc Type':o.type||'INV','Credit Applied':o.applied||'','PO Amount':o.po!=null?o.po.toFixed(2):'','Terms':v.t,'Check No':o.paid!=null?(o.ach?'ACH-':'CHK ')+(chk+=int(1,6)):''};rows.push(r);return r};
+  const terms=v=>{const disc=/2\/10/.test(v.t);if(disc)return R()<.5?{off:int(6,9),pay:.98}:{off:int(28,33),pay:1};const n=+(v.t.match(/\d+/)||[30])[0];return {off:n+int(-3,4),pay:1}};
+  const normal=(v,o={})=>{const date=o.date??TODAY-int(20,170);const amount=o.amount??amt(180,9200);const t=terms(v);const paidDate=date+t.off;
+    const paidOk=paidDate<=TODAY;const paid=paidOk?Math.round(amount*t.pay*100)/100:null;
+    return row(v,{inv:o.inv||v.p+'-'+int(10000,99999),date,amount,paid:o.paid!==undefined?o.paid:paid,paidDate:paidOk?(o.paidDate??paidDate):null,po:o.po!==undefined?o.po:(R()<.7?amount:null),ach:R()<.4})};
+  V.forEach(v=>{if(v.p==='LF')return;for(let k=0;k<11;k++)normal(v)});
+  for(let m=0;m<5;m++)normal(V[4],{inv:'LF-2026-'+String(m+5).padStart(2,'0'),date:TODAY-150+m*30,amount:1850,po:null});
+  // exact duplicates
+  [3,15,30].forEach(ix=>{const s=rows[ix];if(!s['Paid Date'])return;const pd=parseDay(s['Paid Date'])+int(9,20);if(pd>TODAY)return;rows.push({...s,'Paid Date':dus(pd),'Check No':'CHK '+(chk+=int(1,6))})});
+  // near duplicates
+  const d1=TODAY-int(70,100);row(V[0],{inv:'INV-10442',date:d1,amount:4812.60,paid:4812.60,paidDate:d1+29,po:4812.60});row(V[0],{inv:'10442',date:d1,amount:4812.60,paid:4812.60,paidDate:d1+41});
+  const d2=TODAY-int(80,110);row(V[2],{inv:'A-7731',date:d2,amount:2267.15,paid:2267.15,paidDate:d2+44,po:2267.15});row(V[2],{inv:'A7731',date:d2+2,amount:2267.15,paid:2267.15,paidDate:d2+50});
+  // same amount within a few days
+  const d3=TODAY-int(60,90);row(V[5],{inv:'MOP-55120',date:d3,amount:1276.40,paid:1276.40,paidDate:d3+30});row(V[5],{inv:'MOP-55187',date:d3+3,amount:1276.40,paid:1276.40,paidDate:d3+31});
+  const d4=TODAY-int(50,80);row(V[3],{inv:'TS-88014',date:d4,amount:3940,paid:3940,paidDate:d4+30});row(V[3],{inv:'TS-88029',date:d4+5,amount:3940,paid:3940,paidDate:d4+31});
+  // overpayments
+  normal(V[0],{amount:4120,paid:4210,date:TODAY-95,paidDate:TODAY-66});
+  normal(V[2],{amount:986.5,paid:1986.5,date:TODAY-120,paidDate:TODAY-76});
+  normal(V[5],{amount:615.2,paid:651.2,date:TODAY-70,paidDate:TODAY-41});
+  // PO variance
+  normal(V[1],{amount:7340,po:6875,paid:7340,date:TODAY-88,paidDate:TODAY-58});
+  normal(V[3],{amount:5212.4,po:4960,paid:5212.4,date:TODAY-64,paidDate:TODAY-34});
+  normal(V[0],{amount:2894,po:2650,paid:2894,date:TODAY-45,paidDate:TODAY-15});
+  // credit memos
+  [[V[0],-1240,96,'N'],[V[2],-418.75,132,'N'],[V[1],-2075,74,'N'],[V[5],-189.9,61,''],[V[3],-650,88,'Y'],[V[0],-310,110,'Y'],[V[2],-525,21,'N']].forEach(([v,a,age,ap],k)=>row(v,{inv:'CM-'+(4410+k*7),date:TODAY-age,amount:a,type:'CM',applied:ap}));
+  // discounts not taken
+  [[V[1],3125],[V[1],1890.4],[V[3],6402],[V[3],2210.75]].forEach(([v,a])=>{const d=TODAY-int(30,120);row(v,{inv:v.p+'-'+int(10000,99999),date:d,amount:a,paid:a,paidDate:d+int(5,9),po:a})});
+  rows.sort((a,b)=>parseDay(b['Invoice Date'])-parseDay(a['Invoice Date']));
+  return {headers:H,rows,name:'Sample AP payment history',sample:true};
+}
+
+/* ---------- state ---------- */
+const saved=store.get('srw-settings',{});
+const state={
+  mode:'deductions', conf:'all', status:'open', sort:'amount', q:'', bar:null, sel:null,
+  me:saved.me||{company:'',name:'',email:''},
+  deductions:{ds:null,map:{},cfg:{},findings:[],count:0},
+  payables:{ds:null,map:{},cfg:{},findings:[],count:0},
+  marks:{} // key -> {status, recovered, letter}
+};
+['deductions','payables'].forEach(m=>{MODES[m].rules.forEach(r=>state[m].cfg[r.key]=(saved.cfg&&saved.cfg[m]&&saved.cfg[m][r.key]!=null)?saved.cfg[m][r.key]:r.def)});
+const persist=()=>store.set('srw-settings',{me:state.me,cfg:{deductions:state.deductions.cfg,payables:state.payables.cfg}});
+
+function automap(mode,headers){
+  const fields=MODES[mode].fields,map={},used=new Set();const nh=headers.map(normH);
+  fields.forEach(f=>{for(const s of f.syn){const ix=nh.findIndex((h,i)=>h===s&&!used.has(i));if(ix>=0){map[f.key]=headers[ix];used.add(ix);return}}});
+  fields.forEach(f=>{if(map[f.key])return;let best=-1;
+    f.syn.forEach(s=>{if(s.length<5)return;nh.forEach((h,i)=>{if(!used.has(i)&&h.includes(s)&&(best<0||nh[i].length<nh[best].length))best=i})});
+    if(best>=0){map[f.key]=headers[best];used.add(best)}});
+  return map;
+}
+function setData(mode,ds){const S=state[mode];S.ds=ds;S.map=automap(mode,ds.headers);state.sel=null;state.bar=null;run(mode)}
+function missingReq(mode){return MODES[mode].fields.filter(f=>f.req&&!state[mode].map[f.key])}
+function run(mode){
+  const S=state[mode];
+  if(!S.ds||missingReq(mode).length){S.findings=[];S.count=S.ds?S.ds.rows.length:0;return}
+  const get=(r,k)=>S.map[k]?r[S.map[k]]:undefined;
+  const cfg={...S.cfg};Object.keys(cfg).forEach(k=>cfg[k]=+cfg[k]||0);
+  const res=(mode==='deductions'?analyzeDeductions:analyzePayables)(S.ds,get,cfg);
+  S.findings=res.findings;S.count=res.count;
+}
+const mark=f=>state.marks[f.key]||(state.marks[f.key]={status:'new',recovered:null,letter:null});
+const statusOf=f=>(state.marks[f.key]||{}).status||'new';
+
+/* ---------- rendering ---------- */
+function render(){
+  const M=MODES[state.mode],S=state[state.mode];
+  document.querySelectorAll('.modes button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===state.mode)));
+  $('#lede-title').textContent=M.title;$('#lede-text').textContent=M.text;
+  $('#src').innerHTML=S.ds?`<strong>${esc(S.ds.name)}${S.ds.sample?'<span class="tag">Example data</span>':''}</strong><span>${S.ds.rows.length.toLocaleString()} rows · ${S.ds.headers.length} columns</span>`
+    :`<strong>No file loaded</strong><span>Upload your ${esc(M.recordWord)} or load the sample to see how it works.</span>`;
+  renderLayout();renderMap();renderRules();renderTotals();renderBars();renderTable();renderInspector();
+}
+function renderLayout(){
+  const M=MODES[state.mode];const dl='<svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 4v12m0 0l-5-5m5 5l5-5M5 20h14"/></svg>';
+  $('#filehelp').innerHTML=`<span>Need a starting point?</span><a href="${M.files.sample}" download>${dl}${esc(M.files.sampleLabel)}</a><a href="${M.files.template}" download>${dl}Blank template</a><a href="#" id="show-layout">See the file layout</a>`;
+  const reqN=M.fields.filter(f=>f.req).length;
+  $('#layout').innerHTML=`<p>One row per ${state.mode==='deductions'?'deduction':'invoice, payment or credit memo'}. The first ${reqN} columns are required; the rest make more checks possible. Your column names don't have to match: after upload you can match them under "Match your columns". Dates can be MM/DD/YYYY or YYYY-MM-DD. Amounts can include $ and commas.</p>
+  <div class="tablewrap"><table><thead><tr><th>Column</th><th>What it holds</th><th></th><th>Example</th></tr></thead><tbody>${
+    M.fields.map(f=>`<tr><td class="col">${esc(f.col)}</td><td>${esc(f.label)}</td><td>${f.req?'<span class="req">Required</span>':'<span class="opt">Optional</span>'}</td><td class="ex">${esc(f.ex)}</td></tr>`).join('')}</tbody></table></div>`;
+}
+function renderMap(){
+  const mode=state.mode,S=state[mode],M=MODES[mode];
+  const miss=S.ds?missingReq(mode):[];
+  $('#map-warn').innerHTML=miss.length?`<div class="warnbox">Match these required columns to run the scan: ${miss.map(f=>esc(f.label)).join(', ')}.</div>`:'';
+  if(miss.length)$('#map-details').open=true;
+  const n=M.fields.filter(f=>S.map[f.key]).length;
+  $('#map-hint').textContent=S.ds?`${n} of ${M.fields.length} matched`:'available after you load a file';
+  const opts=S.ds?S.ds.headers:[];
+  $('#map-form').innerHTML=M.fields.map(f=>`<div class="field"><label for="map-${f.key}">${esc(f.label)}${f.req?' <b>*</b>':''}</label>
+    <select id="map-${f.key}" data-field="${f.key}" ${S.ds?'':'disabled'}><option value="">Not in my file</option>${opts.map(h=>`<option ${S.map[f.key]===h?'selected':''}>${esc(h)}</option>`).join('')}</select></div>`).join('');
+}
+function renderRules(){
+  const mode=state.mode,S=state[mode];
+  $('#rules-form').innerHTML=MODES[mode].rules.map(r=>`<div class="field"><label for="rule-${r.key}">${esc(r.label)}</label><input id="rule-${r.key}" data-rule="${r.key}" type="number" min="0" step="any" value="${esc(S.cfg[r.key])}">${r.help?`<span class="help">${esc(r.help)}</span>`:''}</div>`).join('');
+}
+function live(){return state[state.mode].findings.filter(f=>!['dismissed','denied'].includes(statusOf(f)))}
+function renderTotals(){
+  const S=state[state.mode],all=S.findings,L=live();
+  const sum=a=>a.reduce((s,f)=>s+f.amount,0);
+  const appr=all.filter(f=>['approved','sent','recovered'].includes(statusOf(f)));
+  const sent=all.filter(f=>['sent','recovered'].includes(statusOf(f)));
+  const rec=all.filter(f=>statusOf(f)==='recovered');const recAmt=rec.reduce((s,f)=>s+(mark(f).recovered??f.amount),0);
+  const high=L.filter(f=>f.conf==='High');
+  $('#totals').innerHTML=`
+    <div class="tot lead"><span class="k">Found</span><span class="v">${money(sum(L))}</span><span class="s">${L.length} findings in ${S.count.toLocaleString()} ${esc(MODES[state.mode].recordWord)}</span></div>
+    <div class="tot"><span class="k">High confidence</span><span class="v">${money(sum(high))}</span><span class="s">${high.length} ready to claim</span></div>
+    <div class="tot"><span class="k">Approved or sent</span><span class="v">${money(sum(appr))}</span><span class="s">${appr.length} approved · ${sent.length} sent</span></div>
+    <div class="tot"><span class="k">Recovered</span><span class="v">${money(recAmt)}</span><span class="s">${rec.length} closed${sent.length?` · ${Math.round(rec.length/sent.length*100)}% of sent`:''}</span></div>`;
+}
+function renderBars(){
+  const L=live();const by={};L.forEach(f=>{(by[f.rule]=by[f.rule]||{n:0,a:0});by[f.rule].n++;by[f.rule].a+=f.amount});
+  const list=Object.entries(by).sort((a,b)=>b[1].a-a[1].a);const max=list.length?list[0][1].a:1;
+  $('#bars').innerHTML=list.length?list.map(([k,v])=>`<button type="button" class="bar" data-rule="${k}" aria-pressed="${state.bar===k}"><span class="lbl">${esc(RULES[k].name)}<em>${v.n}</em></span><span class="track"><span class="fill" style="width:${Math.max(2,v.a/max*100)}%"></span></span><span class="amt">${money(v.a)}</span></button>`).join('')
+    :`<span style="color:var(--muted);font-size:13px">${state[state.mode].ds?'Nothing flagged with the current rules.':'Load a file to see where recoverable money sits.'}</span>`;
+}
+function visible(){
+  const S=state[state.mode];const q=state.q.toLowerCase();
+  let a=S.findings.filter(f=>{
+    const st=statusOf(f);
+    if(state.status==='open'&&['recovered','dismissed','denied'].includes(st))return false;
+    if(state.status==='closed'&&!['dismissed','denied'].includes(st))return false;
+    if(!['open','all','closed'].includes(state.status)&&st!==state.status)return false;
+    if(state.conf!=='all'&&f.conf!==state.conf)return false;
+    if(state.bar&&f.rule!==state.bar)return false;
+    if(q&&!(f.party+' '+f.ref+' '+RULES[f.rule].name+' '+(f.rec.reason||'')+' '+(f.rec.invoice||'')).toLowerCase().includes(q))return false;
+    return true});
+  const s=state.sort;
+  a.sort((x,y)=>s==='deadline'?((x.deadline??1e9)-(y.deadline??1e9))||y.amount-x.amount:s==='conf'?(CONF_ORDER[x.conf]-CONF_ORDER[y.conf])||y.amount-x.amount:y.amount-x.amount);
+  return a;
+}
+function dlCell(f){
+  if(state.mode!=='deductions')return `<span class="mono">${dstr(f.date)}</span>`;
+  if(f.deadline==null)return '—';const left=f.deadline-TODAY;
+  if(left<0)return `<span class="dl-past mono">${dstr(f.deadline)}</span><span class="sub">past window</span>`;
+  const cls=left<=14?'dl-urgent':left<=30?'dl-soon':'';
+  return `<span class="mono ${cls}">${left} days</span><span class="sub">${dstr(f.deadline)}</span>`;
+}
+const ST_LABEL={new:'New',approved:'Approved',sent:'Sent',recovered:'Recovered',dismissed:'Dismissed',denied:'Denied'};
+function renderTable(){
+  const M=MODES[state.mode];const rows=visible();
+  $('#find-count').textContent=`${rows.length} finding${rows.length===1?'':'s'}`;
+  $('#thead').innerHTML=`<tr><th>Confidence</th><th>${M.party}</th><th>Issue</th><th class="r">Amount</th><th>${state.mode==='deductions'?'Time to dispute':'Paid'}</th><th>Status</th></tr>`;
+  if(!rows.length){$('#tbody').innerHTML=`<tr><td colspan="6" class="empty">${state[state.mode].ds?'No findings match these filters.':'Load your file or the sample data to start.'}</td></tr>`;return}
+  $('#tbody').innerHTML=rows.map(f=>{const st=statusOf(f);return `<tr tabindex="0" data-key="${esc(f.key)}" aria-selected="${state.sel===f.key}" class="${['dismissed','denied'].includes(st)?'muted':''}">
+    <td><span class="pill c-${f.conf}">${f.conf==='Review'?'Review':f.conf}</span></td>
+    <td><span class="cp">${esc(f.party)}</span><span class="sub mono">${esc(M.refLabel)} ${esc(f.ref)}</span></td>
+    <td>${esc(RULES[f.rule].name)}${f.rec.reason&&state.mode==='deductions'?`<span class="sub">${esc(f.rec.reason)}</span>`:''}</td>
+    <td class="r num">${money(f.amount)}</td>
+    <td>${dlCell(f)}</td>
+    <td><span class="pill s-${st}">${ST_LABEL[st]}</span></td></tr>`}).join('');
+}
+function current(){return state.sel?state[state.mode].findings.find(f=>f.key===state.sel):null}
+function renderInspector(){
+  const el=$('#inspector');const f=current();
+  if(!f){el.classList.add('is-empty');el.innerHTML=`<div class="insp-empty"><h3>How it works</h3><ol>
+    <li>Load your ${esc(MODES[state.mode].recordWord)} as CSV or Excel. Columns are matched automatically; adjust any that are wrong.</li>
+    <li>The scan flags money you can recover and rates how strong each claim is.</li>
+    <li>Open a finding to see the evidence and a drafted claim letter. Edit the letter, then approve it.</li>
+    <li>Send it from your own email, then mark it sent and record what comes back.</li></ol>
+    <p style="margin:0">Select a finding to start.</p></div>`;return}
+  el.classList.remove('is-empty');
+  const m=mark(f),st=m.status;const me=state.me;const text=m.letter??letter(f,me);
+  const ev=evidence(f,state.mode).map(([k,v])=>k==='__grp'?`<div class="grp">${esc(v)}</div>`:`<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('');
+  let dl='';if(state.mode==='deductions'&&f.deadline!=null){const left=f.deadline-TODAY;dl=left<0?'<span>Past dispute window</span>':`<span>Dispute by ${dstr(f.deadline)} (${left} days)</span>`}
+  let actions='';
+  if(st==='new')actions=`<div class="row"><button class="btn primary" data-act="approve" type="button">Approve claim</button><button class="btn ghost" data-act="dismiss" type="button">Dismiss</button></div><span class="note">Approving locks in the letter for export. Nothing is sent automatically.</span>`;
+  else if(st==='approved')actions=`<div class="row"><button class="btn primary" data-act="sent" type="button">Mark as sent</button><button class="btn ghost" data-act="new" type="button">Back to new</button></div>`;
+  else if(st==='sent')actions=`<div class="row"><label class="sr" for="rec-amt" style="font-size:12px;color:var(--muted)">Amount recovered</label><input id="rec-amt" type="number" step="0.01" min="0" value="${f.amount.toFixed(2)}"><button class="btn primary" data-act="recovered" type="button">Record recovery</button><button class="btn ghost danger" data-act="denied" type="button">Claim denied</button></div>`;
+  else if(st==='recovered')actions=`<span class="note">Recovered ${money(m.recovered??f.amount)}.</span><div class="row"><button class="btn ghost" data-act="sent" type="button">Undo</button></div>`;
+  else actions=`<span class="note">${st==='denied'?'Claim denied.':'Dismissed.'}</span><div class="row"><button class="btn ghost" data-act="new" type="button">Reopen</button></div>`;
+  el.innerHTML=`<div class="insp-head"><button class="close" type="button" data-act="close" aria-label="Close">×</button>
+    <span class="eyebrow">${esc(RULES[f.rule].name)}</span><h2>${esc(f.party)}</h2>
+    <span class="insp-amt">${money(f.amount)}</span>
+    <div class="insp-chips"><span class="pill c-${f.conf}">${f.conf} confidence</span><span class="pill s-${st}">${ST_LABEL[st]}</span>${dl}</div></div>
+    <div class="insp-sec"><h3>Why this is recoverable</h3><p>${esc(f.why)}</p></div>
+    <div class="insp-sec"><h3>Next step</h3><p>${esc(f.action)}</p></div>
+    <div class="insp-sec"><h3>Evidence from your data</h3><dl class="ev">${ev}</dl></div>
+    <div class="insp-sec"><h3>Claim letter</h3><textarea id="letter" aria-label="Claim letter">${esc(text)}</textarea>
+      <div class="row"><button class="btn" data-act="copy" type="button">Copy letter</button>${m.letter!=null?'<button class="btn ghost" data-act="reset" type="button">Reset to draft</button>':''}</div></div>
+    <div class="insp-actions">${actions}</div>`;
+}
+
+/* ---------- toast + exports ---------- */
+let tt;function toast(msg){const t=$('#toast');t.textContent=msg;t.hidden=false;clearTimeout(tt);tt=setTimeout(()=>t.hidden=true,2600)}
+async function copyText(s){try{await navigator.clipboard.writeText(s);return true}catch(e){return false}}
+let dlNs;const dlReady=(window.claude&&window.claude.use)?window.claude.use('downloads').then(n=>dlNs=n).catch(()=>null):Promise.resolve(null);
+async function offerFile(filename,data){
+  await dlReady;
+  if(dlNs){try{await dlNs.save({filename,data});toast('Saved '+filename);return}catch(e){if(e&&e.code==='declined')return}}
+  if(!window.claude){ // running on its own (local server or your own site): plain browser download
+    const url=URL.createObjectURL(new Blob([data],{type:filename.endsWith('.csv')?'text/csv':'text/plain'}));
+    const a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1500);toast('Downloaded '+filename);return;
+  }
+  if(await copyText(data))toast('Downloads are not available here, so the file contents were copied to your clipboard.');
+  else toast('Could not save or copy the file in this view.');
+}
+const csvCell=v=>{const s=String(v??'');return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s};
+function exportCSV(){
+  const M=MODES[state.mode],list=state[state.mode].findings;
+  if(!list.length){toast('Nothing to export yet.');return}
+  const H=['Status','Confidence','Issue',M.party,M.refLabel,'Amount','Recovered',state.mode==='deductions'?'Dispute by':'Date','Why','Next step'];
+  const lines=[H.map(csvCell).join(',')].concat(list.map(f=>{const m=state.marks[f.key]||{};return [ST_LABEL[statusOf(f)],f.conf,RULES[f.rule].name,f.party,f.ref,f.amount.toFixed(2),m.status==='recovered'?(m.recovered??f.amount).toFixed(2):'',state.mode==='deductions'?(f.deadline!=null?dus(f.deadline):''):(f.date!=null?dus(f.date):''),f.why,f.action].map(csvCell).join(',')}));
+  offerFile(`recovery-claims-${state.mode}.csv`,lines.join('\n'));
+}
+function exportLetters(){
+  const list=state[state.mode].findings.filter(f=>['approved','sent'].includes(statusOf(f)));
+  if(!list.length){toast('Approve at least one claim first.');return}
+  const txt=list.map(f=>`==== ${RULES[f.rule].name} · ${f.party} · ${f.ref} · ${money(f.amount)} ====\n\n`+(mark(f).letter??letter(f,state.me))).join('\n\n\n');
+  offerFile(`claim-letters-${state.mode}.txt`,txt);
+}
+
+/* ---------- file loading ---------- */
+function loadFile(file){
+  if(!file)return;const name=file.name;const ext=(name.split('.').pop()||'').toLowerCase();
+  const done=(headers,rows)=>{
+    headers=headers.map((h,i)=>String(h??'').trim()||`Column ${i+1}`);
+    const seen={};headers=headers.map(h=>{seen[h]=(seen[h]||0)+1;return seen[h]>1?`${h} (${seen[h]})`:h});
+    const objs=rows.map(r=>{const o={};headers.forEach((h,i)=>o[h]=r[i]??'');return o});
+    if(!objs.length){toast('That file has a header row but no data rows.');return}
+    setData(state.mode,{headers,rows:objs,name,sample:false});render();toast(`Loaded ${objs.length.toLocaleString()} rows from ${name}`);
+  };
+  const reader=new FileReader();
+  if(ext==='xlsx'||ext==='xls'){
+    if(!window.XLSX){toast('Excel support did not load. Save the sheet as CSV and upload that.');return}
+    reader.onload=e=>{try{const wb=XLSX.read(new Uint8Array(e.target.result),{type:'array',cellDates:true});const ws=wb.Sheets[wb.SheetNames[0]];
+      const aoa=XLSX.utils.sheet_to_json(ws,{header:1,raw:true,defval:''}).filter(r=>r.some(c=>String(c).trim()!==''));
+      if(!aoa.length){toast('The first sheet is empty.');return} done(aoa[0],aoa.slice(1))}catch(err){toast('Could not read that workbook. Try saving it as CSV.')}};
+    reader.readAsArrayBuffer(file);
+  }else{
+    reader.onload=e=>{const aoa=parseCSV(String(e.target.result).replace(/^﻿/,''));if(!aoa.length){toast('That file is empty.');return}done(aoa[0],aoa.slice(1))};
+    reader.readAsText(file);
+  }
+}
+
+/* ---------- events ---------- */
+document.querySelector('.modes').addEventListener('click',e=>{const b=e.target.closest('button[data-mode]');if(!b)return;state.mode=b.dataset.mode;state.sel=null;state.bar=null;render()});
+$('#filehelp').addEventListener('click',e=>{if(e.target.closest('#show-layout')){e.preventDefault();const d=$('#layout-details');d.open=true;d.scrollIntoView({behavior:'smooth',block:'nearest'})}});
+$('#file').addEventListener('change',e=>{loadFile(e.target.files[0]);e.target.value=''});
+$('#load-sample').addEventListener('click',()=>{setData(state.mode,state.mode==='deductions'?sampleDeductions():samplePayables());render();toast('Loaded example data')});
+const drop=$('#drop');
+['dragenter','dragover'].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.add('over')}));
+['dragleave','drop'].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.remove('over')}));
+drop.addEventListener('drop',e=>loadFile(e.dataTransfer.files[0]));
+$('#map-form').addEventListener('change',e=>{const s=e.target.closest('select[data-field]');if(!s)return;state[state.mode].map[s.dataset.field]=s.value||undefined;run(state.mode);render()});
+$('#rules-form').addEventListener('change',e=>{const i=e.target.closest('input[data-rule]');if(!i)return;state[state.mode].cfg[i.dataset.rule]=i.value;persist();run(state.mode);render()});
+['company','name','email'].forEach(k=>$('#me-'+k).addEventListener('input',e=>{state.me[k]=e.target.value;persist();if(current()&&mark(current()).letter==null){const ta=$('#letter');if(ta)ta.value=letter(current(),state.me)}}));
+$('#conf-filters').addEventListener('click',e=>{const b=e.target.closest('[data-conf]');if(!b)return;state.conf=b.dataset.conf;document.querySelectorAll('#conf-filters .fchip').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));renderTable()});
+$('#status-filter').addEventListener('change',e=>{state.status=e.target.value;renderTable()});
+$('#sort').addEventListener('change',e=>{state.sort=e.target.value;renderTable()});
+$('#search').addEventListener('input',e=>{state.q=e.target.value;renderTable()});
+$('#bars').addEventListener('click',e=>{const b=e.target.closest('[data-rule]');if(!b)return;state.bar=state.bar===b.dataset.rule?null:b.dataset.rule;renderBars();renderTable()});
+const pickRow=tr=>{state.sel=tr.dataset.key;renderTable();renderInspector();if(window.matchMedia('(max-width:1100px)').matches)$('#inspector').scrollTop=0};
+$('#tbody').addEventListener('click',e=>{const tr=e.target.closest('tr[data-key]');if(tr)pickRow(tr)});
+$('#tbody').addEventListener('keydown',e=>{const tr=e.target.closest('tr[data-key]');if(tr&&(e.key==='Enter'||e.key===' ')){e.preventDefault();pickRow(tr)}});
+$('#inspector').addEventListener('input',e=>{if(e.target.id==='letter'){const f=current();if(f)mark(f).letter=e.target.value}});
+$('#inspector').addEventListener('click',async e=>{
+  const b=e.target.closest('[data-act]');if(!b)return;const f=current();const act=b.dataset.act;
+  if(act==='close'){state.sel=null;renderTable();renderInspector();return}
+  if(!f)return;const m=mark(f);
+  if(act==='copy'){const ok=await copyText($('#letter').value);if(ok)toast('Letter copied');else{$('#letter').select();toast('Select all is on. Press Ctrl+C or Cmd+C to copy.')}return}
+  if(act==='reset'){m.letter=null;renderInspector();return}
+  if(act==='recovered'){const v=parseFloat($('#rec-amt').value);m.recovered=isNaN(v)?f.amount:v}
+  if(['approve','dismiss','new','sent','recovered','denied'].includes(act)){m.status=act==='approve'?'approved':act==='dismiss'?'dismissed':act;
+    toast({approved:'Claim approved',dismissed:'Finding dismissed',new:'Moved back to new',sent:'Marked as sent',recovered:'Recovery recorded',denied:'Marked as denied'}[m.status]);
+    renderTotals();renderBars();renderTable();renderInspector()}
+});
+$('#approve-high').addEventListener('click',()=>{const list=state[state.mode].findings.filter(f=>f.conf==='High'&&statusOf(f)==='new');list.forEach(f=>mark(f).status='approved');toast(list.length?`Approved ${list.length} High findings`:'No new High findings to approve');render()});
+/* ---------- lead capture on export ---------- */
+const LEAD_KEY='srw-lead';
+let pendingExport=null;
+function leadSummary(){
+  const S=state[state.mode],L=live(),M=MODES[state.mode];
+  const sum=a=>a.reduce((s,f)=>s+f.amount,0);const high=L.filter(f=>f.conf==='High');
+  const by={};L.forEach(f=>{by[f.rule]=(by[f.rule]||0)+f.amount});
+  const top=Object.entries(by).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k,v])=>`${RULES[k].name}: ${money(v)}`);
+  return {mode:M===MODES.deductions?'Deductions & chargebacks':'Overpayments & vendor credits',
+    data:S.ds&&S.ds.sample?'sample data':'their own file',rows:S.count,n:L.length,found:sum(L),high:sum(high),top};
+}
+function withLead(fn){
+  if(!state[state.mode].findings.length){fn();return}
+  if(store.get(LEAD_KEY,null)){fn();return}
+  pendingExport=fn;const s=leadSummary();
+  $('#gate-sum').innerHTML=`<b>${money(s.found)}</b> flagged in ${s.rows.toLocaleString()} rows · <b>${money(s.high)}</b> high confidence`;
+  $('#gate-err').textContent='';$('#gate').hidden=false;setTimeout(()=>$('#g-name').focus(),30);
+}
+function closeGate(){$('#gate').hidden=true;pendingExport=null}
+$('#gate-close').addEventListener('click',closeGate);
+$('#gate').addEventListener('click',e=>{if(e.target.id==='gate')closeGate()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#gate').hidden)closeGate()});
+$('#gate-form').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const name=$('#g-name').value.trim(),email=$('#g-email').value.trim(),company=$('#g-company').value.trim();
+  if(!name||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){$('#gate-err').textContent='Enter your name and a valid work email.';return}
+  const btn=$('#gate-submit');btn.disabled=true;btn.textContent='One moment…';
+  const s=leadSummary();
+  const message=['Supplier recovery demo export','Mode: '+s.mode,'Data: '+s.data,'Rows scanned: '+s.rows,
+    'Findings: '+s.n,'Flagged: '+money(s.found),'High confidence: '+money(s.high),'Top issues: '+(s.top.join('; ')||'none')].join('\n');
+  let sent=false;
+  try{const res=await fetch('/.netlify/functions/contact',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({from_name:name,from_email:email,company:company||'Not provided',interest:'Vendor Compliance Recovery (Product)',message})});
+    sent=res.ok}catch(err){sent=false}
+  store.set(LEAD_KEY,{at:Date.now()});
+  btn.disabled=false;btn.textContent='Download my export';
+  const fn=pendingExport;$('#gate').hidden=true;pendingExport=null;
+  if(fn)fn();
+  if(!sent)setTimeout(()=>toast('Your export is ready. We could not send your details, so email info@beneficialenterprisegroup.com for a review.'),2700);
+});
+$('#export-csv').addEventListener('click',()=>withLead(exportCSV));
+$('#export-letters').addEventListener('click',()=>withLead(exportLetters));
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&state.sel){state.sel=null;renderTable();renderInspector()}});
+
+/* ---------- boot: open with example data so the tool shows what it does ---------- */
+$('#me-company').value=state.me.company;$('#me-name').value=state.me.name;$('#me-email').value=state.me.email;
+setData('deductions',sampleDeductions());setData('payables',samplePayables());
+state.mode=(location.hash==='#payables')?'payables':'deductions';
+render();
+})();
+</script>
+</body>
+</html>

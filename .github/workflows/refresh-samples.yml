@@ -1,0 +1,59 @@
+# ══════════════════════════════════════════════
+# BENEFICIAL ENTERPRISE GROUP — MONTHLY DEMO SAMPLE REFRESH
+# File location: .github/workflows/refresh-samples.yml
+#
+# The supplier recovery demo offers sample CSVs to download. Their dates are
+# a snapshot, so over time more deductions fall past the dispute window.
+# On the 1st of each month this regenerates them from the demo's own sample
+# generator (agent/refresh-samples.mjs) and commits them. The push triggers
+# a Netlify deploy.
+#
+# To run it now: Actions → Refresh Demo Samples → Run workflow
+# ══════════════════════════════════════════════
+
+name: Refresh Demo Samples
+
+on:
+  schedule:
+    # 1st of every month at 13:23 UTC (9:23am EDT / 8:23am EST), after the
+    # content agent (11:00) and the health check (12:17) have finished.
+    - cron: '23 13 1 * *'
+  workflow_dispatch:
+
+# Share the content agent's queue so two jobs never push at the same time.
+concurrency:
+  group: content-agent
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # lets GITHUB_TOKEN push the refreshed CSVs
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Regenerate sample CSVs
+        run: node agent/refresh-samples.mjs
+
+      # Pushes made with GITHUB_TOKEN do not trigger workflow runs, so this
+      # cannot loop.
+      - name: Commit and push if the samples changed
+        run: |
+          git config user.name "content-agent"
+          git config user.email "agent@beneficialenterprisegroup.com"
+          git add products/vendor-compliance/demo/samples/
+          if git diff --staged --quiet; then
+            echo "Samples unchanged — nothing to commit."
+          else
+            git commit -m "chore: refresh supplier recovery demo samples ($(date -u +%Y-%m))"
+            git pull --rebase
+            git push
+          fi
