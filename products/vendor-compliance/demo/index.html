@@ -20,45 +20,36 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: recovery ledger — mode switch and data source up top, totals strip, then a findings ledger with an inspector beside it. Dark-first BEG brand. */
+/* Layout: recovery ledger — mode switch and data source up top, totals strip, then a findings ledger with an inspector beside it. Light work area for readability; header keeps the BEG brand navy. */
 :root{
-  color-scheme:dark;
-  --bg:#080C10; --surface:#0E1420; --surface-2:#131C2B; --line:#1E2A3C; --line-strong:#2A3A52;
-  --fg:#E7EEF6; --muted:#8C9AAE; --faint:#5F6E84;
-  --teal:#0BBFBF; --blue:#1A6FD4; --accent-ink:#5FE0E0; --on-grad:#04121A;
-  --grad:linear-gradient(135deg,#0BBFBF 0%,#1A6FD4 100%);
-  --good:#35C77B; --good-bg:rgba(53,199,123,.14);
-  --warn:#E3A93B; --warn-bg:rgba(227,169,59,.14);
-  --crit:#EF6461; --crit-bg:rgba(239,100,97,.14);
-  --info:#6FA8F5; --info-bg:rgba(26,111,212,.18);
-  --chip:#172235; --row-hover:#111A28; --row-sel:#10243A;
-  --shadow:0 18px 40px rgba(0,0,0,.45);
-  --font-ui:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  --font-data:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
-}
-
-:root[data-theme="light"]{
   color-scheme:light;
   --bg:#F3F6F9; --surface:#FFFFFF; --surface-2:#EEF3F7; --line:#D9E1EA; --line-strong:#C3CFDC;
   --fg:#0C1622; --muted:#566476; --faint:#7D8A9B;
-  --accent-ink:#087F86; --on-grad:#FFFFFF;
+  --teal:#0BBFBF; --blue:#1A6FD4; --accent-ink:#087F86; --on-grad:#FFFFFF;
+  --grad:linear-gradient(135deg,#0BBFBF 0%,#1A6FD4 100%);
   --good:#1C8A52; --good-bg:rgba(28,138,82,.12);
   --warn:#9A6400; --warn-bg:rgba(201,138,20,.15);
   --crit:#C2362F; --crit-bg:rgba(194,54,47,.11);
   --info:#1A5FB8; --info-bg:rgba(26,111,212,.11);
   --chip:#E7EEF4; --row-hover:#F2F7FA; --row-sel:#E3F3F5;
   --shadow:0 18px 40px rgba(12,22,34,.16);
+  --header:#0E1420;
+  --font-ui:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --font-data:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
 }
+
+
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--fg);font-family:var(--font-ui);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--header)}
 button,input,select,textarea{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 .num,.mono{font-family:var(--font-data);font-variant-numeric:tabular-nums}
 .wrap{max-width:1360px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 
 /* Header */
-.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--header);border-bottom:1px solid #1E2A3C;color-scheme:dark;
+  --surface:#0E1420;--surface-2:#131C2B;--line:#1E2A3C;--fg:#E7EEF6;--muted:#8C9AAE;--accent-ink:#5FE0E0;--on-grad:#04121A;color:var(--fg)}
 .top .wrap{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding-block:12px}
 .brand{display:flex;align-items:center;gap:10px;min-width:0}
 .mark{width:32px;height:32px;border-radius:8px;background:var(--grad);display:grid;place-items:center;color:var(--on-grad);font-weight:700;font-size:12px;letter-spacing:.04em;flex:none}
@@ -221,7 +212,7 @@ textarea{width:100%;min-height:240px;background:var(--surface-2);border:1px soli
 .review-cta p{margin:0;color:var(--muted);font-size:13px;max-width:70ch}
 .review-cta p strong{color:var(--fg);font-weight:600}
 .review-cta a{text-decoration:none}
-.gate{position:fixed;inset:0;z-index:70;background:rgba(4,8,12,.72);display:grid;place-items:center;
+.gate{position:fixed;inset:0;z-index:70;background:rgba(12,22,34,.45);display:grid;place-items:center;
   padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
 .gate-card{background:var(--surface);border:1px solid var(--line-strong);border-radius:14px;box-shadow:var(--shadow);width:100%;max-width:440px;padding:22px;display:flex;flex-direction:column;gap:12px;position:relative}
 .gate-card h2{margin:0;font-size:18px;letter-spacing:-.01em}
