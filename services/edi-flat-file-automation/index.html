@@ -72,6 +72,14 @@
   "mainEntity": [
     {
       "@type": "Question",
+      "name": "What's the difference between EDI and a flat file?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "EDI is a standardized format, usually ANSI X12 in the US, that trading partners use to exchange documents like purchase orders (850), invoices (810) and ship notices (856). A flat file is a plain CSV or fixed-width export laid out however the sending system decided, which is what most older ERPs import and export. Most companies need both, and the work is translating between them automatically with validation in between."
+      }
+    },
+    {
+      "@type": "Question",
       "name": "Do we need a new EDI platform?",
       "acceptedAnswer": {
         "@type": "Answer",
@@ -146,11 +154,25 @@
   .card p { font-size: 15px; color: var(--muted); line-height: 1.7; }
   .chips { display: flex; flex-wrap: wrap; gap: 8px; }
   .chip { font-size: 13px; font-weight: 500; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--border2); color: var(--text); background: rgba(255,255,255,0.03); }
+  .table-wrap { overflow-x: auto; }
   .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; counter-reset: s; }
   .step { background: var(--bg-card); border: 1px solid var(--border2); border-radius: 14px; padding: 1.4rem; }
   .step-num { font-size: 11px; font-weight: 700; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.5rem; }
   .step h3 { font-size: 15px; }
   .step p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .compare { width: 100%; border-collapse: collapse; margin: 0.5rem 0 1.5rem; font-size: 15px; }
+  .compare th, .compare td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--border2); vertical-align: top; line-height: 1.6; }
+  .compare th { color: var(--white); font-weight: 600; font-size: 14px; }
+  .compare td { color: var(--muted); }
+  .compare td:first-child { color: var(--text); font-weight: 500; white-space: nowrap; }
+  .note { font-size: 16px; color: var(--muted); line-height: 1.75; max-width: 780px; margin-bottom: 1.25rem; }
+  .note:last-child { margin-bottom: 0; }
+  .note strong { color: var(--text); font-weight: 600; }
+  @media (max-width: 640px) {
+    .compare { font-size: 13px; }
+    .compare th, .compare td { padding: 10px 8px; }
+    .compare td:first-child { white-space: normal; width: 26%; }
+  }
   .faq { display: grid; gap: 1rem; }
   .faq .card h3 { font-size: 16px; }
   .cta { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 2.5rem; display: flex; justify-content: space-between; align-items: center; gap: 2rem; flex-wrap: wrap; position: relative; overflow: hidden; }
@@ -249,6 +271,51 @@
     </div>
   </section>
 
+  <section class="block" id="edi-vs-flat-file">
+    <h2>EDI vs flat files: what's the difference?</h2>
+    <p class="note"><strong>EDI</strong> (Electronic Data Interchange) is a strict, standardized format that trading partners use to exchange business documents computer to computer. In the US that usually means ANSI X12, where every document type has a number: an 850 is a purchase order, an 810 an invoice, an 856 a ship notice. <strong>A flat file</strong> is a plain text export, either CSV or fixed-width, laid out however the system that produced it decided. It's what most older ERPs import and export natively.</p>
+    <div class="table-wrap">
+      <table class="compare">
+        <thead><tr><th></th><th>EDI (X12)</th><th>Flat file / CSV</th></tr></thead>
+        <tbody>
+          <tr><td>Format</td><td>Industry standard, the same structure for every partner (with partner-specific rules)</td><td>Whatever the sending system produces; differs from system to system</td></tr>
+          <tr><td>Who sets it</td><td>Usually your large customer or trading partner</td><td>Your ERP, or each partner's own system</td></tr>
+          <tr><td>Typical use</td><td>Orders, invoices and ship notices with retailers, distributors, hospitals and insurers</td><td>ERP imports and exports, price files, inventory feeds, smaller partners</td></tr>
+          <tr><td>Acknowledgment</td><td>Built in: a 997 confirms each document was received</td><td>None unless someone builds it</td></tr>
+          <tr><td>When it goes wrong</td><td>Rejected documents, and chargebacks for late or incorrect ship notices</td><td>Silent failures, duplicate loads, fields in the wrong column</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Most companies need both. Your customers require EDI, while your ERP speaks flat files. The real work is the translation between them, done automatically and validated before anything reaches the ERP or goes out to a partner.</p>
+  </section>
+
+  <section class="block" id="non-edi-partners">
+    <h2>When a partner can't send EDI</h2>
+    <p class="note">Not every customer or vendor is set up for EDI. Smaller partners often send orders as spreadsheets, CSV attachments or structured emails, and someone keys them into the ERP by hand. We bring those into the same pipeline as your EDI traffic: picked up automatically, mapped to your ERP's format, validated with the same rules, and sent to an exception queue when something doesn't look right. One process for every partner, whether they send EDI or not.</p>
+  </section>
+
+  <section class="block" id="erp-systems">
+    <h2>Works with the ERP you already run</h2>
+    <div class="grid-2">
+      <div class="card">
+        <h3>AS400 / IBM i</h3>
+        <p>EDI and partner files translated into staging files or DB2 tables your existing programs already read, and exports picked up the same way. No changes to the green-screen workflow your team uses.</p>
+      </div>
+      <div class="card">
+        <h3>Eclipse</h3>
+        <p>Inbound orders, price files and inventory updates prepared in the layouts Eclipse imports, with outbound documents built from its exports and checked against each partner's requirements.</p>
+      </div>
+      <div class="card">
+        <h3>Epicor</h3>
+        <p>Data moved through the import tools or service layer your Epicor version supports, so orders and invoices flow without manual entry and every load is reconciled.</p>
+      </div>
+      <div class="card">
+        <h3>Oracle E-Business Suite</h3>
+        <p>Orders and invoices loaded through Oracle's standard open interface tables and import programs, with validation before submission and clear reporting on anything Oracle rejects.</p>
+      </div>
+    </div>
+  </section>
+
   <section class="block">
     <h2>Formats and channels</h2>
     <div class="chips">
@@ -261,6 +328,7 @@
       <span class="chip">SQL Server</span>
       <span class="chip">REST APIs</span>
     </div>
+    <p class="note" style="margin-top:1.5rem">EDI files reach you in one of a few ways: SFTP, an AS2 connection, or a mailbox at a VAN (value-added network) that relays documents between partners. We work around the connection you already have and add what's usually missing: automatic pickup, validation, and an alert when a file doesn't arrive.</p>
   </section>
 
   <section class="block">
@@ -292,6 +360,10 @@
   <section class="block">
     <h2>Common questions</h2>
     <div class="faq">
+      <div class="card">
+        <h3>What&#x27;s the difference between EDI and a flat file?</h3>
+        <p>EDI is a standardized format, usually ANSI X12 in the US, that trading partners use to exchange documents like purchase orders (850), invoices (810) and ship notices (856). A flat file is a plain CSV or fixed-width export laid out however the sending system decided, which is what most older ERPs import and export. Most companies need both, and the work is translating between them automatically with validation in between.</p>
+      </div>
       <div class="card">
         <h3>Do we need a new EDI platform?</h3>
         <p>Not necessarily. Many distributors and manufacturers can automate their existing EDI and file exchanges with an integration layer around their current ERP and translation setup. If a dedicated EDI platform is the better fit, we'll say so and explain why.</p>
